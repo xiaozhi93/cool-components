@@ -8,6 +8,7 @@ export default {
       publicPath: '/cool-components/',
     },
     packageManager: 'pnpm',
+    enableVueJsx: true,
   },
   site: {
     title: 'cool-components',

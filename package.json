@@ -24,12 +24,18 @@
     "*.{ts,tsx,js,vue}": "eslint --fix"
   },
   "peerDependencies": {
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "ant-design-vue": "^4.0.0",
+    "dayjs": "^1.11.0",
+    "lodash-es": "^4.17.0"
   },
   "devDependencies": {
     "@vant/cli": "^7.0.0",
     "vue": "^3.3.4",
-    "sass": "^1.49.7"
+    "sass": "^1.49.7",
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "@types/lodash-es": "^4.17.0"
   },
   "eslintConfig": {
     "root": true,
