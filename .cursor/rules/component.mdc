@@ -1,0 +1,257 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Vue 组件开发规范
+
+基于 `demo-button` 组件分析的标准化组件开发指南，所有新组件必须遵循此规范。
+
+## 1. 标准目录结构
+
+每个组件必须按照以下结构组织：
+
+```
+src/
+└── component-name/              # 组件文件夹，使用 kebab-case
+    ├── index.vue                # 主组件文件
+    ├── README.md                # 组件文档
+    ├── demo/
+    │   └── index.vue            # 演示文件
+    └── test/
+        ├── index.spec.js        # 测试文件
+        └── __snapshots__/       # Jest 快照目录
+            └── index.spec.js.snap
+```
+
+## 2. 主组件文件规范 (index.vue)
+
+```vue
+<template>
+  <!-- 根元素使用组件名对应的 CSS 类 -->
+  <button class="demo-button">
+    <slot />
+  </button>
+</template>
+
+<script>
+export default {
+  // 必须定义 name，使用 PascalCase
+  name: 'DemoButton',
+
+  // Props 必须定义类型和默认值
+  props: {
+    color: String,              // 简单类型
+    type: {                     // 复杂定义
+      type: String,
+      default: 'primary',
+    },
+  },
+};
+</script>
+
+<style lang="scss">
+// 必须使用 SCSS，类名使用 kebab-case
+.demo-button {
+  min-width: 120px;
+  color: #fff;
+  font-size: 16px;
+  // 更多样式...
+}
+</style>
+```
+
+## 3. 演示文件规范 (demo/index.vue)
+
+```vue
+<template>
+  <!-- 每个功能用 demo-block 包装 -->
+  <demo-block title="基础用法">
+    <demo-button type="primary" style="margin-left: 15px">按钮</demo-button>
+  </demo-block>
+
+  <demo-block title="自定义颜色">
+    <demo-button color="#03a9f4" style="margin-left: 15px">按钮</demo-button>
+  </demo-block>
+</template>
+
+<script setup>
+// 导入主组件
+import DemoButton from '../index.vue';
+</script>
+```
+
+**演示文件要求：**
+- 展示主要使用场景
+- 每个示例用 `demo-block` 包装
+- 提供有意义的标题
+
+## 4. 文档规范 (README.md)
+
+```markdown
+# ComponentName 组件中文名
+
+### 介绍
+组件功能描述
+
+### 引入
+```js
+import Vue from 'vue';
+import { ComponentName } from 'cool-components';
+
+Vue.use(ComponentName);
+```
+
+## 代码演示
+
+### 基础用法
+```html
+<component-name type="primary" />
+```
+
+## API
+
+### Props
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| type | 按钮类型 | _string_ | `primary` |
+| color `1.0.0` | 按钮颜色 | _string_ | - |
+
+### Events
+| 事件名 | 说明 | 回调参数 |
+| --- | --- | --- |
+| click | 点击时触发 | _event: MouseEvent_ |
+
+### Slots
+| 名称 | 说明 |
+| --- | --- |
+| default | 默认插槽 |
+```
+
+## 5. 测试规范 (test/index.spec.js)
+
+```javascript
+import { mount } from '@vue/test-utils';
+import ComponentName from '../../component-name';
+
+test('render component name', () => {
+  const wrapper = mount(ComponentName);
+  expect(wrapper.html()).toMatchSnapshot();
+});
+
+// 添加 Props 测试
+test('props validation', () => {
+  const wrapper = mount(ComponentName, {
+    props: { type: 'secondary' }
+  });
+  expect(wrapper.props('type')).toBe('secondary');
+});
+```
+
+## 6. 命名规范
+
+| 类型 | 格式 | 示例 |
+|------|------|------|
+| 组件名 | PascalCase | `DemoButton` |
+| 文件夹名 | kebab-case | `demo-button` |
+| CSS 类名 | kebab-case | `.demo-button` |
+| 文件名 | kebab-case | `demo-button.vue` |
+
+## 7. 样式规范
+
+```scss
+// 主类名与文件夹名保持一致
+.demo-button {
+  // 基础样式
+  
+  // 修饰符使用 BEM 风格
+  &--large {
+    font-size: 18px;
+  }
+  
+  &--small {
+    font-size: 14px;
+  }
+  
+  // 状态类
+  &:hover {
+    opacity: 0.8;
+  }
+}
+```
+
+## 8. Props 定义规范
+
+```javascript
+props: {
+  // 必需的 Props
+  type: {
+    type: String,
+    required: true,
+  },
+  
+  // 带默认值的 Props
+  size: {
+    type: String,
+    default: 'medium',
+  },
+  
+  // 可选 Props（无默认值）
+  color: String,
+  
+  // 布尔类型
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+}
+```
+
+## 9. 必须遵循的开发流程
+
+1. **创建目录结构**：严格按照标准结构
+2. **实现主组件**：编写 `index.vue`
+3. **编写演示**：在 `demo/index.vue` 展示用法
+4. **完善文档**：编写完整的 `README.md`
+5. **添加测试**：至少包含快照测试
+6. **样式调试**：确保样式规范
+
+## 10. 代码质量检查清单
+
+- [ ] 组件名称使用 PascalCase
+- [ ] 文件夹名使用 kebab-case  
+- [ ] CSS 类名与文件夹名一致
+- [ ] Props 定义包含类型和默认值
+- [ ] 包含完整的 API 文档
+- [ ] 演示文件展示主要功能
+- [ ] 至少包含基础快照测试
+- [ ] 样式使用 SCSS 预处理器
+- [ ] 遵循 BEM CSS 命名规范
+
+## 11. 禁止事项
+
+```javascript
+// ❌ 错误示例
+export default {
+  // 缺少组件名
+  props: {
+    type: 'primary',        // 缺少类型定义
+  },
+};
+
+// ❌ 错误的 CSS 类名
+.DemoButton { }             // 不要使用 PascalCase
+
+// ✅ 正确示例  
+export default {
+  name: 'DemoButton',       // 必须定义
+  props: {
+    type: {
+      type: String,
+      default: 'primary',
+    },
+  },
+};
+
+.demo-button { }            // 使用 kebab-case
+```

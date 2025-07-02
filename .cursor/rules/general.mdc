@@ -1,0 +1,23 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 项目通用规范
+
+## 技术栈
+- **Vue**: ^3.3.4 - 前端框架
+- **Sass**: ^1.49.7 - CSS预处理器
+- **Ant Design Vue**: 最新 - UI 组件库基础
+- **TypeScript**: ^5.x - 类型系统
+- **dayjs**: ^1.11.x - 日期处理
+- **lodash**: ^4.17.x - 工具函数库
+
+## 开发工具链
+- **构建工具**: Vant CLI ^7.0.0 (基于 Vite)
+- **代码规范**: ESLint + Prettier
+- **包管理器**: pnpm
+- **Git Hooks**: Husky + nano-staged
+- **部署工具**: gh-pages (静态网站部署)
+
+- **组件开发**: Vant CLI 组件库开发脚手架

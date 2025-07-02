@@ -1,0 +1,67 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Cursor 规则位置
+
+如何向项目添加新的 cursor 规则
+
+1. 始终将规则文件放在 PROJECT_ROOT/.cursor/rules/ 目录下：
+    ```
+    .cursor/rules/
+    ├── your-rule-name.mdc
+    ├── another-rule.mdc
+    └── ...
+    ```
+
+2. 遵循命名约定：
+    - 文件名使用 kebab-case（短横线命名）
+    - 始终使用 .mdc 扩展名
+    - 使名称能够描述规则的用途
+
+3. 目录结构：
+    ```
+    PROJECT_ROOT/
+    ├── .cursor/
+    │   └── rules/
+    │       ├── your-rule-name.mdc
+    │       └── ...
+    └── ...
+    ```
+
+4. 永远不要将规则文件放置在：
+    - 项目根目录
+    - .cursor/rules 之外的子目录
+    - 任何其他位置
+
+5. Cursor 规则具有以下结构：
+
+````
+---
+description: 规则用途的简短描述
+globs: optional/path/pattern/**/* 
+alwaysApply: false
+---
+# 规则标题
+
+使用 markdown 格式解释规则的主要内容。
+
+1. 分步说明
+2. 代码示例（可选）
+3. 指导原则（可选）
+
+示例：
+```typescript
+// 好的示例
+function goodExample() {
+  // 遵循指导原则的实现
+}
+
+// 不好的示例
+function badExample() {
+  // 不遵循指导原则的实现
+}
+```
+
+````
