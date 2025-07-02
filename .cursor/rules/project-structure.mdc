@@ -1,0 +1,51 @@
+---
+description: 项目目录结构规范和组织原则
+globs: 
+alwaysApply: true
+---
+# 项目目录结构规范
+
+## 项目整体架构
+
+基于 Vue 3 + TypeScript + Vant CLI 的现代化组件库项目，采用标准化的目录结构确保代码组织清晰、可维护性强。
+
+## 完整目录结构
+
+```
+cool-components/                    # 项目根目录
+├── .cursor/                        # Cursor 编辑器配置
+│   └── rules/                      # Cursor 规则文件目录
+│       ├── component.mdc           # 组件开发规范
+│       ├── general.mdc             # 项目通用规范
+│       ├── git.mdc                 # Git 提交规范
+│       ├── typescript.mdc          # TypeScript 规范
+│       ├── vue.mdc                 # Vue 开发规范
+│       ├── cursor-rules.mdc        # Cursor 规则说明
+│       └── project-structure.mdc   # 项目结构规范（本文件）
+├── .git/                           # Git 版本控制目录
+├── .husky/                         # Git Hooks 配置
+│   ├── pre-commit                  # 提交前检查脚本
+│   └── commit-msg                  # 提交信息检查脚本
+├── design-docs/                    # 设计文档目录（可选）
+├── docs/                           # 项目文档
+│   ├── home.md                     # 项目介绍
+│   └── quickstart.md               # 快速开始指南
+├── src/                            # 源代码目录
+│   └── [component-name]/           # 组件目录（按组件组织）
+│       ├── index.vue               # 主组件文件
+│       ├── README.md               # 组件文档
+│       ├── demo/                   # 演示目录
+│       │   └── index.vue           # 演示文件
+│       └── test/                   # 测试目录
+│           ├── index.spec.ts       # 测试文件
+│           └── __snapshots__/      # Jest 快照目录
+│               └── index.spec.ts.snap
+├── node_modules/                   # 依赖包目录
+├── .eslintignore                   # ESLint 忽略文件
+├── .gitignore                      # Git 忽略文件
+├── package.json                    # 项目配置文件
+├── pnpm-lock.yaml                  # pnpm 锁定文件
+├── shims-vue.d.ts                  # Vue TypeScript 类型声明
+├── tsconfig.json                   # TypeScript 配置
+└── vant.config.mjs                 # Vant CLI 配置文件
+```
