@@ -1,11 +1,6 @@
----
-description:
-globs:
-alwaysApply: false
----
-# Vue 组件开发规范
+# Vue 3 + TypeScript 组件开发规范
 
-基于 `demo-button` 组件分析的标准化组件开发指南，所有新组件必须遵循此规范。
+基于升级后的 `demo-button` 组件分析的标准化组件开发指南，所有新组件必须遵循此现代化规范。
 
 ## 1. 标准目录结构
 
@@ -19,35 +14,56 @@ src/
     ├── demo/
     │   └── index.vue            # 演示文件
     └── test/
-        ├── index.spec.js        # 测试文件
+        ├── index.spec.ts        # TypeScript 测试文件
         └── __snapshots__/       # Jest 快照目录
-            └── index.spec.js.snap
+            └── index.spec.ts.snap
 ```
 
 ## 2. 主组件文件规范 (index.vue)
 
 ```vue
 <template>
-  <!-- 根元素使用组件名对应的 CSS 类 -->
-  <button class="demo-button">
+  <!-- 根元素使用组件名对应的 CSS 类，支持动态样式绑定 -->
+  <button class="demo-button" :style="buttonStyle">
     <slot />
   </button>
 </template>
 
-<script>
-export default {
-  // 必须定义 name，使用 PascalCase
-  name: 'DemoButton',
+<script setup lang="ts">
+import { computed } from 'vue';
 
-  // Props 必须定义类型和默认值
-  props: {
-    color: String,              // 简单类型
-    type: {                     // 复杂定义
-      type: String,
-      default: 'primary',
-    },
-  },
-};
+// TypeScript 接口定义 Props 类型
+interface Props {
+  color?: string;
+  type?: string;
+  size?: 'small' | 'medium' | 'large';
+  disabled?: boolean;
+}
+
+// 使用 defineProps 和 withDefaults 定义 Props
+const props = withDefaults(defineProps<Props>(), {
+  type: 'primary',
+  size: 'medium',
+  disabled: false,
+});
+
+// 使用计算属性处理动态样式
+const buttonStyle = computed(() => {
+  const style: Record<string, string> = {};
+  
+  if (props.color) {
+    style.backgroundColor = props.color;
+  }
+  
+  return style;
+});
+
+// 如果需要暴露方法给父组件，使用 defineExpose
+// defineExpose({
+//   someMethod: () => {
+//     // 方法实现
+//   }
+// });
 </script>
 
 <style lang="scss">
@@ -56,7 +72,37 @@ export default {
   min-width: 120px;
   color: #fff;
   font-size: 16px;
-  // 更多样式...
+  line-height: 36px;
+  background-color: #f44;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  // 交互状态
+  &:hover {
+    opacity: 0.8;
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  // 修饰符使用 BEM 风格
+  &--large {
+    font-size: 18px;
+    line-height: 40px;
+  }
+  
+  &--small {
+    font-size: 14px;
+    line-height: 32px;
+  }
 }
 </style>
 ```
@@ -73,18 +119,61 @@ export default {
   <demo-block title="自定义颜色">
     <demo-button color="#03a9f4" style="margin-left: 15px">按钮</demo-button>
   </demo-block>
+
+  <demo-block title="不同类型">
+    <demo-button type="primary" style="margin-left: 15px">主要按钮</demo-button>
+    <demo-button type="secondary" style="margin-left: 15px">次要按钮</demo-button>
+  </demo-block>
+
+  <demo-block title="自定义内容">
+    <demo-button color="#ff6b35" style="margin-left: 15px">
+      🚀 火箭按钮
+    </demo-button>
+    <demo-button color="#4ecdc4" style="margin-left: 15px">
+      ✨ 特效按钮
+    </demo-button>
+  </demo-block>
+
+  <demo-block title="响应式演示" v-if="showAdvanced">
+    <demo-button :color="dynamicColor" @click="changeColor">
+      动态颜色按钮
+    </demo-button>
+  </demo-block>
 </template>
 
-<script setup>
-// 导入主组件
+<script setup lang="ts">
+import { ref } from 'vue';
 import DemoButton from '../index.vue';
+
+// 演示页面可以包含响应式逻辑
+const showAdvanced = ref(true);
+const dynamicColor = ref('#007bff');
+
+const changeColor = () => {
+  const colors = ['#007bff', '#28a745', '#dc3545', '#ffc107'];
+  const currentIndex = colors.indexOf(dynamicColor.value);
+  dynamicColor.value = colors[(currentIndex + 1) % colors.length];
+};
 </script>
+
+<style lang="scss" scoped>
+// 演示页面的自定义样式
+.demo-block {
+  margin-bottom: 20px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+</style>
 ```
 
 **演示文件要求：**
-- 展示主要使用场景
+- 使用 TypeScript setup 语法
+- 展示主要使用场景和特殊用法
 - 每个示例用 `demo-block` 包装
 - 提供有意义的标题
+- 可以包含响应式逻辑演示
 
 ## 4. 文档规范 (README.md)
 
@@ -92,59 +181,177 @@ import DemoButton from '../index.vue';
 # ComponentName 组件中文名
 
 ### 介绍
-组件功能描述
+
+ComponentName 是一个基于 Vue 3 + TypeScript 开发的现代化组件，支持...
 
 ### 引入
-```js
-import Vue from 'vue';
+
+```ts
+// 方式一：按需引入（推荐）
 import { ComponentName } from 'cool-components';
 
-Vue.use(ComponentName);
+// 方式二：完整引入
+import CoolComponents from 'cool-components';
+import { createApp } from 'vue';
+
+const app = createApp();
+app.use(CoolComponents);
+```
+
+### TypeScript 支持
+
+```ts
+// 在 TypeScript 项目中使用
+import { ComponentName } from 'cool-components';
+import type { ComponentProps } from 'vue-component-type-helpers';
+
+// 获取组件属性类型
+type ComponentNameProps = ComponentProps<typeof ComponentName>;
 ```
 
 ## 代码演示
 
 ### 基础用法
-```html
-<component-name type="primary" />
+
+```vue
+<template>
+  <component-name type="primary">主要按钮</component-name>
+</template>
+
+<script setup lang="ts">
+import { ComponentName } from 'cool-components';
+</script>
+```
+
+### 事件处理
+
+```vue
+<template>
+  <component-name @click="handleClick">点击我</component-name>
+</template>
+
+<script setup lang="ts">
+import { ComponentName } from 'cool-components';
+
+const handleClick = (event: MouseEvent) => {
+  console.log('组件被点击了！', event);
+};
+</script>
 ```
 
 ## API
 
 ### Props
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| type | 按钮类型 | _string_ | `primary` |
-| color `1.0.0` | 按钮颜色 | _string_ | - |
+
+| 参数 | 说明 | 类型 | 默认值 | 版本 |
+| --- | --- | --- | --- | --- |
+| type | 组件类型 | _string_ | `primary` | - |
+| color `1.0.0` | 自定义颜色 | _string_ | - | 1.0.0 |
 
 ### Events
+
 | 事件名 | 说明 | 回调参数 |
 | --- | --- | --- |
 | click | 点击时触发 | _event: MouseEvent_ |
 
 ### Slots
-| 名称 | 说明 |
-| --- | --- |
-| default | 默认插槽 |
+
+| 名称 | 说明 | 参数 |
+| --- | --- | --- |
+| default | 默认插槽 | - |
+
+### 样式变量
+
+组件提供了以下 CSS 变量，可用于自定义样式：
+
+| 名称 | 默认值 | 描述 |
+| --- | --- | --- |
+| --component-name-primary-color | #f44 | 主色调 |
+| --component-name-border-radius | 30px | 圆角大小 |
+
+### 类型定义
+
+```ts
+interface ComponentNameProps {
+  type?: string;
+  color?: string;
+}
+
+interface ComponentNameEmits {
+  click: (event: MouseEvent) => void;
+}
+```
 ```
 
-## 5. 测试规范 (test/index.spec.js)
+## 5. 测试规范 (test/index.spec.ts)
 
-```javascript
+```typescript
+// @ts-nocheck (如果需要避免类型检查)
 import { mount } from '@vue/test-utils';
-import ComponentName from '../../component-name';
+import ComponentName from '../index.vue';
 
+// 基础渲染测试
 test('render component name', () => {
   const wrapper = mount(ComponentName);
   expect(wrapper.html()).toMatchSnapshot();
 });
 
-// 添加 Props 测试
-test('props validation', () => {
+// 属性测试
+test('render component with props', () => {
   const wrapper = mount(ComponentName, {
-    props: { type: 'secondary' }
+    props: {
+      type: 'primary',
+      color: '#03a9f4'
+    },
+    slots: {
+      default: '测试内容'
+    }
   });
-  expect(wrapper.props('type')).toBe('secondary');
+  
+  expect(wrapper.find('.component-name').exists()).toBe(true);
+  expect(wrapper.text()).toBe('测试内容');
+  
+  // 检查样式是否正确应用
+  const element = wrapper.element as HTMLElement;
+  expect(element.style.backgroundColor).toBeTruthy();
+});
+
+// 默认属性测试
+test('render component with default props', () => {
+  const wrapper = mount(ComponentName, {
+    slots: {
+      default: '默认内容'
+    }
+  });
+  
+  expect(wrapper.find('.component-name').exists()).toBe(true);
+  expect(wrapper.text()).toBe('默认内容');
+});
+
+// 事件测试
+test('component click event', async () => {
+  const wrapper = mount(ComponentName, {
+    slots: {
+      default: '点击测试'
+    }
+  });
+
+  const element = wrapper.find('.component-name');
+  expect(element.exists()).toBe(true);
+  
+  // 模拟事件
+  await element.trigger('click');
+  
+  // 验证事件结果
+  expect(element.exists()).toBe(true);
+});
+
+// 边界情况测试
+test('component with empty content', () => {
+  const wrapper = mount(ComponentName);
+  
+  expect(wrapper.find('.component-name').exists()).toBe(true);
+  expect(wrapper.text()).toBe('');
 });
 ```
 
@@ -152,19 +359,76 @@ test('props validation', () => {
 
 | 类型 | 格式 | 示例 |
 |------|------|------|
-| 组件名 | PascalCase | `DemoButton` |
+| 组件名（代码中） | PascalCase | `DemoButton` |
 | 文件夹名 | kebab-case | `demo-button` |
 | CSS 类名 | kebab-case | `.demo-button` |
-| 文件名 | kebab-case | `demo-button.vue` |
+| 测试文件名 | kebab-case.ts | `index.spec.ts` |
+| TypeScript 接口 | PascalCase | `DemoButtonProps` |
 
-## 7. 样式规范
+## 7. TypeScript 类型定义规范
+
+```typescript
+// Props 接口定义
+interface ComponentProps {
+  // 可选属性使用 ?
+  color?: string;
+  type?: string;
+  // 限制值类型
+  size?: 'small' | 'medium' | 'large';
+  // 布尔类型
+  disabled?: boolean;
+  // 数组类型
+  options?: string[];
+  // 对象类型
+  config?: Record<string, any>;
+}
+
+// Events 接口定义
+interface ComponentEmits {
+  click: (event: MouseEvent) => void;
+  change: (value: string) => void;
+}
+
+// 如果组件有复杂的内部状态
+interface ComponentState {
+  loading: boolean;
+  error: string | null;
+}
+```
+
+## 8. 样式规范（增强版）
 
 ```scss
-// 主类名与文件夹名保持一致
+// 使用 CSS 变量支持主题定制
 .demo-button {
-  // 基础样式
+  // CSS 变量定义
+  --demo-button-primary-color: #f44;
   
-  // 修饰符使用 BEM 风格
+  // 基础样式
+  min-width: 120px;
+  color: #fff;
+  font-size: 16px;
+  background-color: var(--demo-button-primary-color);
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  // 状态样式
+  &:hover {
+    opacity: 0.8;
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  // BEM 修饰符
   &--large {
     font-size: 18px;
   }
@@ -173,84 +437,143 @@ test('props validation', () => {
     font-size: 14px;
   }
   
-  // 状态类
-  &:hover {
-    opacity: 0.8;
+  // 响应式设计
+  @media (max-width: 768px) {
+    min-width: 100px;
+    font-size: 14px;
   }
 }
 ```
 
-## 8. Props 定义规范
+## 9. 现代化开发流程
 
-```javascript
-props: {
-  // 必需的 Props
-  type: {
-    type: String,
-    required: true,
-  },
-  
-  // 带默认值的 Props
-  size: {
-    type: String,
-    default: 'medium',
-  },
-  
-  // 可选 Props（无默认值）
-  color: String,
-  
-  // 布尔类型
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
+1. **创建目录结构**：严格按照 TypeScript 标准结构
+2. **定义类型接口**：先定义 Props 和 Emits 接口
+3. **实现主组件**：使用 `<script setup lang="ts">` 语法
+4. **编写演示**：在 `demo/index.vue` 展示完整用法
+5. **完善文档**：编写包含 TypeScript 支持的 `README.md`
+6. **添加测试**：编写 TypeScript 测试文件
+7. **样式调试**：确保 CSS 变量和响应式支持
+8. **类型检查**：确保组件通过 TypeScript 类型检查
+
+## 10. 现代化质量检查清单
+
+- [ ] 使用 `<script setup lang="ts">` 语法
+- [ ] 定义完整的 TypeScript 接口
+- [ ] 使用 `defineProps` 和 `withDefaults`
+- [ ] CSS 类名与文件夹名一致
+- [ ] 支持 CSS 变量主题定制
+- [ ] 包含交互状态样式（hover、active、disabled）
+- [ ] 文档包含 TypeScript 支持说明
+- [ ] 演示文件展示完整功能
+- [ ] 测试文件使用 `.ts` 扩展名
+- [ ] 包含边界情况测试
+- [ ] 样式支持响应式设计
+- [ ] 通过 TypeScript 类型检查
+
+## 11. 现代化最佳实践
+
+### ✅ 推荐写法
+
+```vue
+<!-- 主组件文件 -->
+<template>
+  <div class="my-component" :class="componentClass" :style="componentStyle">
+    <slot />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue';
+
+interface Props {
+  variant?: 'primary' | 'secondary' | 'danger';
+  size?: 'small' | 'medium' | 'large';
+  disabled?: boolean;
 }
+
+const props = withDefaults(defineProps<Props>(), {
+  variant: 'primary',
+  size: 'medium',
+  disabled: false,
+});
+
+// 计算属性处理复杂逻辑
+const componentClass = computed(() => ({
+  [`my-component--${props.variant}`]: true,
+  [`my-component--${props.size}`]: true,
+  'my-component--disabled': props.disabled,
+}));
+
+const componentStyle = computed(() => {
+  // 动态样式逻辑
+  return {};
+});
+</script>
+
+<style lang="scss">
+.my-component {
+  // CSS 变量
+  --component-primary-color: #007bff;
+  
+  // 基础样式
+  padding: 12px 24px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  
+  // 修饰符
+  &--primary {
+    background-color: var(--component-primary-color);
+  }
+  
+  &--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+</style>
 ```
 
-## 9. 必须遵循的开发流程
+### ❌ 禁止写法
 
-1. **创建目录结构**：严格按照标准结构
-2. **实现主组件**：编写 `index.vue`
-3. **编写演示**：在 `demo/index.vue` 展示用法
-4. **完善文档**：编写完整的 `README.md`
-5. **添加测试**：至少包含快照测试
-6. **样式调试**：确保样式规范
-
-## 10. 代码质量检查清单
-
-- [ ] 组件名称使用 PascalCase
-- [ ] 文件夹名使用 kebab-case  
-- [ ] CSS 类名与文件夹名一致
-- [ ] Props 定义包含类型和默认值
-- [ ] 包含完整的 API 文档
-- [ ] 演示文件展示主要功能
-- [ ] 至少包含基础快照测试
-- [ ] 样式使用 SCSS 预处理器
-- [ ] 遵循 BEM CSS 命名规范
-
-## 11. 禁止事项
-
-```javascript
-// ❌ 错误示例
+```vue
+<!-- 不要使用 Options API -->
+<script>
 export default {
-  // 缺少组件名
+  name: 'MyComponent',
   props: {
-    type: 'primary',        // 缺少类型定义
+    variant: String,  // 缺少类型限制
   },
+  data() {
+    return {}; // 不要使用 data
+  },
+  methods: {} // 不要使用 methods
 };
+</script>
 
-// ❌ 错误的 CSS 类名
-.DemoButton { }             // 不要使用 PascalCase
+<!-- 不要使用内联样式而不是计算属性 -->
+<template>
+  <div :style="{ color: props.color }">
+    <!-- 应该使用计算属性 -->
+  </div>
+</template>
 
-// ✅ 正确示例  
-export default {
-  name: 'DemoButton',       // 必须定义
-  props: {
-    type: {
-      type: String,
-      default: 'primary',
-    },
-  },
+<!-- 不要使用驼峰命名的 CSS 类 -->
+<style>
+.MyComponent { } /* 错误：应该使用 .my-component */
+</style>
+```
+
+## 12. 性能优化建议
+
+1. **使用 `computed` 而不是 `watch`**：对于衍生状态
+2. **合理使用 `v-memo`**：对于复杂的列表渲染
+3. **CSS 变量**：支持主题切换和运行时样式修改
+4. **懒加载**：对于大型组件使用异步组件
+5. **类型收窄**：使用具体的联合类型而不是 `string`
+
+这套规范确保所有组件都符合 Vue 3 + TypeScript 的现代化标准，提供更好的开发体验和代码质量。
+
 };
 
 .demo-button { }            // 使用 kebab-case
