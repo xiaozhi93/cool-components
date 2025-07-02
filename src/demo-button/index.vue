@@ -1,21 +1,31 @@
 <template>
-  <button class="demo-button">
+  <button class="demo-button" :style="buttonStyle">
     <slot />
   </button>
 </template>
 
-<script>
-export default {
-  name: 'DemoButton',
+<script setup lang="ts">
+import { computed } from 'vue';
 
-  props: {
-    color: String,
-    type: {
-      type: String,
-      default: 'primary',
-    },
-  },
-};
+interface Props {
+  color?: string;
+  type?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  type: 'primary',
+});
+
+// 计算按钮样式
+const buttonStyle = computed(() => {
+  const style: Record<string, string> = {};
+  
+  if (props.color) {
+    style.backgroundColor = props.color;
+  }
+  
+  return style;
+});
 </script>
 
 <style lang="scss">
@@ -27,5 +37,15 @@ export default {
   background-color: #f44;
   border: none;
   border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
 }
 </style>
