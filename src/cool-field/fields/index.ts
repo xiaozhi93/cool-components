@@ -13,3 +13,5 @@ export { default as CoolFieldSelect } from './select/index.vue'
 export { default as CoolFieldCascader } from './cascader/index.vue'
 export { default as CoolFieldTreeSelect } from './tree-select/index.vue'
 export { default as CoolFieldSwitch } from './switch/index.vue'
+// 日期时间类
+export { default as CoolFieldDate } from './date/index.vue'

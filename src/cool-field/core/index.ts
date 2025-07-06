@@ -18,6 +18,7 @@ import {
   CoolFieldCascader,
   CoolFieldTreeSelect,
   CoolFieldSwitch,
+  CoolFieldDate,
 } from '../fields'
 
 
@@ -195,31 +196,30 @@ export function render(
           ...props 
         }
       }
-    // case 'date':
-    //   return {
-    //     renderedComponent: FieldDate,
-    //     componentProps: { 
-    //       value: dataValue, 
-    //       mode,
-    //       emptyText,
-    //       // 根据具体需求设置 showTime
-    //       showTime: false,
-    //       ...props 
-    //     }
-    //   }
+    case 'date':
+      return {
+        renderedComponent: CoolFieldDate,
+        componentProps: { 
+          value: dataValue, 
+          mode,
+          emptyText,
+          showTime: false,
+          ...props 
+        }
+      }
     
-    // case 'dateTime':
-    //   return {
-    //     renderedComponent: FieldDate,
-    //     componentProps: { 
-    //       value: dataValue, 
-    //       mode,
-    //       emptyText,
-    //       // dateTime 类型显示时间
-    //       showTime: true,
-    //       ...props 
-    //     }
-    //   }
+    case 'dateTime':
+      return {
+        renderedComponent: CoolFieldDate,
+        componentProps: { 
+          value: dataValue, 
+          mode,
+          emptyText,
+          // dateTime 类型显示时间
+          showTime: true,
+          ...props 
+        }
+      }
     
     // // TODO: 这些类型将在独立组件中实现
     // case 'dateRange':

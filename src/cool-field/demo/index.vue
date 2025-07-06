@@ -466,6 +466,107 @@
         </div>
       </div>
     </section>
+
+    <!-- 日期时间类字段 -->
+    <section class="demo-section">
+      <div class="section-header">
+        <h2>📅 日期时间类字段</h2>
+        <span class="section-badge">3 种类型</span>
+      </div>
+      
+      <div class="demo-grid">
+        <!-- 日期选择 -->
+        <div class="demo-card">
+          <div class="card-header">
+            <h3>date - 日期选择</h3>
+            <span class="type-tag">date</span>
+          </div>
+          <div class="card-content">
+            <div class="demo-row">
+              <div class="demo-col">
+                <label>只读模式</label>
+                <CoolField 
+                  value-type="date" 
+                  mode="read" 
+                  :value="demoData.date"
+                />
+              </div>
+              <div class="demo-col">
+                <label>编辑模式</label>
+                <CoolField 
+                  value-type="date" 
+                  mode="edit" 
+                  v-model:value="demoData.date"
+                  placeholder="请选择日期"
+                  format="YYYY-MM-DD"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 日期时间选择 -->
+        <div class="demo-card">
+          <div class="card-header">
+            <h3>dateTime - 日期时间选择</h3>
+            <span class="type-tag highlight">dateTime</span>
+          </div>
+          <div class="card-content">
+            <div class="demo-row">
+              <div class="demo-col">
+                <label>只读模式</label>
+                <CoolField 
+                  value-type="dateTime" 
+                  mode="read" 
+                  :value="demoData.dateTime"
+                />
+              </div>
+              <div class="demo-col">
+                <label>编辑模式</label>
+                <CoolField 
+                  value-type="dateTime" 
+                  mode="edit" 
+                  v-model:value="demoData.dateTime"
+                  placeholder="请选择日期时间"
+                  format="YYYY-MM-DD HH:mm:ss"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 自定义格式日期 -->
+        <div class="demo-card">
+          <div class="card-header">
+            <h3>date - 自定义格式</h3>
+            <span class="type-tag">date</span>
+          </div>
+          <div class="card-content">
+            <div class="demo-row">
+              <div class="demo-col">
+                <label>只读模式（中文格式）</label>
+                <CoolField 
+                  value-type="date" 
+                  mode="read"
+                  format="YYYY年MM月DD日"
+                  :value="demoData.date"
+                />
+              </div>
+              <div class="demo-col">
+                <label>编辑模式（自定义格式）</label>
+                <CoolField 
+                  :value-type="{ type: 'date', format: 'MM/DD/YYYY' }" 
+                  mode="edit" 
+                  v-model:value="demoData.date"
+                  placeholder="请选择日期"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- 展示类字段 -->
     <section class="demo-section">
       <div class="section-header">
@@ -780,6 +881,10 @@ const demoData = reactive({
   treeSelectMultiple: ['frontend', 'backend'],
   switch: true,
   switchWithCustomText: false,
+  
+  // 日期时间类
+  date: '2024-01-15',
+  dateTime: '2024-01-15 14:30:00',
   
   // 高级特性
   textWithIcon: '',
