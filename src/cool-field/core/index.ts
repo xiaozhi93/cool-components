@@ -19,6 +19,7 @@ import {
   CoolFieldTreeSelect,
   CoolFieldSwitch,
   CoolFieldDate,
+  CoolFieldDateRange,
 } from '../fields'
 
 
@@ -207,8 +208,18 @@ export function render(
         }
       }
     
-    // // TODO: 这些类型将在独立组件中实现
-    // case 'dateRange':
+    case 'dateRange':
+      return {
+        renderedComponent: CoolFieldDateRange,
+        componentProps: { 
+          value: dataValue, 
+          mode,
+          emptyText,
+          ...props 
+        }
+      }
+    
+
     // case 'time':
     // case 'timeRange':
     //   // 暂时使用文本组件，后续实现独立组件

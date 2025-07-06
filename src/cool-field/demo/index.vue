@@ -471,7 +471,7 @@
     <section class="demo-section">
       <div class="section-header">
         <h2>📅 日期时间类字段</h2>
-        <span class="section-badge">2 种场景</span>
+        <span class="section-badge">4 种场景</span>
       </div>
       
       <div class="demo-grid">
@@ -561,6 +561,67 @@
                   mode="edit" 
                   v-model:value="demoData.date"
                   placeholder="请选择日期"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 日期范围选择 -->
+        <div class="demo-card">
+          <div class="card-header">
+            <h3>dateRange - 日期范围选择</h3>
+            <span class="type-tag">dateRange</span>
+          </div>
+          <div class="card-content">
+            <div class="demo-row">
+              <div class="demo-col">
+                <label>只读模式</label>
+                <CoolField 
+                  value-type="dateRange" 
+                  mode="read" 
+                  :value="demoData.dateRange"
+                />
+              </div>
+              <div class="demo-col">
+                <label>编辑模式</label>
+                <CoolField 
+                  value-type="dateRange" 
+                  mode="edit" 
+                  v-model:value="demoData.dateRange"
+                  placeholder="请选择日期范围"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 日期时间范围选择 -->
+        <div class="demo-card">
+          <div class="card-header">
+            <h3>dateRange - 日期时间范围（带时间）</h3>
+            <span class="type-tag highlight">dateRange + showTime</span>
+          </div>
+          <div class="card-content">
+            <div class="demo-row">
+              <div class="demo-col">
+                <label>只读模式</label>
+                <CoolField 
+                  value-type="dateRange" 
+                  mode="read" 
+                  :value="demoData.dateTimeRange"
+                  show-time
+                />
+              </div>
+              <div class="demo-col">
+                <label>编辑模式</label>
+                <CoolField 
+                  value-type="dateRange" 
+                  mode="edit" 
+                  v-model:value="demoData.dateTimeRange"
+                  placeholder="请选择日期时间范围"
+                  show-time
+                  format="YYYY-MM-DD HH:mm:ss"
                 />
               </div>
             </div>
@@ -887,6 +948,8 @@ const demoData = reactive({
   // 日期时间类
   date: '2024-01-15',
   dateWithTime: '2024-01-15 14:30:00',
+  dateRange: ['2024-01-01', '2024-01-31'],
+  dateTimeRange: ['2024-01-01 09:00:00', '2024-01-31 18:00:00'],
   
   // 高级特性
   textWithIcon: '',

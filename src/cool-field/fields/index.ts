@@ -15,3 +15,4 @@ export { default as CoolFieldTreeSelect } from './tree-select/index.vue'
 export { default as CoolFieldSwitch } from './switch/index.vue'
 // 日期时间类
 export { default as CoolFieldDate } from './date/index.vue'
+export { default as CoolFieldDateRange } from './date-range/index.vue'
