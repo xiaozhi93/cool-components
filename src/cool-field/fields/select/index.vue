@@ -38,7 +38,8 @@ interface FieldSelectProps {
 
   selectMode?: 'multiple' | 'tags' | 'SECRET_COMBOBOX_MODE_DO_NOT_USE' 
 
-  valueEnum?: Record<string | number, any>
+  options?: Array<{ label: string; value: any; disabled?: boolean }>
+  valueEnum?: Record<string | number, { label: string; value: any; disabled?: boolean; color?: string } | string>
   request?: (params?: any) => Promise<any[]>
   params?: Record<string, any>
   valueType?: string
@@ -75,44 +76,26 @@ const isMultiSelect = computed(() => {
 
 // 计算选项数据
 const computedOptions = computed(() => {
-  // 优先使用 valueEnum
+  // 优先级：options > request > valueEnum
+  if (props.options) {
+    return props.options
+  }
+
+  if (requestData.value && requestData.value.length > 0) {
+    return requestData.value
+  }
+
   if (props.valueEnum) {
-    return Object.entries(props.valueEnum).map(([value, option]) => {
-      if (typeof option === 'string') {
-        return { value, label: option }
-      }
-      if (typeof option === 'object' && option !== null) {
-        return {
-          value,
-          label: option.text || option.label || String(value),
-          disabled: option.disabled,
-          ...option
-        }
-      }
-      return { value, label: String(option) }
-    })
+    return Object.entries(props.valueEnum).map(([value, config]) => ({
+      label: typeof config === 'string' ? config : config.label,
+      value: value,
+      disabled: typeof config === 'object' ? config.disabled : undefined,
+    }))
   }
-  
-  // 使用异步请求的数据
-  if (requestData.value && Array.isArray(requestData.value)) {
-    return requestData.value.map(item => {
-      if (typeof item === 'string') {
-        return { value: item, label: item }
-      }
-      if (typeof item === 'object' && item !== null) {
-        return {
-          value: item.value || item.key || item.id,
-          label: item.label || item.text || item.name || String(item.value || item.key || item.id),
-          disabled: item.disabled,
-          ...item
-        }
-      }
-      return { value: item, label: String(item) }
-    })
-  }
-  
+
   return []
 })
+
 
 // 计算显示文本
 const displayText = computed(() => {

@@ -52,7 +52,7 @@ interface FieldCheckboxProps {
   /** 选项配置 */
   options?: Array<{ label: string; value: any; disabled?: boolean }>
   /** 值枚举映射 */
-  valueEnum?: Record<string | number, { text: string; status?: string; color?: string }>
+  valueEnum?: Record<string | number, { label: string; value: any; disabled?: boolean; color?: string } | string>
   /** 异步请求函数 */
   request?: (...args: any[]) => Promise<any[]>
   /** 请求参数 */
@@ -88,8 +88,9 @@ const computedOptions = computed(() => {
 
   if (props.valueEnum) {
     return Object.entries(props.valueEnum).map(([value, config]) => ({
-      label: typeof config === 'string' ? config : config.text,
-      value: value
+      label: typeof config === 'string' ? config : config.label,
+      value: value,
+      disabled: typeof config === 'object' ? config.disabled : undefined,
     }))
   }
 
@@ -129,7 +130,7 @@ const displayItems = computed(() => {
       const enumItem = props.valueEnum[val]
       return {
         value: val,
-        label: typeof enumItem === 'string' ? enumItem : enumItem.text,
+        label: typeof enumItem === 'string' ? enumItem : enumItem.label,
         color: typeof enumItem === 'object' ? enumItem.color : undefined
       }
     }
