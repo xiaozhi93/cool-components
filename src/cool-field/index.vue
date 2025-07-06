@@ -54,24 +54,13 @@ const otherSlots = computed(() => {
 
 // 计算渲染组件和属性
 const renderResult = computed(() => {
-  // 如果是选择器，在只读模式，则透传 options, valueEnum, request, params
-  let readAttrs = {}
-  if (props.mode === 'read' && (props.valueType === 'select' || props.valueType === 'checkbox' || props.valueType === 'radio' || props.valueType === 'radioButton' || props.valueType === 'cascader')) {
-    readAttrs = {
-      options: attrs.options || [],
-      valueEnum: attrs.valueEnum || {},
-      request: attrs.request,
-      params: attrs.params || {},
-    }
-  }
   return render(
     props.value,
     props.valueType,
     {
       mode: props.mode,
       emptyText: props.emptyText,
-      // 在 edit/update 模式下透传 attrs（包括事件监听器）
-      ...(props.mode !== 'read' ? attrs : readAttrs)
+      ...attrs
     }
   )
 })
