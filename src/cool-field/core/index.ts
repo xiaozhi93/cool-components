@@ -20,6 +20,7 @@ import {
   CoolFieldSwitch,
   CoolFieldDate,
   CoolFieldDateRange,
+  CoolFieldTime,
 } from '../fields'
 
 
@@ -208,7 +209,7 @@ export function render(
         }
       }
     
-    case 'dateRange':
+        case 'dateRange':
       return {
         renderedComponent: CoolFieldDateRange,
         componentProps: { 
@@ -219,8 +220,18 @@ export function render(
         }
       }
     
-
-    // case 'time':
+    case 'time':
+      return {
+        renderedComponent: CoolFieldTime,
+        componentProps: { 
+          value: dataValue, 
+          mode,
+          emptyText,
+          ...props 
+        }
+      }
+    
+    // case 'timeRange':
     // case 'timeRange':
     //   // 暂时使用文本组件，后续实现独立组件
     //   return {

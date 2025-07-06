@@ -471,7 +471,7 @@
     <section class="demo-section">
       <div class="section-header">
         <h2>📅 日期时间类字段</h2>
-        <span class="section-badge">4 种场景</span>
+        <span class="section-badge">6 种场景</span>
       </div>
       
       <div class="demo-grid">
@@ -622,6 +622,67 @@
                   v-model:value="demoData.dateTimeRange"
                   show-time
                   format="YYYY-MM-DD HH:mm"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 时间选择 -->
+        <div class="demo-card">
+          <div class="card-header">
+            <h3>time - 时间选择</h3>
+            <span class="type-tag">time</span>
+          </div>
+          <div class="card-content">
+            <div class="demo-row">
+              <div class="demo-col">
+                <label>只读模式</label>
+                <CoolField 
+                  value-type="time" 
+                  mode="read" 
+                  :value="demoData.time"
+                />
+              </div>
+              <div class="demo-col">
+                <label>编辑模式</label>
+                <CoolField 
+                  value-type="time" 
+                  mode="edit" 
+                  v-model:value="demoData.time"
+                  placeholder="请选择时间"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 时间选择（12小时制） -->
+        <div class="demo-card">
+          <div class="card-header">
+            <h3>time - 时间选择（12小时制）</h3>
+            <span class="type-tag highlight">time + use12Hours</span>
+          </div>
+          <div class="card-content">
+            <div class="demo-row">
+              <div class="demo-col">
+                <label>只读模式</label>
+                <CoolField 
+                  value-type="time" 
+                  mode="read" 
+                  :value="demoData.time12Hours"
+                  use12Hours
+                />
+              </div>
+              <div class="demo-col">
+                <label>编辑模式</label>
+                <CoolField 
+                  value-type="time" 
+                  mode="edit" 
+                  v-model:value="demoData.time12Hours"
+                  placeholder="请选择时间"
+                  use12Hours
+                  format="h:mm:ss A"
                 />
               </div>
             </div>
@@ -950,6 +1011,8 @@ const demoData = reactive({
   dateWithTime: '2024-01-15 14:30:00',
   dateRange: ['2024-01-01', '2024-01-31'],
   dateTimeRange: ['2024-01-01 09:00:00', '2024-01-31 18:00:00'],
+  time: '14:30:00',
+  time12Hours: '2:30:00 PM',
   
   // 高级特性
   textWithIcon: '',
