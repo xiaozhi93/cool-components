@@ -203,20 +203,6 @@ export function render(
           value: dataValue, 
           mode,
           emptyText,
-          showTime: false,
-          ...props 
-        }
-      }
-    
-    case 'dateTime':
-      return {
-        renderedComponent: CoolFieldDate,
-        componentProps: { 
-          value: dataValue, 
-          mode,
-          emptyText,
-          // dateTime 类型显示时间
-          showTime: true,
           ...props 
         }
       }

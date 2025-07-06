@@ -471,7 +471,7 @@
     <section class="demo-section">
       <div class="section-header">
         <h2>📅 日期时间类字段</h2>
-        <span class="section-badge">3 种类型</span>
+        <span class="section-badge">2 种场景</span>
       </div>
       
       <div class="demo-grid">
@@ -505,31 +505,33 @@
           </div>
         </div>
 
-        <!-- 日期时间选择 -->
-        <div class="demo-card">
-          <div class="card-header">
-            <h3>dateTime - 日期时间选择</h3>
-            <span class="type-tag highlight">dateTime</span>
-          </div>
+                 <!-- 日期时间选择 -->
+         <div class="demo-card">
+           <div class="card-header">
+             <h3>date - 日期时间选择（带时间）</h3>
+             <span class="type-tag highlight">date + showTime</span>
+           </div>
           <div class="card-content">
             <div class="demo-row">
               <div class="demo-col">
                 <label>只读模式</label>
-                <CoolField 
-                  value-type="dateTime" 
-                  mode="read" 
-                  :value="demoData.dateTime"
-                />
-              </div>
-              <div class="demo-col">
-                <label>编辑模式</label>
-                <CoolField 
-                  value-type="dateTime" 
-                  mode="edit" 
-                  v-model:value="demoData.dateTime"
-                  placeholder="请选择日期时间"
-                  format="YYYY-MM-DD HH:mm:ss"
-                />
+                                 <CoolField 
+                   value-type="date" 
+                   mode="read" 
+                   :value="demoData.dateWithTime"
+                   show-time
+                 />
+               </div>
+               <div class="demo-col">
+                 <label>编辑模式</label>
+                                  <CoolField 
+                   value-type="date" 
+                   mode="edit" 
+                   v-model:value="demoData.dateWithTime"
+                   placeholder="请选择日期时间"
+                   format="YYYY-MM-DD HH:mm:ss"
+                   show-time
+                 />
               </div>
             </div>
           </div>
@@ -884,7 +886,7 @@ const demoData = reactive({
   
   // 日期时间类
   date: '2024-01-15',
-  dateTime: '2024-01-15 14:30:00',
+  dateWithTime: '2024-01-15 14:30:00',
   
   // 高级特性
   textWithIcon: '',
