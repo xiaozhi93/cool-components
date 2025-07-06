@@ -309,6 +309,37 @@
             </div>
           </div>
         </div>
+
+        <!-- 级联选择 -->
+        <div class="demo-card">
+          <div class="card-header">
+            <h3>cascader - 级联选择</h3>
+            <span class="type-tag highlight">cascader</span>
+          </div>
+          <div class="card-content">
+            <div class="demo-row">
+              <div class="demo-col">
+                <label>只读模式</label>
+                <CoolField 
+                  value-type="cascader" 
+                  mode="read" 
+                  :value="demoData.cascader"
+                  :options="cascaderOptions"
+                />
+              </div>
+              <div class="demo-col">
+                <label>编辑模式</label>
+                <CoolField 
+                  value-type="cascader" 
+                  mode="edit" 
+                  v-model:value="demoData.cascader"
+                  :options="cascaderOptions"
+                  placeholder="请选择省市区"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
     <!-- 展示类字段 -->
@@ -620,6 +651,7 @@ const demoData = reactive({
   select: 'option2',
   checkbox: ['checkbox1', 'checkbox2'],
   radio: 'radio1',
+  cascader: ['zhejiang', 'hangzhou', 'xihu'],
   
   // 高级特性
   textWithIcon: '',
@@ -646,6 +678,55 @@ const checkboxOptions = [
   { label: '选项A', value: 'checkbox1' },
   { label: '选项B', value: 'checkbox2' },
   { label: '选项C', value: 'checkbox3' }
+]
+
+// 级联选择配置
+const cascaderOptions = [
+  {
+    label: '浙江省',
+    value: 'zhejiang',
+    children: [
+      {
+        label: '杭州市',
+        value: 'hangzhou',
+        children: [
+          { label: '西湖区', value: 'xihu' },
+          { label: '余杭区', value: 'yuhang' },
+          { label: '滨江区', value: 'binjiang' }
+        ]
+      },
+      {
+        label: '宁波市',
+        value: 'ningbo',
+        children: [
+          { label: '海曙区', value: 'haishu' },
+          { label: '江北区', value: 'jiangbei' }
+        ]
+      }
+    ]
+  },
+  {
+    label: '江苏省',
+    value: 'jiangsu',
+    children: [
+      {
+        label: '南京市',
+        value: 'nanjing',
+        children: [
+          { label: '玄武区', value: 'xuanwu' },
+          { label: '秦淮区', value: 'qinhuai' }
+        ]
+      },
+      {
+        label: '苏州市',
+        value: 'suzhou',
+        children: [
+          { label: '姑苏区', value: 'gusu' },
+          { label: '虎丘区', value: 'huqiu' }
+        ]
+      }
+    ]
+  }
 ]
 
 // 事件日志

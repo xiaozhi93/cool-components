@@ -15,6 +15,7 @@ import {
   CoolFieldRadioButton,
   CoolFieldSelect,
   CoolFieldCheckbox,
+  CoolFieldCascader,
 } from '../fields'
 
 
@@ -155,6 +156,16 @@ export function render(
     case 'checkbox':
       return {
         renderedComponent: CoolFieldCheckbox,
+        componentProps: { 
+          value: dataValue, 
+          mode,
+          emptyText,
+          ...props 
+        }
+      }
+    case 'cascader':
+      return {
+        renderedComponent: CoolFieldCascader,
         componentProps: { 
           value: dataValue, 
           mode,
