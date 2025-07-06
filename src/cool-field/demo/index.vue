@@ -220,7 +220,7 @@
         <section class="demo-section">
       <div class="section-header">
         <h2>📋 选择类字段</h2>
-        <span class="section-badge">7 种类型</span>
+        <span class="section-badge">9 种类型</span>
       </div>
       
       <div class="demo-grid">
@@ -335,6 +335,70 @@
                   v-model:value="demoData.cascader"
                   :options="cascaderOptions"
                   placeholder="请选择省市区"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 树选择（单选） -->
+        <div class="demo-card">
+          <div class="card-header">
+            <h3>treeSelect - 树选择（单选）</h3>
+            <span class="type-tag">treeSelect</span>
+          </div>
+          <div class="card-content">
+            <div class="demo-row">
+              <div class="demo-col">
+                <label>只读模式</label>
+                <CoolField 
+                  value-type="treeSelect" 
+                  mode="read" 
+                  :value="demoData.treeSelect"
+                  :options="treeSelectOptions"
+                />
+              </div>
+              <div class="demo-col">
+                <label>编辑模式</label>
+                <CoolField 
+                  value-type="treeSelect" 
+                  mode="edit" 
+                  v-model:value="demoData.treeSelect"
+                  :options="treeSelectOptions"
+                  placeholder="请选择部门"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 树选择（多选） -->
+        <div class="demo-card">
+          <div class="card-header">
+            <h3>treeSelect - 树选择（多选）</h3>
+            <span class="type-tag highlight">treeSelect</span>
+          </div>
+          <div class="card-content">
+            <div class="demo-row">
+              <div class="demo-col">
+                <label>只读模式</label>
+                <CoolField 
+                  value-type="treeSelect" 
+                  mode="read" 
+                  :value="demoData.treeSelectMultiple"
+                  :options="treeSelectOptions"
+                  :multiple="true"
+                />
+              </div>
+              <div class="demo-col">
+                <label>编辑模式</label>
+                <CoolField 
+                  value-type="treeSelect" 
+                  mode="edit" 
+                  v-model:value="demoData.treeSelectMultiple"
+                  :options="treeSelectOptions"
+                  :multiple="true"
+                  placeholder="请选择多个部门"
                 />
               </div>
             </div>
@@ -652,6 +716,8 @@ const demoData = reactive({
   checkbox: ['checkbox1', 'checkbox2'],
   radio: 'radio1',
   cascader: ['zhejiang', 'hangzhou', 'xihu'],
+  treeSelect: 'frontend',
+  treeSelectMultiple: ['frontend', 'backend'],
   
   // 高级特性
   textWithIcon: '',
@@ -725,6 +791,61 @@ const cascaderOptions = [
           { label: '虎丘区', value: 'huqiu' }
         ]
       }
+    ]
+  }
+]
+
+// 树选择配置
+const treeSelectOptions = [
+  {
+    title: '技术团队',
+    value: 'tech',
+    children: [
+      {
+        title: '前端开发',
+        value: 'frontend',
+        children: [
+          { title: 'Vue开发', value: 'vue' },
+          { title: 'React开发', value: 'react' },
+          { title: 'Angular开发', value: 'angular' }
+        ]
+      },
+      {
+        title: '后端开发',
+        value: 'backend',
+        children: [
+          { title: 'Java开发', value: 'java' },
+          { title: 'Node.js开发', value: 'nodejs' },
+          { title: 'Python开发', value: 'python' }
+        ]
+      },
+      {
+        title: '移动开发',
+        value: 'mobile',
+        children: [
+          { title: 'iOS开发', value: 'ios' },
+          { title: 'Android开发', value: 'android' },
+          { title: 'Flutter开发', value: 'flutter' }
+        ]
+      }
+    ]
+  },
+  {
+    title: '产品团队',
+    value: 'product',
+    children: [
+      { title: '产品经理', value: 'pm' },
+      { title: 'UI设计师', value: 'ui' },
+      { title: 'UX设计师', value: 'ux' }
+    ]
+  },
+  {
+    title: '运营团队',
+    value: 'operation',
+    children: [
+      { title: '内容运营', value: 'content' },
+      { title: '用户运营', value: 'user' },
+      { title: '数据分析', value: 'data' }
     ]
   }
 ]
