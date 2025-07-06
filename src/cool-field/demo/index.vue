@@ -589,7 +589,7 @@
                   value-type="dateRange" 
                   mode="edit" 
                   v-model:value="demoData.dateRange"
-                  placeholder="请选择日期范围"
+                  format="YYYY-MM-DD"
                 />
               </div>
             </div>
@@ -611,6 +611,7 @@
                   mode="read" 
                   :value="demoData.dateTimeRange"
                   show-time
+                  format="YYYY-MM-DD HH:mm"
                 />
               </div>
               <div class="demo-col">
@@ -619,9 +620,8 @@
                   value-type="dateRange" 
                   mode="edit" 
                   v-model:value="demoData.dateTimeRange"
-                  placeholder="请选择日期时间范围"
                   show-time
-                  format="YYYY-MM-DD HH:mm:ss"
+                  format="YYYY-MM-DD HH:mm"
                 />
               </div>
             </div>

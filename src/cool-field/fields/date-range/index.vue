@@ -29,6 +29,7 @@
 
 <script setup lang="ts">
 import { computed, useSlots, useAttrs } from 'vue'
+import { RangePicker as ARangePicker } from 'ant-design-vue'
 import dayjs, { type Dayjs } from 'dayjs'
 
 // 支持的日期值类型
