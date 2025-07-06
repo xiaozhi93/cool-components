@@ -17,6 +17,7 @@ import {
   CoolFieldCheckbox,
   CoolFieldCascader,
   CoolFieldTreeSelect,
+  CoolFieldSwitch,
 } from '../fields'
 
 
@@ -177,6 +178,16 @@ export function render(
     case 'treeSelect':
       return {
         renderedComponent: CoolFieldTreeSelect,
+        componentProps: { 
+          value: dataValue, 
+          mode,
+          emptyText,
+          ...props 
+        }
+      }
+    case 'switch':
+      return {
+        renderedComponent: CoolFieldSwitch,
         componentProps: { 
           value: dataValue, 
           mode,

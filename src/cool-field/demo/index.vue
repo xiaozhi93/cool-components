@@ -220,7 +220,7 @@
         <section class="demo-section">
       <div class="section-header">
         <h2>📋 选择类字段</h2>
-        <span class="section-badge">9 种类型</span>
+        <span class="section-badge">6 种类型</span>
       </div>
       
       <div class="demo-grid">
@@ -399,6 +399,66 @@
                   :options="treeSelectOptions"
                   :multiple="true"
                   placeholder="请选择多个部门"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 开关 -->
+        <div class="demo-card">
+          <div class="card-header">
+            <h3>switch - 开关</h3>
+            <span class="type-tag">switch</span>
+          </div>
+          <div class="card-content">
+            <div class="demo-row">
+              <div class="demo-col">
+                <label>只读模式</label>
+                <CoolField 
+                  value-type="switch" 
+                  mode="read" 
+                  :value="demoData.switch"
+                />
+              </div>
+              <div class="demo-col">
+                <label>编辑模式</label>
+                <CoolField 
+                  value-type="switch" 
+                  mode="edit" 
+                  v-model:value="demoData.switch"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 开关（自定义文本） -->
+        <div class="demo-card">
+          <div class="card-header">
+            <h3>switch - 开关（自定义文本）</h3>
+            <span class="type-tag highlight">switch</span>
+          </div>
+          <div class="card-content">
+            <div class="demo-row">
+              <div class="demo-col">
+                <label>只读模式</label>
+                <CoolField 
+                  value-type="switch" 
+                  mode="read" 
+                  :value="demoData.switchWithCustomText"
+                  checked-text="启用"
+                  unchecked-text="禁用"
+                />
+              </div>
+              <div class="demo-col">
+                <label>编辑模式</label>
+                <CoolField 
+                  value-type="switch" 
+                  mode="edit" 
+                  v-model:value="demoData.switchWithCustomText"
+                  checked-text="启用"
+                  unchecked-text="禁用"
                 />
               </div>
             </div>
@@ -718,6 +778,8 @@ const demoData = reactive({
   cascader: ['zhejiang', 'hangzhou', 'xihu'],
   treeSelect: 'frontend',
   treeSelectMultiple: ['frontend', 'backend'],
+  switch: true,
+  switchWithCustomText: false,
   
   // 高级特性
   textWithIcon: '',
