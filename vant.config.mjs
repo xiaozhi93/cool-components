@@ -34,6 +34,10 @@ export default {
             path: 'demo-button',
             title: 'DemoButton 按钮',
           },
+          {
+            path: 'cool-field',
+            title: 'CoolField 统一字段',
+          },
         ],
       },
     ],
