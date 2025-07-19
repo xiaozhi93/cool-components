@@ -42,6 +42,10 @@ export default {
             path: 'cool-form-field',
             title: 'CoolFormField 统一表单字段',
           },
+          {
+            path: 'cool-base-form',
+            title: 'CoolBaseForm 基础表单',
+          },
         ],
       },
     ],
