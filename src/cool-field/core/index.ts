@@ -49,7 +49,7 @@ export function render(
   valueType: CoolFieldValueType | CoolFieldValueObjectType,
   props: Omit<CoolFieldProps, 'value' | 'valueType'>,
 ): FieldRenderResult {
-  const { mode = 'read', emptyText = '-' } = props
+  const { mode = 'edit', emptyText = '-' } = props
 
   // 空值处理
   if (emptyText !== false && mode === 'read' && shouldShowEmpty(dataValue, valueType)) {

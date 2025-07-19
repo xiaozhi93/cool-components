@@ -37,7 +37,7 @@ defineOptions({
 
 // 定义组件 props
 const props = withDefaults(defineProps<CoolFieldProps>(), {
-  mode: 'read',
+  mode: 'edit',
   valueType: 'text',
   emptyText: '-'
 })
