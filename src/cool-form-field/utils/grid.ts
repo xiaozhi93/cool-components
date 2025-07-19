@@ -81,13 +81,12 @@ interface ColWrapperProps extends CommonProps {
 
 export function createGridHelpers(config: ProFormGridConfig & CommonProps = {}): GridComponents {
   const { grid = false, rowProps = {}, colProps = {} } = config;
-
   const RowWrapper: FunctionalComponent<RowWrapperProps> = (
-    { wrapper: Wrapper, children, ...props },
-    { slots }
+    props, { slots }
   ) => {
+    const { wrapper: Wrapper } = props || {};
     if (!grid) {
-      const content = children || slots?.default?.();
+      const content = slots?.default?.();
       return Wrapper ? h(Wrapper, {}, content) : content;
     }
 
@@ -96,13 +95,11 @@ export function createGridHelpers(config: ProFormGridConfig & CommonProps = {}):
       ...rowProps,
       ...props
     };
-
-    return h(Row, finalRowProps, () => children || slots?.default?.());
+    return h(Row, finalRowProps, slots?.default?.());
   };
 
   const ColWrapper: FunctionalComponent<ColWrapperProps> = (props, { slots }) => {
     const { wrapper: Wrapper, ...rest } = props || {};
-
     // 合并 colProps（全局/父级）和当前 props
     const finalColProps = computed(() => {
       const originProps = { ...colProps, ...rest };
@@ -123,10 +120,6 @@ export function createGridHelpers(config: ProFormGridConfig & CommonProps = {}):
 
     return h(Col, finalColProps.value, slots?.default?.());
   };
-
-  // 添加组件 displayName 便于调试
-  RowWrapper.displayName = 'GridRowWrapper';
-  ColWrapper.displayName = 'GridColWrapper';
 
   return {
     grid,
@@ -151,7 +144,6 @@ export function useGridHelpers(
   })
 
   const contextGrid = useGridContext()
-
   return computed(() => {
     return createGridHelpers({
       grid: !!(contextGrid.grid || config.value.grid),

@@ -5,8 +5,9 @@
     v-bind="formProps"
   >
     <!-- 透传默认插槽 -->
-    <slot />
-    
+    <RowWrapper>
+      <slot />
+    </RowWrapper>
     <!-- 增强的submitter插槽 -->
     <div v-if="submitter" class="cool-base-form__submitter">
       <slot name="submitter" :form="formRef" :submit="handleSubmit" :reset="handleReset">
@@ -31,6 +32,7 @@ import { Form as AForm } from 'ant-design-vue'
 import type { FormInstance } from 'ant-design-vue/es/form'
 import type { CoolBaseFormProps } from './types'
 import Submitter from './components/submitter.vue'
+import { useGridHelpers, provideGridContext } from '../cool-form-field/utils/grid'
 
 defineOptions({
   name: 'CoolBaseForm',
@@ -63,6 +65,14 @@ const submitting = ref(false)
 const formProps = computed(() => {
   return attrs
 })
+
+// 网格布局
+provideGridContext({
+  grid: props.grid,
+  rowProps: props.rowProps,
+  colProps: props.colProps
+})
+const { RowWrapper } = useGridHelpers({ grid: props.grid, rowProps: props.rowProps });
 
 
 // 处理表单提交

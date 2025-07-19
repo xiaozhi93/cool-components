@@ -23,22 +23,17 @@
             :on-finish="handleBasicSubmit"
             :on-reset="handleBasicReset"
             layout="vertical"
+            :grid="true"
+            :row-props="{ gutter: 16 }"
+            :col-props="{ span: 8 }"
           >
-            <a-form-item label="用户名" name="username">
-              <a-input v-model:value="basicFormData.username" placeholder="请输入用户名" />
-            </a-form-item>
+            <CoolFormField value-type="text" label="用户名" name="username" v-model:value="basicFormData.username" placeholder="请输入用户名" />
             
-            <a-form-item label="邮箱" name="email">
-              <a-input v-model:value="basicFormData.email" placeholder="请输入邮箱地址" />
-            </a-form-item>
+            <CoolFormField value-type="text" label="邮箱" name="email" v-model:value="basicFormData.email" placeholder="请输入邮箱地址" />
             
-            <a-form-item label="密码" name="password">
-              <a-input-password v-model:value="basicFormData.password" placeholder="请输入密码" />
-            </a-form-item>
+            <CoolFormField value-type="password" label="密码" name="password" v-model:value="basicFormData.password" placeholder="请输入密码" />
             
-            <a-form-item label="个人简介" name="bio">
-              <a-textarea v-model:value="basicFormData.bio" placeholder="请输入个人简介" :rows="4" />
-            </a-form-item>
+            <CoolFormField value-type="textarea" label="个人简介" name="bio" v-model:value="basicFormData.bio" placeholder="请输入个人简介" :rows="4" />
           </CoolBaseForm>
         </div>
       </div>
@@ -60,13 +55,6 @@
               :model="customFormData"
               :on-finish="handleCustomSubmit"
               :on-reset="handleCustomReset"
-              :submitter-props="{
-                submitText: '立即提交',
-                resetText: '清空表单',
-                align: 'left',
-                submitButtonProps: { type: 'primary', size: 'large' },
-                resetButtonProps: { size: 'large' }
-              }"
             >
               <a-form-item label="项目名称" name="projectName">
                 <a-input v-model:value="customFormData.projectName" placeholder="请输入项目名称" />
@@ -173,10 +161,6 @@
             <CoolBaseForm
               :model="dynamicFormData"
               :on-finish="handleDynamicSubmit"
-              :submitter-props="{
-                submitText: '提交动态表单',
-                align: 'center'
-              }"
             >
               <a-form-item label="表单名称" name="formName">
                 <a-input v-model:value="dynamicFormData.formName" placeholder="请输入表单名称" />
@@ -274,11 +258,6 @@
               :model="layoutFormData"
               layout="vertical"
               :on-finish="handleLayoutSubmit"
-              :submitter-props="{
-                submitText: '垂直提交',
-                direction: 'vertical',
-                align: 'center'
-              }"
             >
               <a-form-item label="公司名称" name="company">
                 <a-input v-model:value="layoutFormData.company" placeholder="请输入公司名称" />
@@ -297,10 +276,6 @@
               :model="layoutFormData"
               layout="inline"
               :on-finish="handleLayoutSubmit"
-              :submitter-props="{
-                submitText: '内联提交',
-                showReset: false
-              }"
             >
               <a-form-item label="关键词" name="keyword">
                 <a-input v-model:value="layoutFormData.keyword" placeholder="搜索关键词" />
@@ -370,6 +345,7 @@ import {
   Row as ARow
 } from 'ant-design-vue'
 import CoolBaseForm from '../index.vue'
+import CoolFormField from '../../cool-form-field/index.vue'
 
 // 表单引用
 const asyncFormRef = ref()
