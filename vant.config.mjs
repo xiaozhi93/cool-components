@@ -38,6 +38,10 @@ export default {
             path: 'cool-field',
             title: 'CoolField 统一字段',
           },
+          {
+            path: 'cool-form-field',
+            title: 'CoolFormField 统一表单字段',
+          },
         ],
       },
     ],
