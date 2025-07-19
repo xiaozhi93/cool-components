@@ -150,25 +150,6 @@ export function createField(config: FormFieldConfig = {}) {
 }
 
 /**
- * 创建特定类型的表单字段组件
- * @param valueType 字段类型
- * @param defaultConfig 默认配置
- * @returns 字段组件工厂函数
- */
-export function createTypedField(
-  valueType: CoolFieldValueTypeConfig, 
-  defaultConfig: Omit<FormFieldConfig, 'valueType'> = {}
-) {
-  return (config: Omit<FormFieldConfig, 'valueType'> = {}) => {
-    return createField({
-      ...defaultConfig,
-      ...config,
-      valueType
-    })
-  }
-}
-
-/**
  * 导出默认工厂函数
  */
 export default createField

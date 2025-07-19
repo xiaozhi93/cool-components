@@ -12,26 +12,23 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { createTypedField, type FormFieldConfig } from './core/createField'
-import { omit } from 'lodash-es'
+import { createField, type FormFieldConfig } from './core/createField'
 defineOptions({
   name: 'CoolFormField',
   inheritAttrs: false
 })
 
-const props = withDefaults(defineProps<FormFieldConfig>(), {
-  mode: 'edit',
+const props = withDefaults(defineProps<{
+  valueType: FormFieldConfig['valueType']
+}>(), {
   valueType: 'text',
-  emptyText: '-',
-  disabled: false,
-  required: false
 })
 
 
 // 使用工厂函数创建组件
 const FieldComponent = computed(() => {
-  return createTypedField(props.valueType)({
-    ...omit(props, ['valueType'])
+  return createField({
+    valueType: props.valueType
   })
 })
 
