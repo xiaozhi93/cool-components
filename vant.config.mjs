@@ -54,6 +54,10 @@ export default {
             path: 'cool-drawer-form',
             title: 'CoolDrawerForm 抽屉表单',
           },
+          {
+            path: 'cool-schema-form',
+            title: 'CoolSchemaForm 配置表单',
+          },
         ],
       },
     ],
