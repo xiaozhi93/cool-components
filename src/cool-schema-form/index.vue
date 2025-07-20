@@ -31,7 +31,8 @@ const formProps = computed(() => {
     ...attrs,
   }
 })
-const formModel = reactive<Record<string, any>>({})
+const formModel = reactive<Record<string, any>>({
+})
 const FormRenderComponents = computed(() => {
   return SchemaFormLayout[props.layoutType as FormLayoutType]
 })
@@ -39,7 +40,8 @@ const FormRenderComponents = computed(() => {
 // 表单项组件
 const FormItemComponents = computed(() => {
   let formItemNodes: VNode[] = []
-  formItemNodes = genFormItems(props.columns)
+  // FIXME: formModel改变会导致组件重新渲染，需要优化
+  formItemNodes = genFormItems(props.columns, formModel)
   return () => h(Fragment, formItemNodes)
 })
 
