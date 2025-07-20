@@ -7,4 +7,5 @@ export interface CoolDrawerFormProps  {
   drawerProps?: Omit<DrawerProps, 'open'>
   submitter?: boolean
   submitterProps?: SubmitterProps
+  onFinish?: (values: any) => Promise<any>
 }

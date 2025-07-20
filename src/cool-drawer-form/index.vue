@@ -1,6 +1,6 @@
 <template>
   <Drawer v-model:open="open" v-bind="drawerProps">
-    <CoolBaseForm  v-bind="formProps">
+    <CoolBaseForm  v-bind="formProps" :on-finish="handleFinish">
       <template #default>
         <slot />
       </template>
@@ -68,6 +68,20 @@ const triggerComponent = computed(() => {
     }
   }, slots.trigger())
 })
+
+const handleFinish = async(values: any) => {
+  const response = props.onFinish?.(values)
+  if(response instanceof Promise) {
+    await response
+  }
+  const result = await response;
+  // 返回真值，关闭弹框
+  if (result) {
+    open.value = false;
+  }
+  return result;
+}
+
 </script>
 
 <style scoped lang="scss">
