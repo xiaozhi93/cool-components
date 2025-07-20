@@ -219,6 +219,197 @@
       </div>
     </section>
 
+    <!-- 只读模式示例 -->
+    <section class="demo-section">
+      <div class="section-header">
+        <h2>👁️ 只读模式</h2>
+        <span class="section-badge">数据展示</span>
+      </div>
+      
+      <div class="demo-content">
+        <div class="readonly-examples">
+          <!-- 基础只读表单 -->
+          <div class="example-item">
+            <h3>基础只读表单</h3>
+            <p class="example-desc">展示表单数据的只读模式，所有字段都不可编辑</p>
+            <CoolBaseForm
+              :model="readonlyFormData"
+              :readonly="true"
+              :submitter="false"
+              layout="vertical"
+              :grid="true"
+              :row-props="{ gutter: 16 }"
+              :col-props="{ span: 8 }"
+            >
+              <CoolFormField 
+                value-type="text" 
+                label="用户名" 
+                name="username" 
+                v-model:value="readonlyFormData.username" 
+              />
+              
+              <CoolFormField 
+                value-type="text" 
+                label="邮箱" 
+                name="email" 
+                v-model:value="readonlyFormData.email" 
+              />
+              
+              <CoolFormField 
+                value-type="digit" 
+                label="年龄" 
+                name="age" 
+                v-model:value="readonlyFormData.age" 
+              />
+              
+              <CoolFormField 
+                value-type="select" 
+                label="职位" 
+                name="position" 
+                v-model:value="readonlyFormData.position"
+                :options="[
+                  { label: '前端开发工程师', value: 'frontend' },
+                  { label: '后端开发工程师', value: 'backend' },
+                  { label: '全栈开发工程师', value: 'fullstack' },
+                  { label: '产品经理', value: 'pm' }
+                ]"
+              />
+              
+              <CoolFormField 
+                value-type="date" 
+                label="入职日期" 
+                name="joinDate" 
+                v-model:value="readonlyFormData.joinDate" 
+              />
+              
+              <CoolFormField 
+                value-type="money" 
+                label="薪资" 
+                name="salary" 
+                v-model:value="readonlyFormData.salary" 
+              />
+              
+              <CoolFormField 
+                value-type="percent" 
+                label="股权比例" 
+                name="equity" 
+                v-model:value="readonlyFormData.equity" 
+              />
+              
+              <CoolFormField 
+                value-type="switch" 
+                label="是否在职" 
+                name="isActive" 
+                v-model:value="readonlyFormData.isActive" 
+              />
+              
+              <CoolFormField 
+                value-type="textarea" 
+                label="个人简介" 
+                name="bio" 
+                v-model:value="readonlyFormData.bio" 
+                :col-props="{ span: 24 }"
+              />
+            </CoolBaseForm>
+          </div>
+
+          <!-- 可切换的编辑/只读模式 -->
+          <div class="example-item">
+            <h3>可切换编辑/只读模式</h3>
+            <p class="example-desc">通过切换按钮来展示同一表单在编辑和只读模式下的不同表现</p>
+            
+            <div class="mode-switcher">
+              <a-space>
+                <a-button 
+                  :type="editableMode ? 'primary' : 'default'" 
+                  @click="editableMode = true"
+                  icon="edit"
+                >
+                  编辑模式
+                </a-button>
+                <a-button 
+                  :type="!editableMode ? 'primary' : 'default'" 
+                  @click="editableMode = false"
+                  icon="eye"
+                >
+                  只读模式
+                </a-button>
+              </a-space>
+            </div>
+            
+            <CoolBaseForm
+              :model="editableFormData"
+              :readonly="!editableMode"
+              :submitter="editableMode"
+              :rules="editableRules"
+              :on-finish="handleEditableSubmit"
+              :on-reset="handleEditableReset"
+              layout="vertical"
+              :grid="true"
+              :row-props="{ gutter: 16 }"
+              :col-props="{ span: 12 }"
+            >
+              <CoolFormField 
+                value-type="text" 
+                label="项目名称" 
+                name="projectName" 
+                v-model:value="editableFormData.projectName" 
+                placeholder="请输入项目名称"
+              />
+              
+              <CoolFormField 
+                value-type="select" 
+                label="项目状态" 
+                name="status" 
+                v-model:value="editableFormData.status"
+                placeholder="请选择项目状态"
+                :options="[
+                  { label: '进行中', value: 'active', color: 'green' },
+                  { label: '已完成', value: 'completed', color: 'blue' },
+                  { label: '已暂停', value: 'paused', color: 'orange' },
+                  { label: '已取消', value: 'cancelled', color: 'red' }
+                ]"
+              />
+              
+              <CoolFormField 
+                value-type="dateRange" 
+                label="项目周期" 
+                name="duration" 
+                v-model:value="editableFormData.duration" 
+                :col-props="{ span: 24 }"
+              />
+              
+              <CoolFormField 
+                value-type="digit" 
+                label="团队人数" 
+                name="teamSize" 
+                v-model:value="editableFormData.teamSize" 
+                placeholder="请输入团队人数"
+              />
+              
+              <CoolFormField 
+                value-type="money" 
+                label="项目预算" 
+                name="budget" 
+                v-model:value="editableFormData.budget" 
+                placeholder="请输入项目预算"
+              />
+              
+              <CoolFormField 
+                value-type="textarea" 
+                label="项目描述" 
+                name="description" 
+                v-model:value="editableFormData.description" 
+                placeholder="请输入项目描述"
+                :rows="4"
+                :col-props="{ span: 24 }"
+              />
+            </CoolBaseForm>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- 布局样式示例 -->
     <section class="demo-section">
       <div class="section-header">
@@ -319,6 +510,17 @@
           <a-tab-pane key="layout" tab="布局表单">
             <pre>{{ JSON.stringify(layoutFormData, null, 2) }}</pre>
           </a-tab-pane>
+          <a-tab-pane key="readonly" tab="只读表单">
+            <pre>{{ JSON.stringify(readonlyFormData, null, 2) }}</pre>
+          </a-tab-pane>
+          <a-tab-pane key="editable" tab="可编辑表单">
+            <div style="margin-bottom: 12px; color: #64748b;">
+              当前模式: <span :style="{ color: editableMode ? '#22c55e' : '#f59e0b', fontWeight: 'bold' }">
+                {{ editableMode ? '编辑模式' : '只读模式' }}
+              </span>
+            </div>
+            <pre>{{ JSON.stringify(editableFormData, null, 2) }}</pre>
+          </a-tab-pane>
         </a-tabs>
       </div>
     </div>
@@ -332,7 +534,6 @@ import {
   Button as AButton, 
   FormItem as AFormItem,
   Input as AInput,
-  InputPassword as AInputPassword,
   InputNumber as AInputNumber,
   Textarea as ATextarea,
   Select as ASelect,
@@ -423,6 +624,47 @@ const layoutFormData = reactive({
   category: ''
 })
 
+// 只读表单数据
+const readonlyFormData = reactive({
+  username: 'john_doe',
+  email: 'john.doe@example.com',
+  age: 28,
+  position: 'frontend',
+  joinDate: '2023-03-15',
+  salary: 120000,
+  equity: 0.5,
+  isActive: true,
+  bio: '资深前端开发工程师，拥有5年以上React和Vue开发经验，熟悉现代前端工程化技术栈，负责公司核心产品的前端架构设计和开发工作。'
+})
+
+// 可编辑/只读切换表单数据
+const editableFormData = reactive({
+  projectName: 'Cool Components 组件库',
+  status: 'active',
+  duration: ['2023-01-01', '2023-12-31'],
+  teamSize: 8,
+  budget: 500000,
+  description: '基于Vue 3和TypeScript的现代化组件库项目，提供高质量的UI组件和开发工具，帮助开发者快速构建美观且功能丰富的Web应用程序。'
+})
+
+// 编辑模式状态
+const editableMode = ref(true)
+
+// 可编辑表单验证规则
+const editableRules = {
+  projectName: [
+    { required: true, message: '请输入项目名称' },
+    { min: 2, max: 50, message: '项目名称长度为2-50个字符' }
+  ],
+  status: [
+    { required: true, message: '请选择项目状态' }
+  ],
+  teamSize: [
+    { required: true, message: '请输入团队人数' },
+    { type: 'number', min: 1, max: 100, message: '团队人数应在1-100之间' }
+  ]
+}
+
 // 当前激活的数据标签
 const activeDataTab = ref('basic')
 
@@ -501,6 +743,17 @@ const handleLayoutSubmit = async (values: any) => {
   console.log('布局表单提交:', values)
   await new Promise(resolve => setTimeout(resolve, 500))
   message.success('布局表单提交成功！')
+}
+
+const handleEditableSubmit = async (values: any) => {
+  console.log('可编辑表单提交:', values)
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  message.success('项目信息提交成功！')
+}
+
+const handleEditableReset = () => {
+  console.log('可编辑表单重置')
+  message.info('项目表单已重置')
 }
 
 // 动态字段操作
@@ -697,6 +950,29 @@ const clearValidation = () => {
     background: white;
     border-radius: 8px;
     border: 1px solid #f0f0f0;
+  }
+  
+  // 只读示例
+  .readonly-examples {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  
+  .example-desc {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  
+  .mode-switcher {
+    margin-bottom: 20px;
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px dashed #cbd5e1;
+    text-align: center;
   }
   
   // 自定义提交器

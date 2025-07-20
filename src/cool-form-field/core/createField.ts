@@ -8,6 +8,7 @@ import { FormItem } from 'ant-design-vue'
 import CoolField from '../../cool-field/index.vue'
 import type { CoolFieldProps, CoolFieldMode } from '../../cool-field/types'
 import { useGridHelpers } from '../utils/grid'
+import { useEditOrReadContext } from '../utils/editOrRead'
 import type { ColProps } from 'ant-design-vue'
 import type { CoolFieldValueTypeConfig } from '../../cool-field/types/valueTypes'
 /**
@@ -63,7 +64,7 @@ export function createField(config: FormFieldConfig = {}) {
       /** 组件模式 */
       mode: {
         type: String as PropType<CoolFieldMode>,
-        default: 'edit'
+        default: ''
       },
       /** 是否必填 */
       required: {
@@ -96,6 +97,9 @@ export function createField(config: FormFieldConfig = {}) {
       // 获取Grid辅助工具
       const { ColWrapper } = useGridHelpers(attrs)
 
+      // 获取编辑或只读上下文
+      const modeContext = useEditOrReadContext()
+
       // 计算表单项属性
       const formItemProps = computed(() => {
         const baseProps = {
@@ -127,11 +131,18 @@ export function createField(config: FormFieldConfig = {}) {
         } as CoolFieldProps
       })
       return () => {
-        // 如果是只读模式且没有表单项标签，直接渲染字段组件
-        if (props.mode === 'read' && !props.label) {
-          return h(ColWrapper, {}, () => h(CoolField, {
-            ...fieldComponentProps.value
-          }, slots))
+        // 如果是只读模式，直接渲染字段组件, FormItem可二次封装
+        if (props.mode === 'read' || modeContext.value.mode === 'read') {
+          return h(ColWrapper, {}, () => h(
+            FormItem,
+            formItemProps.value,
+            { 
+              default: () => h(CoolField, {
+                ...fieldComponentProps.value,
+                mode: props.mode || modeContext.value.mode
+              }, slots)
+            }
+          ))
         }
 
         // 渲染带表单项的字段组件
@@ -140,7 +151,8 @@ export function createField(config: FormFieldConfig = {}) {
           formItemProps.value,
           { 
             default: () => h(CoolField, {
-              ...fieldComponentProps.value
+              ...fieldComponentProps.value,
+              mode: props.mode || modeContext.value.mode
             }, slots)
           }
         ))

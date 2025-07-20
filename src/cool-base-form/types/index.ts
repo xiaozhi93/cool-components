@@ -23,4 +23,7 @@ export interface CoolBaseFormProps {
   rowProps?: RowProps;
   /** 网格布局的列属性配置 */
   colProps?: ColProps;
+  
+  /** 是否只读 */
+  readonly?: boolean;
 } 

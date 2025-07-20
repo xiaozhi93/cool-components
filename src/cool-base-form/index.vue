@@ -33,6 +33,7 @@ import type { FormInstance } from 'ant-design-vue/es/form'
 import type { CoolBaseFormProps } from './types'
 import Submitter from './components/submitter.vue'
 import { useGridHelpers, provideGridContext } from '../cool-form-field/utils/grid'
+import { provideEditOrReadContext, type ProFormEditOrReadConfig } from '../cool-form-field/utils/editOrRead'
 
 defineOptions({
   name: 'CoolBaseForm',
@@ -41,6 +42,14 @@ defineOptions({
 
 // 定义组件 props
 const props = withDefaults(defineProps<CoolBaseFormProps>(), {
+  grid: false,
+  rowProps: () => ({
+    gutter: 16
+  }),
+  colProps: () => ({
+    span: 8
+  }),
+  readonly: false,
   submitter: true,
   submitterProps: () => ({
     submitText: '提交',
@@ -73,6 +82,12 @@ provideGridContext({
   colProps: props.colProps
 })
 const { RowWrapper } = useGridHelpers({ grid: props.grid, rowProps: props.rowProps });
+
+// 编辑或只读 - 使用计算属性让它变成响应式的
+const editOrReadConfig = computed<ProFormEditOrReadConfig>(() => ({
+  mode: props.readonly ? 'read' as const : 'edit' as const
+}))
+provideEditOrReadContext(editOrReadConfig)
 
 
 // 处理表单提交

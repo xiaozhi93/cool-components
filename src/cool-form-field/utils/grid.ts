@@ -1,4 +1,4 @@
-import { computed, inject, provide, type InjectionKey, type VNode, h, FunctionalComponent } from 'vue'
+import { computed, inject, provide, type InjectionKey, h, FunctionalComponent } from 'vue'
 import { Row, Col } from 'ant-design-vue'
 import type { RowProps, ColProps } from 'ant-design-vue'
 
@@ -70,7 +70,6 @@ interface GridComponents {
 
 interface RowWrapperProps extends CommonProps {
   wrapper?: any; // 可以是组件或渲染函数
-  children?: VNode[] | VNode;
 }
 
 interface ColWrapperProps extends CommonProps {
