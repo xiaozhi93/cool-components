@@ -38,7 +38,7 @@
       
       <div class="demo-content">
         <div class="example-wrapper">
-          <CoolSchemaForm ref="fullFormRef" :columns="fullColumns" layout-type="CoolForm" />
+          <CoolSchemaForm ref="fullFormRef" :columns="fullColumns" layout-type="CoolForm" :readonly="isReadonly" />
           <div class="form-actions">
             <a-space>
               <a-button @click="getFullFormValues" type="primary">获取表单值</a-button>
