@@ -46,6 +46,10 @@ export default {
             path: 'cool-base-form',
             title: 'CoolBaseForm 基础表单',
           },
+          {
+            path: 'cool-form',
+            title: 'CoolForm 表单',
+          },
         ],
       },
     ],
