@@ -7,7 +7,7 @@
 
   <template v-else>
     <slot name="editRender" :value="value" :on-change="editAttrs['onUpdate:value']">
-      <a-input-number :value="computedValue" v-bind="editAttrs" style="width: 100%" @update:value="handleValueChange">
+      <a-input-number :value="computedValue" v-bind="editAttrs" style="width: 100%">
         <!-- 后缀插槽 -->
         <template #addonAfter>{{ suffix }}</template>
 
@@ -131,35 +131,30 @@ const computedValue = computed(() => {
 })
 
 // 处理值变更
-const handleValueChange = (newValue: any) => {
-  if (newValue === null || newValue === undefined) {
-    // 通过事件更新父组件的值
-    const updateHandler = editAttrs.value['onUpdate:value']
-    if (updateHandler) {
-      updateHandler(null as any)
-    }
-    return
-  }
-
-  // 根据编辑模式转换值
-  const actualValue = props.editMode === 'percent' ? newValue / 100 : newValue
-
-  // 通过事件更新父组件的值
-  const updateHandler = editAttrs.value['onUpdate:value']
-  if (updateHandler) {
-    updateHandler(actualValue)
-  }
-}
 
 // 提取编辑模式下需要透传的属性（包括事件监听器）
 const editAttrs = computed(() => {
   // 从 attrs 中获取所有属性，排除 onUpdate:value（我们需要特殊处理）
-  const { 'onUpdate:value': updateValue, ...rest } = attrs as any
+  const { 'onUpdate:value': updateHandler, ...rest } = attrs as any
 
   const result: any = {
     ...rest,
     precision: props.precision,
-    'onUpdate:value': updateValue, // 保留原始的更新处理器
+    'onUpdate:value': (newValue: any) => {
+      if (newValue === null || newValue === undefined) {
+        // 通过事件更新父组件的值
+        if (updateHandler) {
+          updateHandler(null as any)
+        }
+        return
+      }
+      // 根据编辑模式转换值
+      const actualValue = props.editMode === 'percent' ? newValue / 100 : newValue
+      // 通过事件更新父组件的值
+      if (updateHandler) {
+        updateHandler(actualValue)
+      }
+    },
   }
 
   return result

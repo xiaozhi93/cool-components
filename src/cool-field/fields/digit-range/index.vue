@@ -8,14 +8,13 @@
 
   <!-- 编辑模式 -->
   <template v-else>
-    <slot name="editRender" :value="value" :onChange="handleRangeChange">
+    <slot name="editRender" :value="value" :on-change="handleRangeChange">
       <div class="cool-digit-range-input-group">
         <!-- 最小值输入 -->
         <a-input-number
           :value="minValue"
           v-bind="minInputAttrs"
           class="cool-digit-range-min"
-          @update:value="handleMinChange"
         />
         
         <!-- 分隔符 -->
@@ -26,7 +25,6 @@
           :value="maxValue"
           v-bind="maxInputAttrs"
           class="cool-digit-range-max"
-          @update:value="handleMaxChange"
         />
       </div>
     </slot>
@@ -72,7 +70,7 @@ const props = withDefaults(defineProps<CoolDigitRangeFieldProps>(), {
 const attrs = useAttrs()
 
 // 计算当前的最小值和最大值
-const minValue = computed(() => {
+const minValue = computed<any>(() => {
   if (!Array.isArray(props.value) || props.value.length < 2) {
     return undefined
   }
@@ -103,7 +101,7 @@ const displayText = computed(() => {
 // 计算透传给最小值输入框的属性
 const minInputAttrs = computed(() => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { 'onUpdate:value': _, onChange: __, onBlur, onFocus, ...rest } = attrs
+  const { 'onUpdate:value': _, onChange: __,  ...rest } = attrs
 
   return {
     ...rest,
@@ -111,15 +109,16 @@ const minInputAttrs = computed(() => {
     parser: (value: string) => value.replace(/\D/g, ''), // 只允许整数
     precision: 0, // 确保是整数
     max: props.validateRange && maxValue.value !== undefined ? maxValue.value : undefined,
-    onBlur,
-    onFocus
+    'onUpdate:value': (value: any) => {
+      handleMinChange(value)
+    }
   }
 })
 
 // 计算透传给最大值输入框的属性
 const maxInputAttrs = computed(() => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { 'onUpdate:value': _, onChange: __, onBlur, onFocus, ...rest } = attrs
+  const { 'onUpdate:value': _, onChange: __, ...rest } = attrs
 
   return {
     ...rest,
@@ -127,8 +126,9 @@ const maxInputAttrs = computed(() => {
     parser: (value: string) => value.replace(/\D/g, ''), // 只允许整数
     precision: 0, // 确保是整数
     min: props.validateRange && minValue.value !== undefined ? minValue.value : undefined,
-    onBlur,
-    onFocus
+    'onUpdate:value': (value: any) => {
+      handleMaxChange(value)
+    }
   }
 })
 
