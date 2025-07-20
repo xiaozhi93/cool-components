@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, h, Fragment, reactive, watch, useAttrs, type VNode, useSlots } from "vue"
+import { computed, h, shallowRef, watchEffect, Fragment, reactive, watch, useAttrs, type VNode, useSlots } from "vue"
 import type { CoolSchemaFormProps, FormLayoutType } from "./types"
 import { SchemaFormLayout } from "./core"
 import { genFormItems } from "./valueType"
@@ -38,15 +38,25 @@ const FormRenderComponents = computed(() => {
 })
 
 // 表单项组件
+// const FormItemComponents = computed(() => {
+//   let formItemNodes: VNode[] = []
+//   // FIXME: formModel改变会导致组件重新渲染，需要优化
+//   formItemNodes = genFormItems(props.columns, formModel)
+//   return () => h(Fragment, formItemNodes)
+// })
+const formItemNodes = shallowRef<VNode[]>([])
+
+// 只在 columns 变化时重新生成 VNodes
+watchEffect(() => {
+  formItemNodes.value = genFormItems(props.columns, formModel)
+})
+
 const FormItemComponents = computed(() => {
-  let formItemNodes: VNode[] = []
-  // FIXME: formModel改变会导致组件重新渲染，需要优化
-  formItemNodes = genFormItems(props.columns, formModel)
-  return () => h(Fragment, formItemNodes)
+  return () => h(Fragment, formItemNodes.value)
 })
 
 // 监听columns变化，更新formModel
-watch(props.columns, () => {
+watch(() => props.columns, () => {
   if(props.columns?.length > 0) {
     props.columns.forEach(item => {
       formModel[item.name] = item.initialValue
