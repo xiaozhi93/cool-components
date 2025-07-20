@@ -27,3 +27,5 @@ export interface CoolBaseFormProps {
   /** 是否只读 */
   readonly?: boolean;
 } 
+
+export type { SubmitterProps }

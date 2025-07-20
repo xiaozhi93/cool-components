@@ -10,24 +10,13 @@
     </RowWrapper>
     <!-- 增强的submitter插槽 -->
     <div v-if="submitter" class="cool-base-form__submitter">
-      <slot name="submitter" :form="formRef" :submit="handleSubmit" :reset="handleReset">
-        <Submitter
-          v-bind="submitterProps"
-          :submit-button-props="{
-            ...submitterProps.submitButtonProps,
-            loading: submitting,
-          }"
-          @submit="handleSubmit"
-          @reset="handleReset"
-
-        />
-      </slot>
+      <component :is="submitterComponent" />
     </div>
   </a-form>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, useAttrs } from 'vue'
+import { ref, computed, useAttrs, h, useSlots } from 'vue'
 import { Form as AForm } from 'ant-design-vue'
 import type { FormInstance } from 'ant-design-vue/es/form'
 import type { CoolBaseFormProps } from './types'
@@ -63,6 +52,7 @@ const props = withDefaults(defineProps<CoolBaseFormProps>(), {
 
 // 获取 attrs
 const attrs = useAttrs()
+const slots = useSlots()
 
 // 表单引用
 const formRef = ref<FormInstance>()
@@ -88,6 +78,28 @@ const editOrReadConfig = computed<ProFormEditOrReadConfig>(() => ({
   mode: props.readonly ? 'read' as const : 'edit' as const
 }))
 provideEditOrReadContext(editOrReadConfig)
+
+// 提交按钮
+const submitterComponent = computed(() => {
+  if (!props.submitter) return null
+  const submitter = () => h(Submitter, {
+    ...props.submitterProps,
+    submitButtonProps: {
+      ...props.submitterProps.submitButtonProps,
+      loading: submitting.value
+    },
+    onSubmit: handleSubmit,
+    onReset: handleReset
+  })
+  if(slots.submitter) {
+    return () => {
+      return slots.submitter?.({
+        Component: submitter
+      })
+    }
+  }
+  return submitter
+})
 
 
 // 处理表单提交

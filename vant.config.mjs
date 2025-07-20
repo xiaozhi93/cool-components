@@ -50,6 +50,10 @@ export default {
             path: 'cool-form',
             title: 'CoolForm 表单',
           },
+          {
+            path: 'cool-drawer-form',
+            title: 'CoolDrawerForm 抽屉表单',
+          },
         ],
       },
     ],
