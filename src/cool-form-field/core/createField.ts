@@ -33,6 +33,8 @@ export interface FormFieldConfig {
   fieldProps?: Record<string, any>
   /** 列配置 */
   colProps?: ColProps
+  /** 是否隐藏 */
+  hidden?: boolean
 }
 
 /**
@@ -75,6 +77,10 @@ export function createField(config: FormFieldConfig = {}) {
       rules: {
         type: Array as PropType<any[]>,
         default: () => config.rules || []
+      },
+      hidden: {
+        type: Boolean,
+        default: config.hidden || false
       },
       /** 表单项额外属性 */
       formItemProps: {
@@ -133,7 +139,11 @@ export function createField(config: FormFieldConfig = {}) {
       return () => {
         // 如果是只读模式，直接渲染字段组件, FormItem可二次封装
         if (props.mode === 'read' || modeContext.value.mode === 'read') {
-          return h(ColWrapper, {}, () => h(
+          return h(ColWrapper, {
+            style: {
+              display: props.hidden ? 'none' : 'block'
+            }
+          }, () => h(
             FormItem,
             formItemProps.value,
             { 
@@ -146,7 +156,11 @@ export function createField(config: FormFieldConfig = {}) {
         }
 
         // 渲染带表单项的字段组件
-        return h(ColWrapper, {}, () => h(
+        return h(ColWrapper, {
+          style: {
+            display: props.hidden ? 'none' : 'block'
+          }
+        }, () => h(
           FormItem,
           formItemProps.value,
           { 
