@@ -58,6 +58,10 @@ export default {
             path: 'cool-schema-form',
             title: 'CoolSchemaForm 配置表单',
           },
+          {
+            path: 'cool-query-filter',
+            title: 'CoolQueryFilter 查询筛选',
+          },
         ],
       },
     ],
