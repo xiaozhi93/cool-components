@@ -1,5 +1,5 @@
 import { h, markRaw } from "vue"
-import CoolFormField from "../../cool-form-field/index.vue"
+import CoolFormField from "../../cool-form-field/index"
 
 // 缓存组件引用
 const CachedCoolFormField = markRaw(CoolFormField)

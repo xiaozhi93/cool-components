@@ -5,97 +5,61 @@ import {
   type PropType
 } from 'vue'
 import { FormItem } from 'ant-design-vue'
-import CoolField from '../../cool-field/index.vue'
-import type { CoolFieldProps, CoolFieldMode } from '../../cool-field/types'
-import { useGridHelpers } from '../utils/grid'
-import { useEditOrReadContext } from '../utils/editOrRead'
-import type { ColProps } from 'ant-design-vue'
-import type { CoolFieldValueTypeConfig } from '../../cool-field/types/valueTypes'
-/**
- * 表单字段配置接口
- */
-export interface FormFieldConfig {
-  /** 字段类型 */
-  valueType?: CoolFieldValueTypeConfig
-  /** 字段标签 */
-  label?: string
-  /** 字段名称 */
-  name?: string
-  /** 是否必填 */
-  required?: boolean
-  /** 验证规则 */
-  rules?: any[]
-  /** 表单项额外属性 */
-  formItemProps?: Record<string, any>
-  /** 字段值 */
-  value?: any
-  /** 字段组件额外属性 */
-  fieldProps?: Record<string, any>
-  /** 列配置 */
-  colProps?: ColProps
-  /** 是否隐藏 */
-  hidden?: boolean
-}
+import CoolField from '../cool-field/index.vue'
+import type { CoolFieldProps, CoolFieldMode } from '../cool-field/types'
+import { useGridHelpers } from './utils/grid'
+import { useEditOrReadContext } from './utils/editOrRead'
+import type { CoolFieldValueTypeConfig } from '../cool-field/types/valueTypes'
+import type { CoolFormFieldProps } from './types'
 
-/**
- * 创建表单字段组件的工厂函数
- * @param config 字段配置
- * @returns Vue 组件
- */
-export function createField(config: FormFieldConfig = {}) {
-  return defineComponent({
-    name: 'CoolFormWrapperField',
+export default defineComponent<CoolFormFieldProps>({
+    name: 'CoolFormField',
     inheritAttrs: false,
-    
     props: {
-      /** 字段标签 */
-      label: {
-        type: String,
-        default: config.label
-      },
-      /** 字段名称 */
-      name: {
-        type: String,
-        default: config.name
-      },
       /** 字段类型 */
       valueType: {
         type: [Object, String] as PropType<CoolFieldValueTypeConfig | string>,
-        default: config.valueType || 'text'
+        default: 'text'
       },
       /** 组件模式 */
       mode: {
         type: String as PropType<CoolFieldMode>,
-        default: ''
+        default: 'edit'
       },
       /** 是否必填 */
       required: {
         type: Boolean,
-        default: config.required || false
+        default: false
       },
       /** 验证规则 */
       rules: {
         type: Array as PropType<any[]>,
-        default: () => config.rules || []
+        default: () => []
       },
+      /** 字段标签 */
+      label: {
+        type: String,
+        default: ''
+      },
+      /** 字段名称 */
+      name: {
+        type: String,
+        default: ''
+      },
+      /** 是否隐藏 */
       hidden: {
         type: Boolean,
-        default: config.hidden || false
+        default: false
       },
       /** 表单项额外属性 */
       formItemProps: {
         type: Object,
-        default: () => config.formItemProps || {}
-      },
-      /** 字段值 */
-      value: {
-        type: [String, Number, Boolean, Array, Object] as PropType<any>,
-        default: undefined
+        default: () => {}
       },
       /** 字段组件额外属性 */
       fieldProps: {
         type: Object,
-        default: () => config.fieldProps || {}
+        default: () => {}
       }
     },
 
@@ -129,7 +93,6 @@ export function createField(config: FormFieldConfig = {}) {
       // 计算字段组件属性
       const fieldComponentProps = computed(() => {
         return {
-          value: props.value,
           valueType: props.valueType,
           mode: props.mode,
           ...props.fieldProps,
@@ -145,7 +108,10 @@ export function createField(config: FormFieldConfig = {}) {
             }
           }, () => h(
             FormItem,
-            formItemProps.value,
+            {
+              ...formItemProps.value,
+              required: false
+            },
             { 
               default: () => h(CoolField, {
                 ...fieldComponentProps.value,
@@ -173,9 +139,3 @@ export function createField(config: FormFieldConfig = {}) {
       }
     }
   })
-}
-
-/**
- * 导出默认工厂函数
- */
-export default createField

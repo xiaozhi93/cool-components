@@ -16,11 +16,20 @@
       </div>
       <div class="demo-content">
         <div class="example-wrapper">
+          <CoolFormField
+              value-type="text"
+              label="关键词"
+              name="keyword"
+              v-model:value="filterData.keyword"
+              placeholder="请输入关键词"
+            /> 
+            <a-input placeholder="请输入关键词" v-model:value="filterData.keyword" />
           <CoolQueryFilter
             :model="filterData"
             :on-search="handleSearch"
             :on-reset="handleReset"
           >
+          <a-input v-model:value="filterData.keyword" />
             <CoolFormField
               value-type="text"
               label="关键词"
@@ -60,8 +69,9 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue'
+import { Input as AInput } from 'ant-design-vue'
 import CoolQueryFilter from '../index.vue'
-import CoolFormField from '../../cool-form-field/index.vue'
+import CoolFormField from '../../cool-form-field/index'
 
 const filterData = reactive({
   keyword: '111',
@@ -73,6 +83,11 @@ const statusOptions = [
   { label: '启用', value: 'active' },
   { label: '禁用', value: 'inactive' }
 ]
+
+const handleChange = (value: any) => {
+  filterData.keyword = '123'
+  console.log(value, 'value')
+}
 
 const handleSearch = (values: any) => {
   // 这里只做演示，实际可发起请求

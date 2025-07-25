@@ -596,7 +596,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { message, Button as AButton, Form as AForm, Tabs as ATabs, TabPane as ATabPane, Space as ASpace, Col as ACol, Row as ARow} from 'ant-design-vue'
-import CoolFormField from '../index.vue'
+import CoolFormField from '../index'
 
 const formRef = ref()
 

@@ -410,7 +410,7 @@ import {
   Space as ASpace
 } from 'ant-design-vue'
 import CoolDrawerForm from '../index.vue'
-import CoolFormField from '../../cool-form-field/index.vue'
+import CoolFormField from '../../cool-form-field/index'
 import CoolField from '../../cool-field/index.vue'
 
 // 控制抽屉显示状态

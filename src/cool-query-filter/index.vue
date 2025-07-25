@@ -24,8 +24,8 @@ import { ref, useSlots, computed } from 'vue';
 import { omit } from 'lodash-es';
 import CoolBaseForm from '../cool-base-form/index.vue';
 import { QueryFilterProps } from './types';
-import QueryFilterContent from './components/QueryFilterContent.vue';
-
+// import QueryFilterContent from './components/QueryFilterContent.vue';
+import QueryFilterContent from './components/index.tsx';
 
 defineOptions({
   name: 'CoolQueryFilter',

@@ -546,7 +546,7 @@ import {
   Row as ARow
 } from 'ant-design-vue'
 import CoolBaseForm from '../index.vue'
-import CoolFormField from '../../cool-form-field/index.vue'
+import CoolFormField from '../../cool-form-field/index'
 
 // 表单引用
 const asyncFormRef = ref()

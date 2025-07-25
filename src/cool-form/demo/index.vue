@@ -455,7 +455,7 @@ import {
   Row as ARow
 } from 'ant-design-vue'
 import CoolForm from '../index.vue'
-import CoolFormField from '../../cool-form-field/index.vue'
+import CoolFormField from '../../cool-form-field/index'
 import CoolField from '../../cool-field/index.vue'
 
 // 表单引用
