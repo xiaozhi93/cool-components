@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { computed, useSlots, h, useAttrs, ref } from 'vue'
 import { Drawer } from 'ant-design-vue'
-import CoolBaseForm from '../cool-base-form/index.vue'
+import CoolBaseForm from '../cool-base-form/index'
 import type { CoolDrawerFormProps } from './types'
 defineOptions({
   name: 'CoolDrawerForm',

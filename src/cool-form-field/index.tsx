@@ -102,40 +102,31 @@ export default defineComponent<CoolFormFieldProps>({
       return () => {
         // 如果是只读模式，直接渲染字段组件, FormItem可二次封装
         if (props.mode === 'read' || modeContext.value.mode === 'read') {
-          return h(ColWrapper, {
-            style: {
-              display: props.hidden ? 'none' : 'block'
-            }
-          }, () => h(
-            FormItem,
-            {
-              ...formItemProps.value,
-              required: false
-            },
-            { 
-              default: () => h(CoolField, {
-                ...fieldComponentProps.value,
-                mode: props.mode || modeContext.value.mode
-              }, slots)
-            }
-          ))
+          return (
+            <ColWrapper>
+              <FormItem {...formItemProps.value} required={false}>
+                <CoolField
+                  {...fieldComponentProps.value}
+                  mode={props.mode || modeContext.value.mode}
+                  v-slots={slots}
+                />
+              </FormItem>
+            </ColWrapper>
+          )
         }
 
         // 渲染带表单项的字段组件
-        return h(ColWrapper, {
-          style: {
-            display: props.hidden ? 'none' : 'block'
-          }
-        }, () => h(
-          FormItem,
-          formItemProps.value,
-          { 
-            default: () => h(CoolField, {
-              ...fieldComponentProps.value,
-              mode: props.mode || modeContext.value.mode
-            }, slots)
-          }
-        ))
+        return (
+          <ColWrapper>
+            <FormItem {...formItemProps.value}>
+              <CoolField
+                {...fieldComponentProps.value}
+                mode={props.mode || modeContext.value.mode}
+                v-slots={slots}
+              />
+            </FormItem>
+          </ColWrapper>
+        )
       }
     }
   })

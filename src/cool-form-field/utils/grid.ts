@@ -65,8 +65,7 @@ interface RowWrapperProps extends CommonProps {
 
 interface ColWrapperProps extends CommonProps {
   wrapper?: any;
-  span?: number;
-  xs?: number;
+  colProps?: ColProps;
 }
 
 export function createGridHelpers(config: ProFormGridConfig & CommonProps = {}): GridComponents {
@@ -77,7 +76,7 @@ export function createGridHelpers(config: ProFormGridConfig & CommonProps = {}):
     const { wrapper: Wrapper } = props || {};
     if (!grid) {
       const content = slots?.default?.();
-      return Wrapper ? h(Wrapper, {}, content) : content;
+      return Wrapper ? h(Wrapper, {}, { default: () => content }) : content;
     }
 
     const finalRowProps = {
@@ -85,14 +84,14 @@ export function createGridHelpers(config: ProFormGridConfig & CommonProps = {}):
       ...rowProps,
       ...props
     };
-    return h(Row, finalRowProps, slots?.default?.());
+    return h(Row, finalRowProps, { default: () => slots?.default?.() });
   };
 
-  const ColWrapper: FunctionalComponent<ColWrapperProps> = (props, { slots }) => {
+  const ColWrapper: FunctionalComponent<ColWrapperProps> = (props, { slots, attrs }) => {
     const { wrapper: Wrapper, ...rest } = props || {};
     // 合并 colProps（全局/父级）和当前 props
     const finalColProps = computed(() => {
-      const originProps = { ...colProps, ...rest };
+      const originProps = { ...colProps, ...rest, ...attrs };
       // xs 优先于 span，避免 span 不生效
       if (
         typeof originProps.span === 'undefined' &&
@@ -105,10 +104,10 @@ export function createGridHelpers(config: ProFormGridConfig & CommonProps = {}):
 
     if (!grid) {
       const content = slots?.default?.();
-      return Wrapper ? h(Wrapper, {}, content) : content;
+      return Wrapper ? h(Wrapper, {}, { default: () => content }) : content;
     }
 
-    return h(Col, finalColProps.value, slots?.default?.());
+    return h(Col, finalColProps.value, { default: () => slots?.default?.() });
   };
 
   return {

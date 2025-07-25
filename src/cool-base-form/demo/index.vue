@@ -20,8 +20,6 @@
           <CoolBaseForm
             :model="basicFormData"
             :rules="basicRules"
-            :on-finish="handleBasicSubmit"
-            :on-reset="handleBasicReset"
             layout="vertical"
             :grid="true"
             :row-props="{ gutter: 16 }"
@@ -545,7 +543,7 @@ import {
   Col as ACol, 
   Row as ARow
 } from 'ant-design-vue'
-import CoolBaseForm from '../index.vue'
+import CoolBaseForm from '../index'
 import CoolFormField from '../../cool-form-field/index'
 
 // 表单引用

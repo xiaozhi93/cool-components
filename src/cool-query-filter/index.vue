@@ -20,12 +20,12 @@
   </CoolBaseForm>
 </template>
 <script setup lang="ts">
-import { ref, useSlots, computed } from 'vue';
+import { useSlots, computed } from 'vue';
 import { omit } from 'lodash-es';
-import CoolBaseForm from '../cool-base-form/index.vue';
+import CoolBaseForm from '../cool-base-form/index';
 import { QueryFilterProps } from './types';
 // import QueryFilterContent from './components/QueryFilterContent.vue';
-import QueryFilterContent from './components/index.tsx';
+import QueryFilterContent from './components/index';
 
 defineOptions({
   name: 'CoolQueryFilter',
