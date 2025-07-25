@@ -15,24 +15,15 @@ export interface ProFormGridConfig {
 }
 
 /**
- * Grid上下文类型
- */
-export interface GridContextType extends ProFormGridConfig {
-  grid: boolean
-  colProps?: ColProps
-  rowProps?: RowProps
-}
-
-/**
  * Grid上下文注入键
  */
-export const GridContextKey: InjectionKey<GridContextType> = Symbol('GridContext')
+export const GridContextKey: InjectionKey<ProFormGridConfig> = Symbol('GridContext')
 
 /**
  * 提供Grid上下文
  */
 export function provideGridContext(config: ProFormGridConfig = {}) {
-  const gridContext: GridContextType = {
+  const gridContext: ProFormGridConfig = {
     grid: !!config.grid,
     colProps: config.colProps,
     rowProps: config.rowProps
@@ -46,7 +37,7 @@ export function provideGridContext(config: ProFormGridConfig = {}) {
 /**
  * 注入Grid上下文
  */
-export function useGridContext(): GridContextType {
+export function useGridContext(): ProFormGridConfig {
   return inject(GridContextKey, {
     grid: false,
     colProps: undefined,
