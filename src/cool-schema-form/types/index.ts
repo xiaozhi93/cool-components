@@ -1,37 +1,29 @@
 export type FormLayoutType = 'CoolForm' | 'CoolDrawerForm'
-import { CoolFieldValueType } from "../../cool-field/types/valueTypes"
+import { CoolFormFieldProps } from "../../cool-form-field/types"
+import { FormItemProps } from 'ant-design-vue'
 
+export type FormExpression = `{{${string}}}`
 
-export interface CoolFormColumnsType {
-  // 字段名称
-  name: string;
-  
-  // 字段标题
-  label?: string;
-  
-  // 字段类型
-  valueType?: CoolFieldValueType;
-  
-  // 字段宽度
-  width?: string | number;
-  
-  // 排序权重
-  order?: number;
-  
+/**
+ * 表单表达式求值结果类型
+ */
+export type FormExpressionResult = any
+
+export interface CoolFormColumnsType extends CoolFormFieldProps {
   // 是否只读
-  readonly?: boolean;
+  readonly?: boolean | FormExpression;
   
   // 初始值
-  initialValue?: any;
-  
-  // 是否在表单中隐藏
-  hideInForm?: boolean;
+  initialValue?: any | FormExpression;
+
+  // 是否显示 （v-if），支持表单表达式
+  visible?: boolean | FormExpression;
   
   // 字段属性配置
-  fieldProps?: any;
+  fieldProps?: Record<string, any> | ((formData: Record<string, any>) => Record<string, any>);
   
   // 表单项属性配置
-  formItemProps?: any;
+  formItemProps?: FormItemProps | ((formData: Record<string, any>) => FormItemProps);
 }
 
 export interface CoolSchemaFormProps {

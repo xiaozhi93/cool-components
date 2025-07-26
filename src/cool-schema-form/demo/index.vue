@@ -260,6 +260,17 @@ const basicColumns: CoolFormColumnsType[] = [
     label: '是否激活',
     valueType: 'switch',
     initialValue: false
+  },
+  {
+    visible: "{{$form.active}}",
+    name: 'activeName',
+    label: '激活名称',
+    valueType: 'text',
+    required: true,
+    initialValue: '',
+    fieldProps: {
+      placeholder: '请输入激活名称'
+    }
   }
 ]
 
@@ -599,7 +610,8 @@ const fieldTypes = ['text', 'digit', 'money', 'date', 'select', 'switch', 'texta
 
 // 事件处理函数
 const getBasicFormValues = () => {
-  Object.assign(basicFormData, basicFormRef.value?.formModel || {})
+  const values = basicFormRef.value?.getFieldsValue()
+  console.log(values)
   message.success('基础表单数据已获取，请查看数据展示区域')
 }
 
@@ -610,12 +622,12 @@ const setBasicFormValues = () => {
     age: 25,
     active: true
   }
-  basicFormRef.value?.setFormValues(values)
+  basicFormRef.value?.setFieldsValue(values)
   message.success('基础表单示例数据已填充')
 }
 
 const clearBasicFormValues = () => {
-  basicFormRef.value?.setFormValues({
+  basicFormRef.value?.setFieldsValue({
     username: '',
     email: '',
     age: null,
@@ -626,7 +638,8 @@ const clearBasicFormValues = () => {
 }
 
 const getFullFormValues = () => {
-  Object.assign(fullFormData, fullFormRef.value?.formModel || {})
+  const values = fullFormRef.value?.getFieldsValue()
+  console.log(values)
   message.success('完整字段表单数据已获取')
 }
 
@@ -644,7 +657,7 @@ const setFullFormValues = () => {
     checkbox: ['check1', 'check3'],
     switch: true
   }
-  fullFormRef.value?.setFormValues(values)
+  fullFormRef.value?.setFieldsValue(values)
   message.success('完整字段示例数据已填充')
 }
 
@@ -659,7 +672,8 @@ const showDrawerForm = () => {
 
 const closeDrawerForm = () => {
   drawerVisible.value = false
-  Object.assign(drawerFormData, drawerFormRef.value?.formModel || {})
+  const values = drawerFormRef.value?.getFieldsValue()
+  console.log(values)
 }
 
 const addDynamicField = () => {
@@ -728,7 +742,8 @@ const reorderFields = () => {
 }
 
 const getDynamicFormValues = () => {
-  Object.assign(dynamicFormData, dynamicFormRef.value?.formModel || {})
+  const values = dynamicFormRef.value?.getFieldsValue()
+  console.log(values)
   message.success('动态表单数据已获取')
 }
 
@@ -767,7 +782,8 @@ const validateComplexForm = () => {
 }
 
 const getComplexFormValues = () => {
-  Object.assign(complexFormData, complexFormRef.value?.formModel || {})
+  const values = complexFormRef.value?.getFieldsValue()
+  console.log(values)
   message.success('复杂表单数据已获取')
 }
 
@@ -786,12 +802,12 @@ const setComplexFormValues = () => {
     isHighTech: true,
     isExport: false
   }
-  complexFormRef.value?.setFormValues(values)
+  complexFormRef.value?.setFieldsValue(values)
   message.success('企业示例数据已填充')
 }
 
 const resetComplexForm = () => {
-  complexFormRef.value?.setFormValues({
+  complexFormRef.value?.setFieldsValue({
     companyName: '',
     companyType: '',
     establishDate: '',

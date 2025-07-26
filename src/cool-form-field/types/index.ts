@@ -7,7 +7,7 @@ export type CoolFormFieldProps = {
     /** 字段标签 */
     label?: string
     /** 字段名称 */
-    name?: string
+    name: string
     /** 是否必填 */
     required?: boolean
     /** 验证规则 */
