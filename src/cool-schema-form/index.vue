@@ -1,7 +1,7 @@
 <template>
   <component :is="FormRenderComponents" v-bind="formProps" :model="formModel">
     <template v-for="item in props.columns" :key="item.name">
-      <CoolFormField :key="item.name" v-if="getFieldProp(item, 'visible', formModel) !== false" :name="item.name" v-bind="getFieldProps(item, formModel)" v-model:value="formModel[item.name]" />
+      <CoolFormField :key="item.name" v-if="getFieldProp(item, 'visible', formModel) !== false" :name="item.name" v-bind="getFieldProps(item, formModel, context)" v-model:value="formModel[item.name]" />
     </template>
     <template v-for="(_, name) in otherSlots" #[name]="slotProps" :key="name">
       <slot :name="name" v-bind="slotProps || {}" />
@@ -42,7 +42,7 @@ const FormRenderComponents = computed(() => {
 watch(() => props.columns, () => {
   if(props.columns?.length > 0) {
     props.columns.forEach(item => {
-      formModel[item.name] = item.initialValue
+      formModel[item.name] = getFieldProp(item, 'initialValue', {}, props.context)
     })
   }
 }, {

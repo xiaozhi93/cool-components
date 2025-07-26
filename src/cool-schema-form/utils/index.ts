@@ -18,23 +18,6 @@ export function toFormExpression(expr: string): FormExpression | string {
   return isFormExpression(expr) ? expr as FormExpression : expr;
 }
 
-/**
- * 表达式求值
- * @param expr 表达式
- * @param data 数据
- * @returns 求值结果
- * @example
- * evalExpr('$form.a.b', { a: { b: 1 } }) // 1
- */
-export function evalExpr(expr: string, data: Record<string, any>): any {
-  try {
-    // 支持 $form.xxx
-    // eslint-disable-next-line no-new-func
-    return new Function('$form', `return (${expr})`)(data);
-  } catch (e) {
-    return undefined;
-  }
-}
 
 /**
  * 表单表达式求值
@@ -44,13 +27,13 @@ export function evalExpr(expr: string, data: Record<string, any>): any {
  * @example
  * evalFormilyExpr('{{$form.a.b}}', { a: { b: 1 } }) // 1
  */
-export function evalFormilyExpr(expr: FormExpression | string, formData: Record<string, any>): FormExpressionResult {
+export function evalFormilyExpr(expr: FormExpression | string, formData: Record<string, any>, context?: Record<string, any>): FormExpressionResult {
   const match = expr.match(/^\{\{(.+)\}\}$/);
   if (!match) return expr;
   const code = match[1];
   try {
     // eslint-disable-next-line no-new-func
-    return new Function('$form', `return (${code})`)(formData);
+    return new Function('$form', '$context', `return (${code})`)(formData, context);
   } catch (e) {
     return undefined;
   }

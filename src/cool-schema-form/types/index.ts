@@ -10,8 +10,6 @@ export type FormExpression = `{{${string}}}`
 export type FormExpressionResult = any
 
 export interface CoolFormColumnsType extends CoolFormFieldProps {
-  // 是否只读
-  readonly?: boolean | FormExpression;
   
   // 初始值
   initialValue?: any | FormExpression;
@@ -31,4 +29,6 @@ export interface CoolSchemaFormProps {
   columns: CoolFormColumnsType[];
   // 表单布局类型
   layoutType?: FormLayoutType;
+  // 上下文数据
+  context?: Record<string, any>;
 }

@@ -20,6 +20,8 @@ export type CoolFormFieldProps = {
     colProps?: ColProps
     /** 是否隐藏 */
     hidden?: boolean
+    /** 是否只读 */
+    readonly?: boolean
     /** 模式 */
     mode?: CoolFormFieldMode
 }

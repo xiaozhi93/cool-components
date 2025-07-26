@@ -17,7 +17,7 @@
       
       <div class="demo-content">
         <div class="example-wrapper">
-          <CoolSchemaForm ref="basicFormRef" :columns="basicColumns" layout-type="CoolForm" />
+          <CoolSchemaForm ref="basicFormRef" :columns="basicColumns" layout-type="CoolForm" :context="{ username: 'windfly' }" />
           <div class="form-actions">
             <a-space>
               <a-button @click="getBasicFormValues" type="primary">获取表单值</a-button>
@@ -218,7 +218,7 @@ const basicColumns: CoolFormColumnsType[] = [
     name: 'username',
     label: '用户名',
     valueType: 'text',
-    initialValue: '',
+    initialValue: '{{$context.username}}',
     fieldProps: {
       placeholder: '请输入用户名'
     },
@@ -464,7 +464,6 @@ const dynamicColumns = ref<CoolFormColumnsType[]>([
     label: '动态字段1',
     valueType: 'text',
     initialValue: '',
-    order: 1,
     fieldProps: {
       placeholder: '这是一个动态字段'
     }
@@ -478,8 +477,6 @@ const complexColumns: CoolFormColumnsType[] = [
     label: '公司名称',
     valueType: 'text',
     initialValue: '',
-    width: '50%',
-    order: 1,
     fieldProps: {
       placeholder: '请输入公司名称'
     },
@@ -492,8 +489,6 @@ const complexColumns: CoolFormColumnsType[] = [
     label: '公司类型',
     valueType: 'select',
     initialValue: '',
-    width: '50%',
-    order: 2,
     fieldProps: {
       placeholder: '请选择公司类型',
       options: [
@@ -509,8 +504,6 @@ const complexColumns: CoolFormColumnsType[] = [
     label: '成立日期',
     valueType: 'date',
     initialValue: '',
-    width: '50%',
-    order: 3,
     fieldProps: {
       placeholder: '请选择成立日期'
     }
@@ -520,8 +513,6 @@ const complexColumns: CoolFormColumnsType[] = [
     label: '注册资本',
     valueType: 'money',
     initialValue: null,
-    width: '50%',
-    order: 4,
     fieldProps: {
       placeholder: '请输入注册资本'
     }
@@ -531,8 +522,6 @@ const complexColumns: CoolFormColumnsType[] = [
     label: '经营范围',
     valueType: 'textarea',
     initialValue: '',
-    width: '100%',
-    order: 5,
     fieldProps: {
       placeholder: '请输入经营范围',
       rows: 3
@@ -543,8 +532,6 @@ const complexColumns: CoolFormColumnsType[] = [
     label: '联系人',
     valueType: 'text',
     initialValue: '',
-    width: '33.33%',
-    order: 6,
     fieldProps: {
       placeholder: '请输入联系人'
     }
@@ -554,8 +541,6 @@ const complexColumns: CoolFormColumnsType[] = [
     label: '联系电话',
     valueType: 'text',
     initialValue: '',
-    width: '33.33%',
-    order: 7,
     fieldProps: {
       placeholder: '请输入联系电话'
     }
@@ -565,8 +550,6 @@ const complexColumns: CoolFormColumnsType[] = [
     label: '联系邮箱',
     valueType: 'text',
     initialValue: '',
-    width: '33.33%',
-    order: 8,
     fieldProps: {
       placeholder: '请输入联系邮箱'
     }
@@ -576,32 +559,24 @@ const complexColumns: CoolFormColumnsType[] = [
     label: '是否上市',
     valueType: 'switch',
     initialValue: false,
-    width: '25%',
-    order: 9
   },
   {
     name: 'hasSubsidiary',
     label: '有子公司',
     valueType: 'switch',
     initialValue: false,
-    width: '25%',
-    order: 10
   },
   {
     name: 'isHighTech',
     label: '高新技术企业',
     valueType: 'switch',
     initialValue: false,
-    width: '25%',
-    order: 11
   },
   {
     name: 'isExport',
     label: '进出口企业',
     valueType: 'switch',
     initialValue: false,
-    width: '25%',
-    order: 12
   }
 ]
 
@@ -685,7 +660,6 @@ const addDynamicField = () => {
     label: `动态字段${fieldIndex}`,
     valueType: randomType as any,
     initialValue: getInitialValueByType(randomType),
-    order: fieldIndex,
     fieldProps: {
       placeholder: `这是动态添加的${randomType}字段`
     }
@@ -736,7 +710,6 @@ const toggleFieldType = () => {
 const reorderFields = () => {
   dynamicColumns.value.reverse()
   dynamicColumns.value.forEach((field, index) => {
-    field.order = index + 1
   })
   message.success('字段顺序已重新排列')
 }
@@ -761,14 +734,12 @@ const importSchema = () => {
       label: '导入字段1',
       valueType: 'text',
       initialValue: '导入的数据',
-      order: 1
     },
     {
       name: 'importedField2',
       label: '导入字段2',
       valueType: 'digit',
       initialValue: 100,
-      order: 2
     }
   ]
   
