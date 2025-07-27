@@ -30,13 +30,17 @@ import CoolBaseForm from '../cool-base-form/index';
 import { QueryFilterProps } from './types';
 // import QueryFilterContent from './components/QueryFilterContent.vue';
 import QueryFilterContent from './components/index';
+import { spanSize } from './core';
 
 defineOptions({
   name: 'CoolQueryFilter',
   inheritAttrs: false,
 });
 
-defineProps<QueryFilterProps>();
+withDefaults(defineProps<QueryFilterProps>(), {
+  defaultCollapsed: false,
+  defaultColsNumber: 24 / spanSize.span * 2,
+});
 const slots = useSlots();
 
 const otherSlots = computed(() => {

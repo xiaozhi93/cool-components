@@ -48,12 +48,92 @@
       </div>
     </section>
 
+    <!-- 高级用法示例 -->
+    <section class="demo-section">
+      <div class="section-header">
+        <h2>🎯 高级用法</h2>
+        <span class="section-badge">折叠筛选项</span>
+      </div>
+      <div class="demo-content">
+        <div class="example-wrapper">
+          <CoolQueryFilter
+            :model="advancedFilterData"
+            :on-search="handleAdvancedSearch"
+            :on-reset="handleAdvancedReset"
+          >
+            <CoolFormField
+              value-type="text"
+              label="商品名称"
+              name="productName"
+              v-model:value="advancedFilterData.productName"
+              placeholder="请输入商品名称"
+            />
+            <CoolFormField
+              value-type="select"
+              label="商品分类"
+              name="category"
+              v-model:value="advancedFilterData.category"
+              placeholder="请选择商品分类"
+              :options="categoryOptions"
+            />
+            <CoolFormField
+              value-type="digit"
+              label="最低价格"
+              name="minPrice"
+              v-model:value="advancedFilterData.minPrice"
+              placeholder="请输入最低价格"
+            />
+            <CoolFormField
+              value-type="digit"
+              label="最高价格"
+              name="maxPrice"
+              v-model:value="advancedFilterData.maxPrice"
+              placeholder="请输入最高价格"
+            />
+            <CoolFormField
+              value-type="dateRange"
+              label="上架时间"
+              name="publishDate"
+              v-model:value="advancedFilterData.publishDate"
+            />
+            <CoolFormField
+              value-type="select"
+              label="库存状态"
+              name="stockStatus"
+              v-model:value="advancedFilterData.stockStatus"
+              :options="stockStatusOptions"
+            />
+            <CoolFormField
+              value-type="select"
+              label="是否推荐"
+              name="isRecommended"
+              v-model:value="advancedFilterData.isRecommended"
+              :options="isRecommendedOptions"
+            />
+            <CoolFormField
+              value-type="timeRange"
+              label="营业时间"
+              name="businessHours"
+              v-model:value="advancedFilterData.businessHours"
+            />
+          </CoolQueryFilter>
+        </div>
+      </div>
+    </section>
+
     <!-- 数据展示 -->
     <div class="data-display">
       <h3 style="color: #ecf0f1; margin-bottom: 16px; font-size: 18px;">
         📊 当前筛选条件
       </h3>
-      <pre>{{ JSON.stringify(filterData, null, 2) }}</pre>
+      <div style="margin-bottom: 24px;">
+        <h4 style="color: #3498db; margin-bottom: 12px;">基础筛选：</h4>
+        <pre>{{ JSON.stringify(filterData, null, 2) }}</pre>
+      </div>
+      <div>
+        <h4 style="color: #e74c3c; margin-bottom: 12px;">高级筛选：</h4>
+        <pre>{{ JSON.stringify(advancedFilterData, null, 2) }}</pre>
+      </div>
     </div>
   </div>
 </template>
@@ -70,9 +150,39 @@ const filterData = reactive({
   date: ''
 })
 
+const advancedFilterData = reactive({
+  productName: '',
+  category: '',
+  minPrice: '',
+  maxPrice: '',
+  publishDate: [],
+  stockStatus: '',
+  isRecommended: false,
+  businessHours: []
+})
+
 const statusOptions = [
   { label: '启用', value: 'active' },
   { label: '禁用', value: 'inactive' }
+]
+
+const categoryOptions = [
+  { label: '电子产品', value: 'electronics' },
+  { label: '服装鞋帽', value: 'clothing' },
+  { label: '家居用品', value: 'home' },
+  { label: '图书音像', value: 'books' },
+  { label: '运动户外', value: 'sports' }
+]
+
+const stockStatusOptions = [
+  { label: '有库存', value: 'in_stock' },
+  { label: '库存不足', value: 'low_stock' },
+  { label: '缺货', value: 'out_of_stock' }
+]
+
+const isRecommendedOptions = [
+  { label: '是', value: 'yes' },
+  { label: '否', value: 'no' }
 ]
 
 const handleChange = (value: any) => {
@@ -82,11 +192,20 @@ const handleChange = (value: any) => {
 
 const handleSearch = (values: any) => {
   // 这里只做演示，实际可发起请求
-  console.log('筛选条件：', values)
+  console.log('基础筛选条件：', values)
 }
 
 const handleReset = () => {
-  console.log('筛选条件已重置')
+  console.log('基础筛选条件已重置')
+}
+
+const handleAdvancedSearch = (values: any) => {
+  // 这里只做演示，实际可发起请求
+  console.log('高级筛选条件：', values)
+}
+
+const handleAdvancedReset = () => {
+  console.log('高级筛选条件已重置')
 }
 </script>
 
