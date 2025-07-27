@@ -1,4 +1,4 @@
-import { defineComponent, ref, computed, type VNode } from 'vue'
+import { defineComponent, ref, computed, type VNode, cloneVNode } from 'vue'
 import { Col as ACol, Row as ARow, FormItem as AFormItem } from 'ant-design-vue'
 import { flatFieldItems } from '../core'
 import Action from './actions.vue'
@@ -22,9 +22,6 @@ export default defineComponent({
     const setCollapsed = (value: boolean) => {
       collapsed.value = value
     }
-    const offset = computed(() => {
-      return collapsed.value ? 0 : 8
-    })
     return () => {
       const contentVnodes = slots.default?.() ?? []
       const flatFieldItemsVnodes = flatFieldItems(contentVnodes as VNode[])
@@ -37,17 +34,22 @@ export default defineComponent({
       } else {
         offset = 24 - spanSize.span // 最后
       }
+      // 隐藏， 折叠并且当前所在的位置超过默认展示的数量， 则隐藏
+      const newFlatFieldItemsVnodes = flatFieldItemsVnodes.map((vnode: VNode, index: number) => {
+        if (collapsed.value && index >= props.defaultColsNumber) {
+          return cloneVNode(vnode, { hidden: true })
+        }
+        return <ACol span={spanSize.span} key={index}>
+          {vnode}
+        </ACol>
+      })
       return (
         <ARow gutter={16}>
-          {flatFieldItemsVnodes.map((vnode: VNode, index: number) => (
-            <ACol span={spanSize.span} key={index}>
-              {vnode}
-            </ACol>
-          ))}
+          {newFlatFieldItemsVnodes}
           <ACol span={spanSize.span} offset={offset}>
             <AFormItem label=" " colon={false}>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Action collapsed={collapsed.value} onUpdate:collapsed={setCollapsed} needCollapse={needCollapse.value}>
+              <Action collapsed={collapsed.value} onUpdate:collapsed={setCollapsed} needCollapse={needCollapse}>
                 {slots.actions?.()}
               </Action>
               </div>

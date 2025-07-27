@@ -2,7 +2,7 @@
   <a-space>
     <slot />
     <a v-if="needCollapse" @click="handleClick">
-      <template v-if="!collapsed">
+      <template v-if="collapsed">
         <DownOutlined />
         {{ '展开' }}
       </template>

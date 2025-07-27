@@ -105,11 +105,14 @@ export default defineComponent<CoolFormFieldProps>({
         } as CoolFieldProps
       })
       return () => {
+        // 计算样式，如果隐藏则设置 display: none
+        const style = props.hidden ? { display: 'none' } : {}
+
         // 如果是只读模式，直接渲染字段组件, FormItem可二次封装
         if (props.mode === 'read' || modeContext.value.mode === 'read') {
           return (
             <ColWrapper>
-              <FormItem {...formItemProps.value} required={false}>
+              <FormItem {...formItemProps.value} required={false} style={style}>
                 <CoolField
                   {...fieldComponentProps.value}
                   mode={props.mode || modeContext.value.mode}
@@ -123,7 +126,7 @@ export default defineComponent<CoolFormFieldProps>({
         // 渲染带表单项的字段组件
         return (
           <ColWrapper>
-            <FormItem {...formItemProps.value}>
+            <FormItem {...formItemProps.value} style={style}>
               <CoolField
                 {...fieldComponentProps.value}
                 mode={props.mode || modeContext.value.mode}
