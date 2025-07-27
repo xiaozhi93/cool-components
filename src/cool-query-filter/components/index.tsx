@@ -1,6 +1,7 @@
 import { defineComponent, type VNode } from 'vue'
-import { Col as ACol, Row as ARow } from 'ant-design-vue'
+import { Col as ACol, Row as ARow, Form } from 'ant-design-vue'
 import { flatFieldItems } from '../core'
+import Action from './actions.vue'
 
 export default defineComponent({
   name: 'QueryFilter',
@@ -16,6 +17,13 @@ export default defineComponent({
               {vnode}
             </ACol>
           ))}
+          <ACol span={8}>
+            <Form.Item label=" " colon={false} noStyle>
+              <Action>
+                {slots.actions?.()}
+              </Action>
+            </Form.Item>
+          </ACol>
         </ARow>
       )
     }

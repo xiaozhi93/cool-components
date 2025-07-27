@@ -1,7 +1,7 @@
 <template>
   <CoolBaseForm layout="vertical" v-bind="$attrs">
-    <slot />
-    <template #submitter="{ Component }">
+    <template #default="{ Component }">
+      <slot />
       <Component :is="Component" />
     </template>
   </CoolBaseForm>

@@ -10,9 +10,12 @@
     }"
     v-bind="$attrs"
   >
-    <template #default>
+    <template #default="{ Component }">
       <QueryFilterContent v-bind="$props">
         <slot />
+        <template #actions>
+          <Component :is="Component" />
+        </template>
       </QueryFilterContent>
     </template>
     <template v-for="(_, name) in otherSlots" #[name]="slotProps" :key="name">

@@ -96,31 +96,22 @@ export default defineComponent<CoolBaseFormProps>({
     });
     // 渲染
     return () => {
-      let submitterDom = null;
-      // FIXME:需要将状态和提交封装到上下文中
-      if (props.submitter && slots.submitter) {
-        submitterDom = slots.submitter({ Component: () => h(Submitter, {
-          ...props.submitterProps,
-          submitButtonProps: {
-            ...props.submitterProps?.submitButtonProps,
-            loading: submitting.value,
-          },
-          onSubmit: handleSubmit,
-          onReset: handleReset,
-        }) })
-      }
+      const submitterDom = () => h(Submitter, {
+        ...props.submitterProps,
+        submitButtonProps: {
+          ...props.submitterProps?.submitButtonProps,
+          loading: submitting.value,
+        },
+        onSubmit: handleSubmit,
+        onReset: handleReset,
+      })
       return (
         <AForm ref={formRef} auto-complete="off" {...formProps.value}>
           <RowWrapper>
-            {slots.default?.()}
+            {slots.default?.({
+              Component: submitterDom,
+            })}
           </RowWrapper>
-          {
-            submitterDom && (
-              <div class="cool-base-form__submitter">
-                {submitterDom}
-              </div>
-            )
-          }
         </AForm>
       )
     };

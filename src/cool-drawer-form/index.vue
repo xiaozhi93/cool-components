@@ -1,12 +1,10 @@
 <template>
   <Drawer v-model:open="open" v-bind="drawerProps">
     <CoolBaseForm  v-bind="formProps" :on-finish="handleFinish">
-      <template #default>
+      <template #default="{ Component }">
         <slot />
-      </template>
-      <template #submitter="{ Component }">
-        <!-- 先确保footerRef存在 -->
-        <Teleport v-if="footerRef" :to="footerRef" defer>
+         <!-- 先确保footerRef存在 -->
+         <Teleport v-if="footerRef" :to="footerRef" defer>
           <component :is="Component" />
         </Teleport>
       </template>

@@ -104,8 +104,6 @@ export default defineComponent<CoolFormFieldProps>({
           ...attrs
         } as CoolFieldProps
       })
-      console.log(formFieldContext.value, 'formFieldContext')
-      console.log(formItemProps.value, 'formItemProps')
       return () => {
         // 如果是只读模式，直接渲染字段组件, FormItem可二次封装
         if (props.mode === 'read' || modeContext.value.mode === 'read') {
