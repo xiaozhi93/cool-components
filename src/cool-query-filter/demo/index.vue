@@ -16,20 +16,11 @@
       </div>
       <div class="demo-content">
         <div class="example-wrapper">
-          <CoolFormField
-              value-type="text"
-              label="关键词"
-              name="keyword"
-              v-model:value="filterData.keyword"
-              placeholder="请输入关键词"
-            /> 
-            <a-input placeholder="请输入关键词" v-model:value="filterData.keyword" />
           <CoolQueryFilter
             :model="filterData"
             :on-search="handleSearch"
             :on-reset="handleReset"
           >
-          <a-input v-model:value="filterData.keyword" />
             <CoolFormField
               value-type="text"
               label="关键词"
@@ -121,7 +112,7 @@ const handleReset = () => {
       font-size: 18px;
       line-height: 1.6;
       opacity: 0.95;
-      max-width: 700px;
+      max-width: 1200px;
       margin: 0 auto;
     }
   }
@@ -129,7 +120,7 @@ const handleReset = () => {
   .demo-section {
     background: white;
     margin: 40px auto 0 auto;
-    max-width: 700px;
+    max-width: 1200px;
     border-radius: 16px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
     overflow: hidden;
@@ -173,7 +164,7 @@ const handleReset = () => {
     color: #ecf0f1;
     font-size: 14px;
     line-height: 1.6;
-    max-width: 700px;
+    max-width: 1200px;
     margin: 40px auto;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
     pre {

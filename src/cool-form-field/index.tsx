@@ -1,7 +1,6 @@
 import { 
   defineComponent, 
   computed, 
-  h, 
   type PropType
 } from 'vue'
 import { FormItem } from 'ant-design-vue'
@@ -11,6 +10,7 @@ import { useGridHelpers } from './utils/grid'
 import { useEditOrReadContext } from './utils/editOrRead'
 import type { CoolFieldValueTypeConfig } from '../cool-field/types/valueTypes'
 import type { CoolFormFieldProps } from './types'
+import { useFormFieldContext } from './utils/field'
 
 export default defineComponent<CoolFormFieldProps>({
     name: 'CoolFormField',
@@ -70,9 +70,13 @@ export default defineComponent<CoolFormFieldProps>({
       // 获取编辑或只读上下文
       const modeContext = useEditOrReadContext()
 
+      // 获取表单项上下文
+      const formFieldContext = useFormFieldContext()
+
       // 计算表单项属性
       const formItemProps = computed(() => {
         const baseProps = {
+          ...formFieldContext.value.formItemProps,
           label: props.label,
           name: props.name,
           required: props.required,
@@ -95,10 +99,13 @@ export default defineComponent<CoolFormFieldProps>({
         return {
           valueType: props.valueType,
           mode: props.mode,
+          ...formFieldContext.value.fieldProps,
           ...props.fieldProps,
           ...attrs
         } as CoolFieldProps
       })
+      console.log(formFieldContext.value, 'formFieldContext')
+      console.log(formItemProps.value, 'formItemProps')
       return () => {
         // 如果是只读模式，直接渲染字段组件, FormItem可二次封装
         if (props.mode === 'read' || modeContext.value.mode === 'read') {

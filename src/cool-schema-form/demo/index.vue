@@ -17,7 +17,7 @@
       
       <div class="demo-content">
         <div class="example-wrapper">
-          <CoolSchemaForm ref="basicFormRef" :columns="basicColumns" layout-type="CoolForm" :context="{ username: 'windfly' }" />
+          <CoolSchemaForm ref="basicFormRef" :on-finish="onFinish" :on-reset="onReset" :columns="basicColumns" layout-type="CoolForm" :context="{ username: 'windfly' }" />
           <div class="form-actions">
             <a-space>
               <a-button @click="getBasicFormValues" type="primary">获取表单值</a-button>
@@ -38,7 +38,7 @@
       
       <div class="demo-content">
         <div class="example-wrapper">
-          <CoolSchemaForm ref="fullFormRef" :columns="fullColumns" layout-type="CoolForm" :readonly="isReadonly" />
+          <CoolSchemaForm ref="fullFormRef"  :columns="fullColumns" layout-type="CoolForm" :readonly="isReadonly" />
           <div class="form-actions">
             <a-space>
               <a-button @click="getFullFormValues" type="primary">获取表单值</a-button>
@@ -273,6 +273,14 @@ const basicColumns: CoolFormColumnsType[] = [
     }
   }
 ]
+
+const onFinish = (values: any) => {
+  console.log('onFinish', values)
+}
+
+const onReset = () => {
+  console.log('onReset')
+}
 
 // 完整字段类型配置
 const fullColumns = computed((): CoolFormColumnsType[] => [

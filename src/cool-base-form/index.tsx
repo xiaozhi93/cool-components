@@ -5,6 +5,7 @@ import type { CoolBaseFormProps } from './types';
 import Submitter from './components/submitter.vue';
 import { useGridHelpers, provideGridContext } from '../cool-form-field/utils/grid';
 import { provideEditOrReadContext, type ProFormEditOrReadConfig } from '../cool-form-field/utils/editOrRead';
+import { provideFormFieldContext, type ProFormFieldContext } from '../cool-form-field/utils/field';
 
 export default defineComponent<CoolBaseFormProps>({
   name: 'CoolBaseForm',
@@ -14,6 +15,8 @@ export default defineComponent<CoolBaseFormProps>({
     rowProps: { type: Object as PropType<CoolBaseFormProps['rowProps']>, default: () => ({ gutter: 16 }) },
     colProps: { type: Object as PropType<CoolBaseFormProps['colProps']>, default: () => ({ span: 8 }) },
     readonly: { type: Boolean, default: false },
+    formItemProps: { type: Object as PropType<CoolBaseFormProps['formItemProps']>, default: () => ({}) },
+    fieldProps: { type: Object as PropType<CoolBaseFormProps['fieldProps']>, default: () => ({}) },
     submitter: { type: Boolean, default: true },
     submitterProps: { type: Object as PropType<CoolBaseFormProps['submitterProps']>, default: () => ({
       submitText: '提交',
@@ -49,6 +52,13 @@ export default defineComponent<CoolBaseFormProps>({
       mode: props.readonly ? 'read' : 'edit',
     }));
     provideEditOrReadContext(editOrReadConfig);
+    // 表单项上下文
+    const formFieldContext = computed<ProFormFieldContext>(() => ({
+      formComponentType: props.formComponentType,
+      formItemProps: props.formItemProps,
+      fieldProps: props.fieldProps,
+    }));
+    provideFormFieldContext(formFieldContext);
     // 提交按钮
     const handleSubmit = async () => {
       try {

@@ -26,6 +26,11 @@ export interface CoolBaseFormProps {
   
   /** 是否只读 */
   readonly?: boolean;
+
+  /** 表单项属性 */
+  formItemProps?: Record<string, any>;
+  /** 字段属性 */
+  fieldProps?: Record<string, any>;
 } 
 
 export type { SubmitterProps }

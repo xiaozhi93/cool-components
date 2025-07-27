@@ -2,6 +2,7 @@
   <CoolBaseForm
     layout="vertical"
     :is-key-press-submit="true"
+    :form-component-type="'CoolQueryFilter'"
     :field-props="{
       style: {
         width: '100%',
