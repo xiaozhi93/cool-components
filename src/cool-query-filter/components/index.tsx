@@ -10,11 +10,10 @@ export default defineComponent({
   props: {
     defaultCollapsed: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     defaultColsNumber: {
-      type: Number,
-      default: 24 / spanSize.span * 2, // 2行的数量， 默认一个项占 一个spanSize
+      type: Number
     },
   },
   setup(props, { slots }) {
@@ -22,21 +21,28 @@ export default defineComponent({
     const setCollapsed = (value: boolean) => {
       collapsed.value = value
     }
+    const showLength = computed(() => {
+      return props.defaultColsNumber  || ( 24 / spanSize.span * 2) // 2行的数量， 默认一个项占 一个spanSize
+    })
     return () => {
       const contentVnodes = slots.default?.() ?? []
       const flatFieldItemsVnodes = flatFieldItems(contentVnodes as VNode[])
       // flatFieldItemsVnodes 计算是否需要隐藏，隐藏添加一个hidden属性直接渲染，不隐藏添加一个show属性，默认true使用ACol组件包裹
-      const needCollapse = flatFieldItemsVnodes.length >= props.defaultColsNumber
+      const needCollapse = flatFieldItemsVnodes.length >= showLength.value
       let offset = 0
       const totalSize = flatFieldItemsVnodes.length * spanSize.span
-      if (totalSize % 24 !== 0) { // 0, 8, 16
-        offset = 24 - totalSize % 24 - spanSize.span
+      if (collapsed.value) {
+        offset = 0
       } else {
-        offset = 24 - spanSize.span // 最后
+        if (totalSize % 24 !== 0) { // 0, 8, 16
+          offset = 24 - totalSize % 24 - spanSize.span
+        } else {
+          offset = 24 - spanSize.span // 最后
+        }
       }
       // 隐藏， 折叠并且当前所在的位置超过默认展示的数量， 则隐藏
       const newFlatFieldItemsVnodes = flatFieldItemsVnodes.map((vnode: VNode, index: number) => {
-        if (collapsed.value && index >= props.defaultColsNumber) {
+        if (collapsed.value && index >= showLength.value - 1) {
           return cloneVNode(vnode, { hidden: true })
         }
         return <ACol span={spanSize.span} key={index}>

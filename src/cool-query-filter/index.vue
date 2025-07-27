@@ -28,9 +28,7 @@ import { useSlots, computed } from 'vue';
 import { omit } from 'lodash-es';
 import CoolBaseForm from '../cool-base-form/index';
 import { QueryFilterProps } from './types';
-// import QueryFilterContent from './components/QueryFilterContent.vue';
 import QueryFilterContent from './components/index';
-import { spanSize } from './core';
 
 defineOptions({
   name: 'CoolQueryFilter',
@@ -38,8 +36,8 @@ defineOptions({
 });
 
 withDefaults(defineProps<QueryFilterProps>(), {
-  defaultCollapsed: false,
-  defaultColsNumber: 24 / spanSize.span * 2,
+  defaultCollapsed: true,
+  defaultColsNumber: undefined,
 });
 const slots = useSlots();
 
