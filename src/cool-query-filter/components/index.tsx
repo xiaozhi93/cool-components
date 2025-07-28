@@ -31,14 +31,15 @@ export default defineComponent({
       const needCollapse = flatFieldItemsVnodes.length >= showLength.value
       let offset = 0
       const totalSize = flatFieldItemsVnodes.length * spanSize.span
-      if (collapsed.value) {
+      if (collapsed.value && needCollapse) {
         offset = 0
       } else {
-        if (totalSize % 24 !== 0) { // 0, 8, 16
-          offset = 24 - totalSize % 24 - spanSize.span
-        } else {
-          offset = 24 - spanSize.span // 最后
-        }
+        // if (totalSize % 24 !== 0) { // 0, 8, 16
+        //   offset = 24 - (totalSize % 24 + spanSize.span)
+        // } else {
+        //   offset = 24 - spanSize.span // 最后
+        // }
+        offset = 24 - (totalSize % 24 + spanSize.span)
       }
       // 隐藏， 折叠并且当前所在的位置超过默认展示的数量， 则隐藏
       const newFlatFieldItemsVnodes = flatFieldItemsVnodes.map((vnode: VNode, index: number) => {
