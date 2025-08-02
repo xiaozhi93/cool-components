@@ -1,8 +1,20 @@
 <template>
   <component :is="FormRenderComponents" v-bind="formProps" :model="formModel">
     <template v-for="item in props.columns" :key="item.name">
-      <component :is="item.component" v-if="item.valueType === 'custom'" v-bind="getFieldProps(item, formModel, context)" v-model:value="formModel[item.name]" />
-      <CoolFormField v-else :key="item.name" v-if="getFieldProp(item, 'visible', formModel) !== false" :name="item.name" v-bind="getFieldProps(item, formModel, context)" v-model:value="formModel[item.name]" />
+      <component 
+        :is="getComponent(item.component)" 
+        v-if="item.valueType === 'custom' && getFieldProp(item, 'visible', formModel) !== false" 
+        :name="item.name"
+        v-bind="getFieldProps(item, formModel, context)" 
+        v-model:value="formModel[item.name]" 
+      />
+      <CoolFormField 
+        v-else 
+        v-if="getFieldProp(item, 'visible', formModel) !== false" 
+        :name="item.name" 
+        v-bind="getFieldProps(item, formModel, context)" 
+        v-model:value="formModel[item.name]" 
+      />
     </template>
     <template v-for="(_, name) in otherSlots" #[name]="slotProps" :key="name">
       <slot :name="name" v-bind="slotProps || {}" />
@@ -17,6 +29,7 @@ import { SchemaFormLayout } from "./core"
 import { omit } from "lodash-es"
 import CoolFormField from "../cool-form-field/index"
 import { getFieldProp, getFieldProps } from "./core"
+import type { Component } from "vue"
 defineOptions({
   name: "CoolSchemaForm",
   inheritAttrs: false
@@ -61,6 +74,24 @@ const setFieldsValue = (values: any) => {
 const otherSlots = computed(() => {
   return omit(slots, ['default']) || {}
 })
+
+// 获取组件函数，支持字符串和组件对象
+const getComponent = (component: Component | string | undefined): Component | string => {
+  if (!component) return ''
+  
+  // 如果是字符串，从注册的组件中查找
+  if (typeof component === 'string') {
+    // 优先从 props.components 中查找
+    if (props.components && props.components[component]) {
+      return props.components[component]
+    }
+    // 如果没找到，返回原字符串，Vue 会自动从全局注册的组件中查找
+    return component
+  }
+  
+  // 如果是组件对象，直接返回
+  return component
+}
 
 defineExpose({
   setFieldsValue,

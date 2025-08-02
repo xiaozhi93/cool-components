@@ -17,7 +17,7 @@
       
       <div class="demo-content">
         <div class="example-wrapper">
-          <CoolSchemaForm ref="basicFormRef" :on-finish="onFinish" :on-reset="onReset" :columns="basicColumns" layout-type="CoolForm" :context="{ username: 'windfly' }" />
+          <CoolSchemaForm ref="basicFormRef" :on-finish="onFinish" :on-reset="onReset" :columns="basicColumns" layout-type="CoolForm" :context="{ username: 'windfly' }" :components="{ customInput: CustomFormInput }" />
           <div class="form-actions">
             <a-space>
               <a-button @click="getBasicFormValues" type="primary">获取表单值</a-button>
@@ -192,6 +192,10 @@ import {
 } from 'ant-design-vue'
 import CoolSchemaForm from '../index.vue'
 import type { CoolFormColumnsType } from '../types'
+import { createFormField } from '../../cool-form-field/core/createFormField'
+import { Input as AInput } from 'ant-design-vue'
+const CustomFormInput = createFormField(AInput)
+
 
 // 表单引用
 const basicFormRef = ref()
@@ -270,6 +274,30 @@ const basicColumns: CoolFormColumnsType[] = [
     initialValue: '',
     fieldProps: {
       placeholder: '请输入激活名称'
+    }
+  },
+  {
+    name: 'customInput',
+    label: '自定义输入',
+    valueType: 'custom',
+    component: 'customInput',
+    initialValue: '',
+    required: true,
+    formItemProps: {
+      rules: [{ required: true, message: '请输入自定义输入' }]
+    },
+    fieldProps: {
+      placeholder: '请输入自定义输入'
+    }
+  },
+  {
+    name: 'customInput2',
+    label: '自定义输入2',
+    valueType: 'custom',
+    component: CustomFormInput,
+    initialValue: '{{$context.username}}',
+    fieldProps: {
+      placeholder: '请输入自定义输入2'
     }
   }
 ]
