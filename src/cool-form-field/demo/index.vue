@@ -428,6 +428,109 @@
       </div>
     </section>
 
+    <!-- 自定义表单字段示例 -->
+    <section class="demo-section">
+      <div class="section-header">
+        <h2>🔧 自定义表单字段示例</h2>
+        <span class="section-badge">createFormField</span>
+      </div>
+      
+      <div class="demo-content">
+        <div class="custom-field-examples">
+          <div class="custom-field-group">
+            <h3>📝 使用 createFormField 创建的表单字段</h3>
+            <p class="field-desc">
+              通过 createFormField 函数可以将任意组件包装成表单字段，自动集成 FormItem 验证功能。
+            </p>
+            
+            <a-form 
+              :model="customFieldData" 
+              :label-col="{ span: 6 }" 
+              :wrapper-col="{ span: 18 }"
+              @finish="handleCustomFieldSubmit"
+            >
+              <CustomFormInput
+                label="自定义输入框"
+                name="customInput"
+                v-model:value="customFieldData.customInput"
+                placeholder="这是一个通过 createFormField 包装的输入框"
+                :rules="[
+                  { required: true, message: '请输入内容' },
+                  { min: 3, max: 20, message: '长度必须在3-20个字符之间' }
+                ]"
+              />
+
+              <CustomFormInput
+                label="邮箱输入"
+                name="emailInput"
+                v-model:value="customFieldData.emailInput"
+                placeholder="请输入邮箱地址"
+                :rules="[
+                  { required: true, message: '请输入邮箱' },
+                  { type: 'email', message: '邮箱格式不正确' }
+                ]"
+              />
+
+              <CustomFormInput
+                label="数字输入"
+                name="numberInput"
+                v-model:value="customFieldData.numberInput"
+                placeholder="请输入数字"
+                type="number"
+                :rules="[
+                  { type: 'number', min: 1, max: 100, message: '数值必须在1-100之间' }
+                ]"
+              />
+
+              <CustomFormInput
+                label="密码输入"
+                name="passwordInput"
+                v-model:value="customFieldData.passwordInput"
+                placeholder="请输入密码"
+                type="password"
+                :rules="[
+                  { required: true, message: '请输入密码' },
+                  { min: 6, message: '密码长度至少6位' }
+                ]"
+              />
+
+              <div class="form-actions">
+                <a-space>
+                  <a-button type="primary" html-type="submit">
+                    提交自定义表单
+                  </a-button>
+                  <a-button @click="resetCustomFieldForm">
+                    重置表单
+                  </a-button>
+                </a-space>
+              </div>
+            </a-form>
+          </div>
+
+          <div class="custom-field-group">
+            <h3>💡 使用说明</h3>
+            <div class="usage-info">
+              <h4>createFormField 的优势：</h4>
+              <ul>
+                <li>✅ 自动集成 FormItem 验证功能</li>
+                <li>✅ 支持所有 Ant Design Vue 表单验证规则</li>
+                <li>✅ 自动处理表单布局和样式</li>
+                <li>✅ 支持 Grid 布局系统</li>
+                <li>✅ 可复用任意组件作为表单字段</li>
+              </ul>
+              
+              <h4>使用步骤：</h4>
+              <ol>
+                <li>导入需要包装的组件：<code>import { Input } from 'ant-design-vue'</code></li>
+                <li>使用 createFormField 包装：<code>const CustomFormInput = createFormField(Input)</code></li>
+                <li>在表单中使用：<code>&lt;CustomFormInput name="field" label="标签" :rules="[...]" /&gt;</code></li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- 字段类型展示 -->
     <section class="demo-section">
       <div class="section-header">
@@ -584,6 +687,9 @@
           <a-tab-pane key="validation" tab="验证表单数据">
             <pre>{{ JSON.stringify(validationFormData, null, 2) }}</pre>
           </a-tab-pane>
+          <a-tab-pane key="customField" tab="自定义表单字段数据">
+            <pre>{{ JSON.stringify(customFieldData, null, 2) }}</pre>
+          </a-tab-pane>
           <a-tab-pane key="fieldType" tab="字段类型数据">
             <pre>{{ JSON.stringify(fieldTypeData, null, 2) }}</pre>
           </a-tab-pane>
@@ -595,8 +701,11 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { message, Button as AButton, Form as AForm, Tabs as ATabs, TabPane as ATabPane, Space as ASpace, Col as ACol, Row as ARow} from 'ant-design-vue'
+import { Input as AInput, message, Button as AButton, Form as AForm, Tabs as ATabs, TabPane as ATabPane, Space as ASpace, Col as ACol, Row as ARow} from 'ant-design-vue'
 import CoolFormField from '../index'
+import { createFormField } from '../core/createFormField'
+
+const CustomFormInput = createFormField(AInput)
 
 const formRef = ref()
 
@@ -656,6 +765,14 @@ const fieldTypeData = reactive({
   date: '',
   time: '',
   dateRange: []
+})
+
+// 自定义表单字段数据
+const customFieldData = reactive({
+  customInput: '',
+  emailInput: '',
+  numberInput: null,
+  passwordInput: ''
 })
 
 // 当前激活的数据标签
@@ -801,6 +918,23 @@ const validateUsernameAsync = (rule: any, value: string) => {
     }, 1000)
   })
 }
+
+// 自定义表单字段事件处理
+const handleCustomFieldSubmit = (values: any) => {
+  console.log('Custom field form submitted:', values)
+  message.success('自定义表单字段提交成功！')
+}
+
+const resetCustomFieldForm = () => {
+  // 重置自定义表单字段数据
+  Object.assign(customFieldData, {
+    customInput: '',
+    emailInput: '',
+    numberInput: null,
+    passwordInput: ''
+  })
+  message.info('自定义表单字段已重置')
+}
 </script>
 
 <style lang="scss" scoped>
@@ -938,6 +1072,64 @@ const validateUsernameAsync = (rule: any, value: string) => {
     }
   }
   
+  // 自定义表单字段示例
+  .custom-field-examples {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 32px;
+  }
+  
+  .custom-field-group {
+    background: #fafbfc;
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid #e8e8e8;
+    
+    h3 {
+      color: #2c3e50;
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 16px 0;
+    }
+    
+    .field-desc {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    
+    .usage-info {
+      h4 {
+        color: #2c3e50;
+        font-size: 16px;
+        font-weight: 600;
+        margin: 16px 0 12px 0;
+      }
+      
+      ul, ol {
+        margin: 0 0 16px 0;
+        padding-left: 20px;
+        
+        li {
+          color: #666;
+          font-size: 14px;
+          line-height: 1.6;
+          margin-bottom: 8px;
+        }
+      }
+      
+      code {
+        background: #f0f0f0;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        font-size: 12px;
+        color: #e74c3c;
+      }
+    }
+  }
+  
   // 字段类型网格
   .field-types-grid {
     display: grid;
@@ -1022,6 +1214,10 @@ const validateUsernameAsync = (rule: any, value: string) => {
     }
     
     .validation-examples {
+      grid-template-columns: 1fr;
+    }
+    
+    .custom-field-examples {
       grid-template-columns: 1fr;
     }
     

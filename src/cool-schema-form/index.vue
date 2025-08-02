@@ -1,7 +1,8 @@
 <template>
   <component :is="FormRenderComponents" v-bind="formProps" :model="formModel">
     <template v-for="item in props.columns" :key="item.name">
-      <CoolFormField :key="item.name" v-if="getFieldProp(item, 'visible', formModel) !== false" :name="item.name" v-bind="getFieldProps(item, formModel, context)" v-model:value="formModel[item.name]" />
+      <component :is="item.component" v-if="item.valueType === 'custom'" v-bind="getFieldProps(item, formModel, context)" v-model:value="formModel[item.name]" />
+      <CoolFormField v-else :key="item.name" v-if="getFieldProp(item, 'visible', formModel) !== false" :name="item.name" v-bind="getFieldProps(item, formModel, context)" v-model:value="formModel[item.name]" />
     </template>
     <template v-for="(_, name) in otherSlots" #[name]="slotProps" :key="name">
       <slot :name="name" v-bind="slotProps || {}" />
@@ -11,7 +12,7 @@
 
 <script setup lang="ts">
 import { computed, reactive, watch, useAttrs, useSlots } from "vue"
-import type { CoolSchemaFormProps, FormLayoutType } from "./types"
+import type { CoolSchemaFormProps, FormLayoutType, CoolFormColumnsType } from "./types"
 import { SchemaFormLayout } from "./core"
 import { omit } from "lodash-es"
 import CoolFormField from "../cool-form-field/index"
@@ -24,7 +25,8 @@ const attrs = useAttrs()
 const slots = useSlots()
 const props = withDefaults(defineProps<CoolSchemaFormProps>(), {
   layoutType: 'CoolForm',
-  columns: () => [] // 渲染之前就需要有
+  columns: () => [] as CoolFormColumnsType[], // 渲染之前就需要有
+  components: () => ({})
 })
 
 const formProps = computed(() => {

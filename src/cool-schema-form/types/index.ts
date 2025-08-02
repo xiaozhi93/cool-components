@@ -1,6 +1,8 @@
 export type FormLayoutType = 'CoolForm' | 'CoolDrawerForm'
 import { CoolFormFieldProps } from "../../cool-form-field/types"
 import { FormItemProps } from 'ant-design-vue'
+import type { Component } from "vue";
+import type { CoolFieldValueTypeConfig } from "../../cool-field/types/valueTypes";
 
 export type FormExpression = `{{${string}}}`
 
@@ -9,8 +11,11 @@ export type FormExpression = `{{${string}}}`
  */
 export type FormExpressionResult = any
 
-export interface CoolFormColumnsType extends CoolFormFieldProps {
-  
+export interface CoolFormColumnsType extends Omit<CoolFormFieldProps, 'valueType'> {
+  /**
+   * 字段类型，支持 CoolFieldValueTypeConfig 及 'custom'
+   */
+  valueType?: CoolFieldValueTypeConfig | 'custom'
   // 初始值
   initialValue?: any | FormExpression;
 
@@ -22,6 +27,9 @@ export interface CoolFormColumnsType extends CoolFormFieldProps {
   
   // 表单项属性配置
   formItemProps?: FormItemProps | ((formData: Record<string, any>) => FormItemProps);
+  
+  // 自定义组件（当 valueType 为 'custom' 时使用）
+  component?: Component | string; // 字符串的时候从当前注册表或者全局注册表获取
 }
 
 export interface CoolSchemaFormProps {
@@ -31,4 +39,6 @@ export interface CoolSchemaFormProps {
   layoutType?: FormLayoutType;
   // 上下文数据
   context?: Record<string, any>;
+  // 自定义组件注册表
+  components?: Record<string, Component>;
 }
