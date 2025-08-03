@@ -54,6 +54,7 @@ const otherSlots = computed(() => {
 
 // 计算渲染组件和属性
 const renderResult = computed(() => {
+  attrs._track; // 访问属性，强制建立以来追踪
   return render(
     props.value,
     props.valueType,
@@ -67,6 +68,7 @@ const renderResult = computed(() => {
 
 const renderedComponent = computed(() => renderResult.value.renderedComponent)
 const componentProps = computed(() => renderResult.value.componentProps)
+
 </script>
 
 <style scoped>

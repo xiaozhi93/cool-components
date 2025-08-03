@@ -21,8 +21,14 @@
             placeholder="请输入字段名称"
           />
         </div>
-        <div class="property-actions">
-          <button @click="handleDeleteItem" class="delete-btn">删除控件</button>
+        <div class="property-group">
+          <label>占位内容</label>
+          <input 
+            v-model="selectedItem.fieldProps.placeholder" 
+            @input="handleFieldPropsChange('placeholder', selectedItem.fieldProps.placeholder)"
+            type="text" 
+            placeholder="请输入占位内容"
+          />
         </div>
       </div>
       <div v-else class="no-selection">
@@ -36,19 +42,37 @@
 import { computed } from 'vue';
 import { useDesignerContext, type FormItem } from '../../hooks/useDesigner';
 
-const { designer, updateItem, removeItem, getSelectedItem } = useDesignerContext();
+const { updateItem, getSelectedItem } = useDesignerContext();
 
+// 获取选中的表单项
 const selectedItem = computed(() => getSelectedItem());
 
+// 处理顶层属性变化
 const handlePropertyChange = (key: string, value: any) => {
   if (selectedItem.value) {
     updateItem(selectedItem.value.key, { [key]: value });
   }
 };
 
-const handleDeleteItem = () => {
+// 处理 fieldProps 属性变化
+const handleFieldPropsChange = (key: string, value: any) => {
   if (selectedItem.value) {
-    removeItem(selectedItem.value.key);
+    const updatedFieldProps = {
+      ...selectedItem.value.fieldProps,
+      [key]: value
+    };
+    updateItem(selectedItem.value.key, { fieldProps: updatedFieldProps });
+  }
+};
+
+// 处理 formItemProps 属性变化
+const handleFormItemPropsChange = (key: string, value: any) => {
+  if (selectedItem.value) {
+    const updatedFormItemProps = {
+      ...selectedItem.value.formItemProps,
+      [key]: value
+    };
+    updateItem(selectedItem.value.key, { formItemProps: updatedFormItemProps });
   }
 };
 </script>
@@ -125,4 +149,4 @@ const handleDeleteItem = () => {
     }
   }
 }
-</style> 
+</style>

@@ -8,7 +8,7 @@
         提供完整的透传机制，满足各种业务场景需求。
       </p>
     </div>
-
+    <Test   v-bind="baseAttrs" />
     <!-- 文本类字段 -->
     <section class="demo-section">
       <div class="section-header">
@@ -34,9 +34,9 @@
                 <CoolField 
                   value-type="text" 
                   mode="edit" 
-                  v-model:value="demoData.text"
-                  placeholder="请输入文本"
+                  :value="demoData.text"
                   allow-clear
+                  v-bind="baseAttrs"
                 />
               </div>
             </div>
@@ -44,7 +44,7 @@
         </div>
 
         <!-- 密码字段 -->
-        <div class="demo-card">
+        <!-- <div class="demo-card">
           <div class="card-header">
             <h3>password - 密码字段</h3>
             <span class="type-tag">password</span>
@@ -66,7 +66,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- 多行文本 -->
         <div class="demo-card">
@@ -122,6 +122,7 @@
                 <CoolField 
                   value-type="digit" 
                   mode="edit" 
+              
                   v-model:value="demoData.digit"
                   placeholder="请输入整数"
                 />
@@ -1032,13 +1033,14 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import CoolField from '../index.vue'
+import Test from './Test.vue'
 
 // 演示数据
 const demoData = reactive({
   // 文本类
-  text: 'Hello CoolField 🎯',
+  text: undefined,
   password: 'secret123',
   textarea: '这是一段多行文本示例\n支持换行显示\n功能强大且易用',
   
@@ -1083,6 +1085,16 @@ const demoData = reactive({
   textWithEvents: ''
 })
 
+const placeholder = ref('请输入')
+const baseAttrs = reactive({
+  // allowClear: true
+})
+onMounted(() => {
+  setTimeout(() => {
+    baseAttrs.allowClear = true
+    baseAttrs.placeholder = '请输入111'
+  }, 4000)
+})
 // 选择框配置
 const selectOptions = {
   option1: { label: '选项一', value: 'option1' },

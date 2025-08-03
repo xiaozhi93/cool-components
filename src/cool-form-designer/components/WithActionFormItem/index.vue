@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, useAttrs } from 'vue';
 import CoolFormField from '../../../cool-form-field/index';
 import { useDesignerContext, type FormItem } from '../../hooks/useDesigner';
 
@@ -76,7 +76,7 @@ const {
   moveItemUp,
   moveItemDown
 } = useDesignerContext();
-
+const attrs = useAttrs();
 // 计算属性
 const isSelected = computed(() => designer.selectedKey === props.id);
 const canMoveUpItem = computed(() => canMoveUp(props.id));
@@ -84,7 +84,10 @@ const canMoveDownItem = computed(() => canMoveDown(props.id));
 
 // 事件处理
 const handleSelect = () => {
-  selectItem(props as any);
+  selectItem({
+    ...(attrs as any),  
+    key: props.id,
+  });
 };
 
 const handleCopy = () => {

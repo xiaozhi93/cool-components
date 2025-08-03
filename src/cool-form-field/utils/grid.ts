@@ -87,11 +87,11 @@ export function createGridHelpers(config: ProFormGridConfig & CommonProps = {}):
     return h(Row, finalRowProps, { default: () => slots?.default?.() });
   };
 
-  const ColWrapper: FunctionalComponent<ColWrapperProps> = (props, { slots, attrs }) => {
+  const ColWrapper: FunctionalComponent<ColWrapperProps> = (props, { slots }) => {
     const { wrapper: Wrapper, ...rest } = props || {};
     // 合并 colProps（全局/父级）和当前 props
     const finalColProps = computed(() => {
-      const originProps = { ...colProps, ...rest, ...attrs };
+      const originProps = { ...colProps, ...rest };
       // xs 优先于 span，避免 span 不生效
       if (
         typeof originProps.span === 'undefined' &&

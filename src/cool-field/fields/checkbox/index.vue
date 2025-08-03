@@ -145,6 +145,7 @@ const displayItems = computed(() => {
 
 // 计算透传属性
 const editAttrs = computed(() => {
+  attrs._track; // 访问属性，强制建立以来追踪
   const result: any = { ...attrs }
   
   if (loading.value) {

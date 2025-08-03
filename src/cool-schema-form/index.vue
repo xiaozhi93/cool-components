@@ -1,5 +1,5 @@
 <template>
-  <component :is="FormRenderComponents" v-bind="formProps" :model="formModel">
+  <component :is="FormRenderComponents" v-bind="$attrs" :model="formModel">
     <template v-for="item in props.columns" :key="item.name">
       <component 
         :is="getComponent(item.component)" 
@@ -42,11 +42,6 @@ const props = withDefaults(defineProps<CoolSchemaFormProps>(), {
   components: () => ({})
 })
 
-const formProps = computed(() => {
-  return {
-    ...attrs,
-  }
-})
 const formModel = reactive<Record<string, any>>({
 })
 const FormRenderComponents = computed(() => {

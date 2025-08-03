@@ -49,13 +49,16 @@ const drawerProps = computed(() => ({
   ...props.drawerProps
 }))
 
-const formProps = computed(() => ({
-  ...attrs,
-  layout: 'vertical',
-  submitter: true,
-  submitterProps: props.submitterProps,
-  formComponentType: 'CoolDrawerForm' as const
-}))
+const formProps = computed(() => {
+  attrs._track; // 访问属性，强制建立以来追踪
+  return {
+    ...attrs,
+    layout: 'vertical',
+    submitter: true,
+    submitterProps: props.submitterProps,
+    formComponentType: 'CoolDrawerForm' as const
+  }
+})
 
 const triggerComponent = computed(() => {
   if (!slots.trigger) return null

@@ -160,6 +160,7 @@ const timeRangePickerValue = computed(() => {
 
 // 提取编辑模式下需要透传的属性（包括事件监听器）
 const editAttrs = computed(() => {
+  attrs._track; // 访问属性，强制建立以来追踪
   return { ...attrs }
 })
 </script>

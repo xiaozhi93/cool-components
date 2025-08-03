@@ -125,6 +125,7 @@ export const createFormField = (
 
       // 计算字段组件属性
       const fieldComponentProps = computed(() => {
+        attrs._track; // 访问属性，强制建立以来追踪
         return {
           valueType: props.valueType,
           mode: props.mode,

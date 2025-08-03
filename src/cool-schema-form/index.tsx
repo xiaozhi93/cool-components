@@ -19,7 +19,6 @@ export default defineComponent<CoolSchemaFormProps>({
   },
   setup(props, { attrs, slots, expose }) {
     const formModel = reactive<Record<string, any>>({});
-    const formProps = computed(() => ({ ...attrs }));
     const FormRenderComponent = computed(() => SchemaFormLayout[props.layoutType || "CoolForm"]);
     const formItemNodes = shallowRef<VNode[]>([]);
     // 只在 columns 变化时重新生成 VNodes
@@ -56,7 +55,7 @@ export default defineComponent<CoolSchemaFormProps>({
       // 默认插槽内容（表单项）
       const defaultSlot = () => h(Fragment, formItemNodes.value);
       return (
-        <LayoutComponent {...formProps.value} model={formModel}>
+        <LayoutComponent {...attrs} model={formModel}>
           {{
             default: defaultSlot,
             ...otherSlots.value
