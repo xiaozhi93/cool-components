@@ -52,6 +52,8 @@
   ],
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
+    "ace-builds": "^1.43.2",
+    "vue3-ace-editor": "^2.2.4",
     "vuedraggable": "^4.1.0"
   }
 }

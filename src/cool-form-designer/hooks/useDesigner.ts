@@ -33,6 +33,7 @@ export interface DesignerContext {
   moveItemDown: (key: string) => void;
   canMoveUp: (key: string) => boolean;
   canMoveDown: (key: string) => boolean;
+  clear: () => void;
 }
 
 export function useDesigner(): DesignerContext {
@@ -127,6 +128,10 @@ export function useDesigner(): DesignerContext {
     }
   };
 
+  const clear = () => {
+    designer.schema = [];
+  };
+
   const context: DesignerContext = {
     designer,
     selectItem,
@@ -139,7 +144,8 @@ export function useDesigner(): DesignerContext {
     moveItemUp,
     moveItemDown,
     canMoveUp,
-    canMoveDown
+    canMoveDown,
+    clear
   };
 
   provide('designer', context);
