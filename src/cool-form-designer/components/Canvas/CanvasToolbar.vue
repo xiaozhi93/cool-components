@@ -14,6 +14,7 @@
         title="预览表单"
         :columns="previewColumns"
         layout-type="CoolDrawerForm"
+        :components="formComponents"
       />
     <!-- 导出模态框 -->
     <a-modal
@@ -68,11 +69,10 @@ defineOptions({
   name: 'CanvasToolbar'
 });
 
-const { designer, clear } = useDesignerContext();
+const { designer, clear, formComponents } = useDesignerContext();
 
 // 预览模态框状态
 const previewModalVisible = ref(false);
-const previewContext = ref({});
 
 // 导出模态框状态
 const exportModalVisible = ref(false);

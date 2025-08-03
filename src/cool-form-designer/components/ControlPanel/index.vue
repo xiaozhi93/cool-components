@@ -4,8 +4,8 @@
       <draggable 
         tag="div" 
         :clone="handleControlClone" 
-        :list="categories" 
-        item-key="type" 
+        :list="controls" 
+        item-key="valueType" 
         class="control-list" 
         handle=".control-item" 
         :group="{ name: 'control', pull: 'clone', put: false }" 
@@ -24,14 +24,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import draggable from "vuedraggable";
-import { baseControl } from '../../core/control';
 import {  type FormItem, useDesignerContext } from '../../hooks/useDesigner';
 
-const categories = ref(baseControl);
 
-const { addItem } = useDesignerContext();
+const { addItem, controls } = useDesignerContext();
 
 const handleControlClone = (control: any): FormItem => {
   const newItem: FormItem = {
@@ -43,6 +40,10 @@ const handleControlClone = (control: any): FormItem => {
     },
     fieldProps: {}
   };
+  // 自定义组件需要特殊处理
+  if(control.valueType === 'custom') {
+    newItem.component = control.component.name;
+  }
   return newItem;
 };
 

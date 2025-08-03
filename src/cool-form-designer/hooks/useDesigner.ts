@@ -1,5 +1,6 @@
-import { ref, reactive, inject, provide, type Ref } from 'vue';
-
+import { ref, reactive, inject, provide, type Ref, type Component, computed } from 'vue';
+import type { CoolFormDesignerComponent,   ControlDefinition } from '../types';
+import { baseControl } from '../core/control';
 // 定义设计器状态类型
 export interface DesignerState {
   schema: FormItem[];
@@ -20,6 +21,8 @@ export interface FormItem {
 
 // 定义设计器上下文类型
 export interface DesignerContext {
+  controls: ControlDefinition[];
+  formComponents: Record<string, Component>;
   designer: DesignerState;
   selectItem: (item: FormItem) => void;
   addItem: (item: FormItem) => void;
@@ -36,7 +39,12 @@ export interface DesignerContext {
   clear: () => void;
 }
 
-export function useDesigner(): DesignerContext {
+export function useDesigner(components: CoolFormDesignerComponent[]): DesignerContext {
+  const controls = [...baseControl, ...components] as ControlDefinition[];
+  const formComponents = components.reduce((acc, component) => {
+    acc[component.component.name as string] = component.component;
+    return acc;
+  }, {} as Record<string, Component>);
   const designer = reactive<DesignerState>({
     schema: [],
     selectedKey: null,
@@ -133,6 +141,8 @@ export function useDesigner(): DesignerContext {
   };
 
   const context: DesignerContext = {
+    controls,
+    formComponents,
     designer,
     selectItem,
     addItem,

@@ -41,10 +41,11 @@ import { useFormFieldContext } from '../utils/field'
  * ```
  */
 export const createFormField = (
-  FieldComponent: Component
+  FieldComponent: Component,
+  name?: string
 ) => {
   return defineComponent({
-    name: 'CoolFormField',
+    name: name || 'CoolFormField',
     inheritAttrs: false,
     props: {
       /** 字段类型 */

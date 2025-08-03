@@ -5,3 +5,14 @@ export interface ControlDefinition {
   title: string;
   icon: Component;
 }
+
+export interface CoolFormDesignerComponent {
+  valueType: 'custom';
+  component: Component;
+  title: string;
+  icon: Component;
+}
+
+export interface CoolFormDesignerProps {
+  components: CoolFormDesignerComponent[];
+}

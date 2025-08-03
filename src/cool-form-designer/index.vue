@@ -7,12 +7,21 @@
 </template>
 
 <script setup lang="ts">
+import type { PropType } from 'vue';
 import ControlPanel from './components/ControlPanel/index.vue';
 import Canvas from './components/Canvas/index.vue';
 import PropertyPanel from './components/PropertyPanel/index.vue';
 import { useDesigner } from './hooks/useDesigner';
+import type { CoolFormDesignerComponent } from './types';
 
-useDesigner();
+const props = defineProps({
+  components: {
+    type: Array as PropType<CoolFormDesignerComponent[]>,
+    default: () => []
+  }
+});
+
+useDesigner(props.components);
 
 </script>
 
