@@ -51,6 +51,7 @@
     "iOS >= 10"
   ],
   "dependencies": {
-    "@ant-design/icons-vue": "^7.0.1"
+    "@ant-design/icons-vue": "^7.0.1",
+    "vuedraggable": "^4.1.0"
   }
 }

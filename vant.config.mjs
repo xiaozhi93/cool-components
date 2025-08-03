@@ -62,6 +62,10 @@ export default {
             path: 'cool-query-filter',
             title: 'CoolQueryFilter 查询筛选',
           },
+          {
+            path: 'cool-form-designer',
+            title: 'CoolFormDesigner 表单设计器',
+          },
         ],
       },
     ],
