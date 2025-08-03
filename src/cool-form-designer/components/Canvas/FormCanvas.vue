@@ -6,6 +6,7 @@
           :list="designer.schema" 
           group="control" 
           item-key="key"
+          @add="handleAdd"
         >
           <template #item="{ element }">
             <div 
@@ -40,6 +41,14 @@ const isSelected = (key: string): boolean => {
 const handleItemClick = (item: FormItem) => {
   selectItem(item);
 };
+
+const handleAdd = (evt: any) => {
+  const newIndex = evt.newIndex;
+  if (!!designer.schema[newIndex]) {
+    selectItem(designer.schema[newIndex]);
+  }
+};
+
 </script>
 
 <style lang="scss" scoped>
@@ -69,5 +78,11 @@ const handleItemClick = (item: FormItem) => {
       background-color: #e6f7ff;
     }
   }
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>
