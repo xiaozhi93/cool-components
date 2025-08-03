@@ -11,14 +11,8 @@
           <template #item="{ element }">
             <div 
               class="control-item"
-              :class="{ 'selected': isSelected(element.key) }"
-              @click="handleItemClick(element)"
             >
-              <CoolFormField 
-                :name="element.name" 
-                :label="element.label" 
-                :valueType="element.type" 
-              />
+              <WithActionFormItem v-bind="element" :key="element.key" :id="element.key" />
             </div>
           </template>
         </draggable>
@@ -29,18 +23,10 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable';
 import coolBaseForm from '../../../cool-base-form/index';
-import CoolFormField from '../../../cool-form-field/index';
-import { useDesignerContext, type FormItem } from '../../hooks/useDesigner';
+import WithActionFormItem from '../WithActionFormItem/index.vue';
+import { useDesignerContext } from '../../hooks/useDesigner';
 
 const { designer, selectItem } = useDesignerContext();
-
-const isSelected = (key: string): boolean => {
-  return designer.selectedKey === key;
-};
-
-const handleItemClick = (item: FormItem) => {
-  selectItem(item);
-};
 
 const handleAdd = (evt: any) => {
   const newIndex = evt.newIndex;
@@ -48,7 +34,6 @@ const handleAdd = (evt: any) => {
     selectItem(designer.schema[newIndex]);
   }
 };
-
 </script>
 
 <style lang="scss" scoped>
@@ -58,27 +43,8 @@ const handleAdd = (evt: any) => {
   padding: 10px;
   background-color: #f0f0f0;
   border-radius: 5px;
-
-  .control-item {
-    display: flex;
-    margin-bottom: 8px;
-    padding: 8px;
-    border: 2px solid transparent;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    
-    &:hover {
-      border-color: #d9d9d9;
-      background-color: #fafafa;
-    }
-    
-    &.selected {
-      border-color: #1890ff;
-      background-color: #e6f7ff;
-    }
-  }
 }
+
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
 }

@@ -12,6 +12,12 @@
 </template>
 
 <script setup lang="ts">
+import { Button as AButton, ButtonGroup as AButtonGroup } from 'ant-design-vue';
+
+defineOptions({
+  name: 'CanvasToolbar'
+});
+
 defineEmits<{
   undo: [];
   redo: [];

@@ -37,7 +37,6 @@ const handleControlClone = (control: any): FormItem => {
     key: Date.now().toString(),
     name: control.valueType + Date.now().toString(),
     label: control.title,
-    type: control.valueType,
     formItemProps: {
     },
     fieldProps: {}

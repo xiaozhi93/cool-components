@@ -27,6 +27,12 @@ export interface DesignerContext {
   updateItem: (key: string, updates: Partial<FormItem>) => void;
   clearSelection: () => void;
   getSelectedItem: () => FormItem | null;
+  // 新增功能
+  copyItem: (key: string) => void;
+  moveItemUp: (key: string) => void;
+  moveItemDown: (key: string) => void;
+  canMoveUp: (key: string) => boolean;
+  canMoveDown: (key: string) => boolean;
 }
 
 export function useDesigner(): DesignerContext {
@@ -76,6 +82,51 @@ export function useDesigner(): DesignerContext {
     return designer.selectedItem;
   };
 
+  // 新增功能方法
+  const copyItem = (key: string) => {
+    const item = designer.schema.find(item => item.key === key);
+    if (item) {
+      const copiedItem: FormItem = {
+        ...item,
+        key: Date.now().toString(),
+        name: `${item.name}_copy`,
+        label: `${item.label}_副本`
+      };
+      addItem(copiedItem);
+      selectItem(copiedItem);
+    }
+  };
+
+  const getItemIndex = (key: string): number => {
+    return designer.schema.findIndex(item => item.key === key);
+  };
+
+  const canMoveUp = (key: string): boolean => {
+    const index = getItemIndex(key);
+    return index > 0;
+  };
+
+  const canMoveDown = (key: string): boolean => {
+    const index = getItemIndex(key);
+    return index >= 0 && index < designer.schema.length - 1;
+  };
+
+  const moveItemUp = (key: string) => {
+    const index = getItemIndex(key);
+    if (canMoveUp(key)) {
+      const item = designer.schema.splice(index, 1)[0];
+      designer.schema.splice(index - 1, 0, item);
+    }
+  };
+
+  const moveItemDown = (key: string) => {
+    const index = getItemIndex(key);
+    if (canMoveDown(key)) {
+      const item = designer.schema.splice(index, 1)[0];
+      designer.schema.splice(index + 1, 0, item);
+    }
+  };
+
   const context: DesignerContext = {
     designer,
     selectItem,
@@ -83,7 +134,12 @@ export function useDesigner(): DesignerContext {
     removeItem,
     updateItem,
     clearSelection,
-    getSelectedItem
+    getSelectedItem,
+    copyItem,
+    moveItemUp,
+    moveItemDown,
+    canMoveUp,
+    canMoveDown
   };
 
   provide('designer', context);
@@ -100,4 +156,3 @@ export function useDesignerContext(): DesignerContext {
   
   return designer;
 }
-
