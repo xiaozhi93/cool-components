@@ -13,7 +13,7 @@
         :sort="false"
       >
         <template #item="{ element }">
-          <div class="control-item">
+          <div class="control-item" @dblclick="handleControlDoubleClick(element)">
             <component :is="element.icon" />
             <span>{{ element.title }}</span>
           </div>
@@ -27,9 +27,11 @@
 import { ref } from 'vue';
 import draggable from "vuedraggable";
 import { baseControl } from '../../core/control';
-import {  type FormItem } from '../../hooks/useDesigner';
+import {  type FormItem, useDesignerContext } from '../../hooks/useDesigner';
 
 const categories = ref(baseControl);
+
+const { addItem } = useDesignerContext();
 
 const handleControlClone = (control: any): FormItem => {
   const newItem: FormItem = {
@@ -42,6 +44,11 @@ const handleControlClone = (control: any): FormItem => {
     fieldProps: {}
   };
   return newItem;
+};
+
+const handleControlDoubleClick = (element: any) => {
+  const newItem = handleControlClone(element);
+  addItem(newItem as any);
 };
 </script>
 
