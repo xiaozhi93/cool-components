@@ -3,14 +3,14 @@
     <template v-for="item in props.columns" :key="item.name">
       <component 
         :is="getComponent(item.component)" 
-        v-if="item.valueType === 'custom' && getFieldProp(item, 'visible', formModel) !== false" 
+        v-if="item.valueType === 'custom' && getFieldVisibleProp(item, formModel) !== false" 
         :name="item.name"
         v-bind="getFieldProps(item, formModel, context)" 
         v-model:value="formModel[item.name]" 
       />
       <CoolFormField 
         v-else 
-        v-if="getFieldProp(item, 'visible', formModel) !== false" 
+        v-if="getFieldVisibleProp(item, formModel) !== false" 
         :name="item.name" 
         v-bind="getFieldProps(item, formModel, context)" 
         v-model:value="formModel[item.name]" 
@@ -28,7 +28,7 @@ import type { CoolSchemaFormProps, FormLayoutType, CoolFormColumnsType } from ".
 import { SchemaFormLayout } from "./core"
 import { omit } from "lodash-es"
 import CoolFormField from "../cool-form-field/index"
-import { getFieldProp, getFieldProps } from "./core"
+import { getFieldProp, getFieldProps, getFieldVisibleProp } from "./core"
 import type { Component } from "vue"
 defineOptions({
   name: "CoolSchemaForm",

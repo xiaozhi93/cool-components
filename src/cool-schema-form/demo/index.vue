@@ -266,7 +266,7 @@ const basicColumns: CoolFormColumnsType[] = [
     initialValue: false
   },
   {
-    visible: "{{$form.active}}",
+    // visible: "{{$form.active}}",
     name: 'activeName',
     label: '激活名称',
     valueType: 'text',
@@ -274,6 +274,24 @@ const basicColumns: CoolFormColumnsType[] = [
     initialValue: '',
     fieldProps: {
       placeholder: '请输入激活名称'
+    },
+    // dynamicProps 示例：根据 $form.active 动态设置多个属性
+    dynamicProps: ($form) => {
+      if ($form.active) {
+        return {
+          label: '激活名称（已激活）',
+          required: true,
+          fieldProps: { placeholder: '请输入激活后的名称' },
+          visible: true
+        }
+      } else {
+        return {
+          label: '激活名称（未激活）',
+          required: false,
+          fieldProps: { placeholder: '未激活不可编辑', disabled: true },
+          visible: false
+        }
+      }
     }
   },
   {
