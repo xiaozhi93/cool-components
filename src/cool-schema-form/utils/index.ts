@@ -38,3 +38,34 @@ export function evalFormilyExpr(expr: FormExpression | string, formData: Record<
     return undefined;
   }
 }
+
+/**
+ * 检查字符串是否为有效的函数字符串表达式
+ * @param expr 待检查的字符串
+ * @returns 是否为函数字符串
+ */
+export function isFunctionString(expr: string): boolean {
+  const str = expr.trim();
+  // 支持箭头函数格式，如 (a, b) => {...}
+  if (/^\s*\(.*\)\s*=>/.test(str)) return true;
+  // 支持 function 声明格式，如 function(a, b) {...}
+  if (/^function\s*\(.*\)/.test(str)) return true;
+  return false;
+}
+
+/**
+ * 安全执行函数字符串表达式
+ * @param fnStr 函数字符串
+ * @param formData 表单数据
+ * @param context 上下文
+ * @returns 执行结果
+ */
+export function evalFunctionString(fnStr: string, formData: Record<string, any>, context?: Record<string, any>): any {
+  try {
+    const str = fnStr.trim();
+    const fn = new Function('return (' + str + ')')();
+    return fn(formData, context);
+  } catch (e) {
+    return fnStr;
+  }
+}

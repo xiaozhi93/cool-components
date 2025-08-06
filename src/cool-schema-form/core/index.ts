@@ -1,7 +1,7 @@
 import CoolForm from "../../cool-form/index.vue"
 import CoolDrawerForm from "../../cool-drawer-form/index.vue"
 import type { FormLayoutType } from "../types"
-import { evalFormilyExpr, isFormExpression } from "../utils"
+import { evalFormilyExpr, isFormExpression, isFunctionString, evalFunctionString } from "../utils"
 import { omit } from "lodash-es"
 
 export const SchemaFormLayout: Record<FormLayoutType, any> = {
@@ -18,6 +18,10 @@ export const getFieldProp = (field: Record<string, any>, propName: string, formD
     // 检查是否为表单表达式格式
     if (isFormExpression(prop)) {
       return evalFormilyExpr(prop, formData, context);
+    }
+    // 检查是否为函数字符串格式
+    if (isFunctionString(prop)) {
+      return evalFunctionString(prop, formData, context);
     }
   }
   return prop;
