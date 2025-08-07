@@ -66,6 +66,14 @@ export default {
             path: 'cool-form-designer',
             title: 'CoolFormDesigner 表单设计器',
           },
+          {
+            path: 'cool-form-group',
+            title: 'CoolFormGroup 表单组',
+          },
+          {
+            path: 'cool-form-list',
+            title: 'CoolFormList 表单列表',
+          },
         ],
       },
     ],

@@ -75,7 +75,7 @@ export const createFormField = (
       },
       /** 字段名称 */
       name: {
-        type: String,
+        type: [String, Array] as PropType<string | string[]>,
         default: ''
       },
       /** 是否隐藏 */
