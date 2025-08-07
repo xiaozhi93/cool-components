@@ -15,7 +15,7 @@ export interface CoolFormColumnsType extends Omit<CoolFormFieldProps, 'valueType
   /**
    * 字段类型，支持 CoolFieldValueTypeConfig 及 'custom'
    */
-  valueType?: CoolFieldValueTypeConfig | 'custom'
+  valueType?: CoolFieldValueTypeConfig | 'custom' | 'group' | 'list'
   // 初始值
   initialValue?: any | FormExpression;
 
@@ -30,6 +30,9 @@ export interface CoolFormColumnsType extends Omit<CoolFormFieldProps, 'valueType
   
   // 自定义组件（当 valueType 为 'custom' 时使用）
   component?: Component | string; // 字符串的时候从当前注册表或者全局注册表获取
+  
+  // 子表单列配置，定义表单字段(当 valueType 为 'group'和 'list' 时使用)
+  columns?: CoolFormColumnsType[];
 
   /**
    * 批量动态设置属性的函数

@@ -4,6 +4,10 @@
       <RowWrapper>
         <slot :list="innerValue" :actions="actions" />
       </RowWrapper>
+      <a-button type="dashed" style="width: 60%" @click="actions.add">
+        <PlusOutlined />
+        添加一项
+      </a-button>
     </div>
   </ColWrapper>
 </template>
@@ -12,6 +16,8 @@
 import type { CoolFormListProps } from './types';
 import { useGridHelpers } from '../cool-form-field/utils/grid';
 import { computed } from 'vue';
+import { Button as AButton } from 'ant-design-vue';
+import { PlusOutlined } from '@ant-design/icons-vue';
 
 const props = withDefaults(defineProps<CoolFormListProps>(), {
   grid: false,
@@ -24,7 +30,15 @@ const innerValue = defineModel<any[]>('value', { required: true, default: () => 
 const actions = computed(() => {
   return {
     add: () => {
-      innerValue.value.push({})
+      // innerValue.value.push({})
+      innerValue.value = [
+        ...innerValue.value,
+        {}
+      ]
+    },
+    remove: (index: number) => {
+      // innerValue.value.splice(index, 1)
+      innerValue.value = innerValue.value.filter((_, i) => i !== index)
     }
   }
 })

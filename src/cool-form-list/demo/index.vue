@@ -2,7 +2,7 @@
   <div class="demo-container">
     <h3>CoolFormList 结合 CoolForm 表单使用示例</h3>
     
-    <CoolForm>
+    <CoolForm :model="formData">
       <CoolFormList v-model:value="formData.items">
         <template #default="{ list, actions }">
           <div class="form-list-container">
@@ -20,14 +20,14 @@
               </div>
               <div class="item-content">
                 <CoolFormField
-                  :name="`items.${index}.name`"
+                  :name="['items', index, 'name']"
                   v-model:value="item.name"
                   label="名称"
                   placeholder="请输入名称"
                   :rules="[{ required: true, message: '请输入名称' }]"
                 />
                 <CoolFormField
-                  :name="`items.${index}.age`"
+                  :name="['items', index, 'age']"
                   v-model:value="item.age"
                   label="年龄"
                   type="digit"
@@ -35,7 +35,7 @@
                   :rules="[{ required: true, message: '请输入年龄' }]"
                 />
                 <CoolFormField
-                  :name="`items.${index}.email`"
+                  :name="['items', index, 'email']"
                   v-model:value="item.email"
                   label="邮箱"
                   type="text"
@@ -43,13 +43,6 @@
                   :rules="[{ required: true, message: '请输入邮箱' }]"
                 />
               </div>
-            </div>
-            
-            <div class="add-button-container">
-              <a-button type="dashed" @click="actions.add">
-                <PlusOutlined />
-                添加项目
-              </a-button>
             </div>
           </div>
         </template>

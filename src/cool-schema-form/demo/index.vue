@@ -29,6 +29,32 @@
       </div>
     </section>
 
+    <!-- Group 嵌套示例 -->
+    <section class="demo-section">
+      <div class="section-header">
+        <h2>🧩 分组嵌套（Group）示例</h2>
+        <span class="section-badge">递归分组</span>
+      </div>
+      <div class="demo-content">
+        <div class="example-wrapper">
+          <CoolSchemaForm :columns="groupColumns" layout-type="CoolForm" />
+        </div>
+      </div>
+    </section>
+
+    <!-- List 嵌套示例 -->
+    <section class="demo-section">
+      <div class="section-header">
+        <h2>📋 列表嵌套（List）示例</h2>
+        <span class="section-badge">递归列表</span>
+      </div>
+      <div class="demo-content">
+        <div class="example-wrapper">
+          <CoolSchemaForm :columns="listColumns" layout-type="CoolForm" />
+        </div>
+      </div>
+    </section>
+
     <!-- 完整字段类型示例 -->
     <section class="demo-section">
       <div class="section-header">
@@ -327,6 +353,61 @@ const onFinish = (values: any) => {
 const onReset = () => {
   console.log('onReset')
 }
+
+// Group 嵌套示例配置
+const groupColumns: CoolFormColumnsType[] = [
+  {
+    name: 'userInfo',
+    label: '用户信息',
+    valueType: 'group',
+    columns: [
+      {
+        name: 'name',
+        label: '姓名',
+        valueType: 'text',
+        required: true,
+        fieldProps: { placeholder: '请输入姓名' }
+      },
+      {
+        name: 'contact',
+        label: '联系方式',
+        valueType: 'group',
+        columns: [
+          {
+            name: 'phone',
+            label: '电话',
+            valueType: 'text',
+            fieldProps: { placeholder: '请输入电话' }
+          },
+          {
+            name: 'email',
+            label: '邮箱',
+            valueType: 'text',
+            fieldProps: { placeholder: '请输入邮箱' }
+          }
+        ]
+      }
+    ]
+  }
+]
+
+// List 嵌套示例配置
+const listColumns: CoolFormColumnsType[] = [
+  {
+    name: 'projects',
+    label: '项目列表',
+    valueType: 'list',
+    columns: [
+      {
+        name: 'projectName',
+        label: '项目名称',
+        valueType: 'text',
+        required: true,
+        fieldProps: { placeholder: '请输入项目名称' }
+      }
+    ]
+  }
+]
 
 // 完整字段类型配置
 const fullColumns = computed((): CoolFormColumnsType[] => [
