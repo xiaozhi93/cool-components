@@ -1,11 +1,15 @@
 <template>
   <component :is="FormRenderComponents" v-bind="$attrs" :model="formModel">
-    <CoolSchemaNode 
-      :columns="props.columns"
-      :form-model="formModel"
-      :context="context"
-      :components="components"
-    />
+    <template v-if="props.columns?.length">
+      <CoolSchemaNode 
+        v-for="(column, index) in props.columns"
+        :key="column.name"
+        :column="column"
+        :form-model="formModel"
+        :context="context"
+        :components="components"
+      />
+    </template>
     <template v-for="(_, name) in otherSlots" #[name]="slotProps" :key="name">
       <slot :name="name" v-bind="slotProps || {}" />
     </template>

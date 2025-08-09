@@ -1,5 +1,6 @@
 import CoolForm from "../../cool-form/index.vue"
 import CoolDrawerForm from "../../cool-drawer-form/index.vue"
+import CoolQueryFilter from "../../cool-query-filter/index.vue"
 import type { FormLayoutType } from "../types"
 import { evalFormilyExpr, isFormExpression, isFunctionString, evalFunctionString } from "../utils"
 import { omit } from "lodash-es"
@@ -7,6 +8,7 @@ import { omit } from "lodash-es"
 export const SchemaFormLayout: Record<FormLayoutType, any> = {
   CoolForm: CoolForm,
   CoolDrawerForm: CoolDrawerForm,
+  CoolQueryFilter: CoolQueryFilter,
 };
 
 export const getFieldProp = (field: Record<string, any>, propName: string, formData: Record<string, any>, context?: Record<string, any>) => {

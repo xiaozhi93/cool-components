@@ -1,65 +1,73 @@
 <template>
-  <template v-for="(item, index) in columns" :key="item.name">
-    <!-- 自定义组件 -->
-    <component 
-      v-if="item.valueType === 'custom' && getFieldVisibleProp(item, formModel) !== false" 
-      :is="getComponent(item.component)" 
-      :name="parentPath ? [parentPath, parentIndex, item.name] : item.name"
-      v-bind="getFieldProps(item, formModel, context)" 
-      v-model:value="formModel[item.name]" 
-    />
-    
-    <!-- 分组组件 -->
-    <CoolFormGroup 
-      v-else-if="item.valueType === 'group' && getFieldVisibleProp(item, formModel) !== false" 
-      :name="item.name"
-      v-bind="getFieldProps(item, formModel, context)" 
-    >
-      <!-- 递归渲染子字段 -->
+  <!-- 自定义组件 -->
+  <component 
+    v-if="column.valueType === 'custom' && getFieldVisibleProp(column, formModel) !== false" 
+    :is="getComponent(column.component)" 
+    :name="parentPath && parentIndex !== undefined ? [parentPath, parentIndex.toString(), column.name] : column.name"
+    :hidden="hidden"
+    v-bind="getFieldProps(column, formModel, context)" 
+    v-model:value="formModel[column.name]" 
+  />
+  
+  <!-- 分组组件 -->
+  <CoolFormGroup 
+    v-else-if="column.valueType === 'group' && getFieldVisibleProp(column, formModel) !== false" 
+    :name="column.name"
+    :hidden="hidden"
+    v-bind="getFieldProps(column, formModel, context)" 
+  >
+    <!-- 递归渲染子字段 -->
+    <template v-if="column.columns?.length">
       <CoolSchemaNode 
-        v-if="item.columns?.length"
-        :columns="item.columns"
+        v-for="(childColumn, index) in column.columns"
+        :key="childColumn.name"
+        :column="childColumn"
         :form-model="formModel"
         :context="context"
         :components="components"
       />
-    </CoolFormGroup>
-    
-    <!-- 列表组件 -->
-    <CoolFormList 
-      v-else-if="item.valueType === 'list' && getFieldVisibleProp(item, formModel) !== false" 
-      :name="item.name"
-      v-bind="getFieldProps(item, formModel, context)" 
-      v-model:value="formModel[item.name]" 
-    >
-      <template #default="{ list, actions }">
-        <div v-for="(listItem, index) in list" :key="index" class="list-item">
-          <div class="list-item-header">
-            <span>项目 {{ index + 1 }}</span>
-            <button @click="actions.remove(index)" type="button">删除</button>
-          </div>
-          <!-- 递归渲染子字段 -->
+    </template>
+  </CoolFormGroup>
+  
+  <!-- 列表组件 -->
+  <CoolFormList 
+    v-else-if="column.valueType === 'list' && getFieldVisibleProp(column, formModel) !== false" 
+    :name="column.name"
+    :hidden="hidden"
+    v-bind="getFieldProps(column, formModel, context)" 
+    v-model:value="formModel[column.name]" 
+  >
+    <template #default="{ list, actions }">
+      <div v-for="(listItem, index) in list" :key="index" class="list-item">
+        <div class="list-item-header">
+          <span>项目 {{ index + 1 }}</span>
+          <button @click="actions.remove(index)" type="button">删除</button>
+        </div>
+        <!-- 递归渲染子字段 -->
+        <template v-if="column.columns?.length">
           <CoolSchemaNode 
-            v-if="item.columns?.length"
-            :columns="item.columns"
+            v-for="(childColumn, childIndex) in column.columns"
+            :key="childColumn.name"
+            :column="childColumn"
             :form-model="listItem"
             :context="context"
             :components="components"
-            :parent-path="item.name"
+            :parent-path="column.name"
             :parent-index="index"
           />
-        </div>
-      </template>
-    </CoolFormList>
-    
-    <!-- 普通字段 -->
-    <CoolFormField 
-      v-else-if="getFieldVisibleProp(item, formModel) !== false" 
-      :name="parentPath ? [parentPath, parentIndex, item.name] : item.name" 
-      v-bind="getFieldProps(item, formModel, context)" 
-      v-model:value="formModel[item.name]" 
-    />
-  </template>
+        </template>
+      </div>
+    </template>
+  </CoolFormList>
+  
+  <!-- 普通字段 -->
+  <CoolFormField 
+    v-else-if="getFieldVisibleProp(column, formModel) !== false" 
+    :name="parentPath && parentIndex !== undefined ? [parentPath, parentIndex.toString(), column.name] : column.name" 
+    :hidden="hidden"
+    v-bind="getFieldProps(column, formModel, context)" 
+    v-model:value="formModel[column.name]" 
+  />
 </template>
 
 <script setup lang="ts">
@@ -76,19 +84,21 @@ defineOptions({
 })
 
 interface Props {
-  columns: CoolFormColumnsType[]
+  column: CoolFormColumnsType
   formModel: Record<string, any>
   context?: Record<string, any>
   components?: Record<string, Component>
   parentPath?: string // 父级路径
   parentIndex?: number // 父级索引， 用于列表组件
+  hidden?: boolean // 是否隐藏
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  columns: () => [],
+  column: () => ({} as CoolFormColumnsType),
   formModel: () => ({}),
   context: () => ({}),
-  components: () => ({})
+  components: () => ({}),
+  hidden: false
 })
 
 // 获取组件函数，支持字符串和组件对象

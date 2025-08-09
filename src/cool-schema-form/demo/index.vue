@@ -102,6 +102,25 @@
       </div>
     </section>
 
+    <!-- CoolQueryFilter 集成示例 -->
+    <section class="demo-section">
+      <div class="section-header">
+        <h2>🔍 CoolQueryFilter 集成示例</h2>
+        <span class="section-badge">查询筛选</span>
+      </div>
+      
+      <div class="demo-content">
+        <div class="example-wrapper">
+          <CoolSchemaForm 
+            :columns="queryFilterColumns" 
+            layout-type="CoolQueryFilter"
+            :on-finish="handleQueryFilterSearch"
+            :on-reset="handleQueryFilterReset"
+          />
+        </div>
+      </div>
+    </section>
+
     <!-- 动态表单示例 -->
     <section class="demo-section">
       <div class="section-header">
@@ -197,6 +216,12 @@
           <a-tab-pane key="complex" tab="复杂表单">
             <pre>{{ JSON.stringify(complexFormData, null, 2) }}</pre>
           </a-tab-pane>
+          <a-tab-pane key="queryFilter" tab="查询筛选">
+            <div style="margin-bottom: 12px; color: #64748b;">
+              筛选条件数量: <span style="color: #3b82f6; font-weight: bold;">{{ queryFilterColumns.length }}</span>
+            </div>
+            <pre>{{ JSON.stringify(queryFilterData, null, 2) }}</pre>
+          </a-tab-pane>
           <a-tab-pane key="schema" tab="配置详情">
             <div style="margin-bottom: 12px; color: #64748b;">当前激活的表单配置</div>
             <pre>{{ JSON.stringify(getCurrentSchema(), null, 2) }}</pre>
@@ -241,6 +266,7 @@ const fullFormData = reactive({})
 const drawerFormData = reactive({})
 const dynamicFormData = reactive({})
 const complexFormData = reactive({})
+const queryFilterData = reactive({})
 
 // 基础表单配置
 const basicColumns: CoolFormColumnsType[] = [
@@ -592,6 +618,90 @@ const drawerColumns: CoolFormColumnsType[] = [
   }
 ]
 
+// CoolQueryFilter 集成示例配置
+const queryFilterColumns: CoolFormColumnsType[] = [
+  {
+    name: 'keyword',
+    label: '关键词',
+    valueType: 'text',
+    initialValue: '',
+    fieldProps: {
+      placeholder: '请输入关键词'
+    }
+  },
+  {
+    name: 'status',
+    label: '状态',
+    valueType: 'select',
+    initialValue: '',
+    fieldProps: {
+      placeholder: '请选择状态',
+      options: [
+        { label: '全部', value: '' },
+        { label: '待处理', value: 'pending' },
+        { label: '进行中', value: 'in_progress' },
+        { label: '已完成', value: 'completed' }
+      ]
+    }
+  },
+  {
+    name: 'priority',
+    label: '优先级',
+    valueType: 'select',
+    initialValue: '',
+    fieldProps: {
+      placeholder: '请选择优先级',
+      options: [
+        { label: '全部', value: '' },
+        { label: '低', value: 'low' },
+        { label: '中', value: 'medium' },
+        { label: '高', value: 'high' }
+      ]
+    }
+  },
+  {
+    name: 'dateRange',
+    label: '日期范围',
+    valueType: 'dateRange',
+    initialValue: [],
+    fieldProps: {
+      placeholder: ['开始日期', '结束日期']
+    }
+  },
+  {
+    name: 'category',
+    label: '分类',
+    valueType: 'select',
+    initialValue: '',
+    fieldProps: {
+      placeholder: '请选择分类',
+      options: [
+        { label: '全部', value: '' },
+        { label: '技术', value: 'tech' },
+        { label: '产品', value: 'product' },
+        { label: '设计', value: 'design' },
+        { label: '运营', value: 'operation' }
+      ]
+    }
+  },
+  {
+    name: 'tags',
+    label: '标签',
+    valueType: 'select',
+    initialValue: [],
+    fieldProps: {
+      placeholder: '请选择标签',
+      mode: 'multiple',
+      options: [
+        { label: '重要', value: 'important' },
+        { label: '紧急', value: 'urgent' },
+        { label: 'bug', value: 'bug' },
+        { label: 'feature', value: 'feature' }
+      ]
+    }
+  }
+]
+
 // 动态表单配置
 const dynamicColumns = ref<CoolFormColumnsType[]>([
   {
@@ -786,6 +896,17 @@ const closeDrawerForm = () => {
   console.log(values)
 }
 
+const handleQueryFilterSearch = (values: any) => {
+  console.log('CoolQueryFilter 搜索条件:', values)
+  message.success('CoolQueryFilter 搜索条件已获取')
+}
+
+const handleQueryFilterReset = () => {
+  console.log('CoolQueryFilter 已重置')
+  message.info('CoolQueryFilter 已重置')
+}
+
+
 const addDynamicField = () => {
   const fieldIndex = dynamicColumns.value.length + 1
   const randomType = fieldTypes[Math.floor(Math.random() * fieldTypes.length)]
@@ -960,6 +1081,8 @@ const getCurrentSchema = () => {
       return dynamicColumns.value
     case 'complex':
       return complexColumns
+    case 'queryFilter':
+      return queryFilterColumns
     default:
       return []
   }

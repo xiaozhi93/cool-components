@@ -1,4 +1,4 @@
-export type FormLayoutType = 'CoolForm' | 'CoolDrawerForm'
+export type FormLayoutType = 'CoolForm' | 'CoolDrawerForm' | 'CoolQueryFilter'
 import { CoolFormFieldProps } from "../../cool-form-field/types"
 import { FormItemProps } from 'ant-design-vue'
 import type { Component } from "vue";
