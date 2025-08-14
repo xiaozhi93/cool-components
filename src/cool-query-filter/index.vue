@@ -8,6 +8,8 @@
         width: '100%',
       },
     }"
+    :submitter="true"
+    :submitter-props="submitterProps"
     v-bind="$attrs"
   >
     <template #default="{ Component }">
@@ -27,7 +29,7 @@
 import { useSlots, computed } from 'vue';
 import { omit } from 'lodash-es';
 import CoolBaseForm from '../cool-base-form/index';
-import { QueryFilterProps } from './types';
+import { CoolQueryFilterProps } from './types';
 import QueryFilterContent from './components/index';
 
 defineOptions({
@@ -35,14 +37,25 @@ defineOptions({
   inheritAttrs: false,
 });
 
-withDefaults(defineProps<QueryFilterProps>(), {
+const props = withDefaults(defineProps<CoolQueryFilterProps>(), {
   defaultCollapsed: true,
   defaultColsNumber: undefined,
+  resetText: '重置',
+  searchText: '搜索'
 });
 const slots = useSlots();
 
 const otherSlots = computed(() => {
   return omit(slots, ['default']);
 });
+
+const submitterProps = computed(() => {
+  return {
+    searchConfig: {
+      submitText: props.searchText,
+      resetText: props.resetText,
+    }
+  }
+})
 </script>
 <style scoped></style>

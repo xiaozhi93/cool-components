@@ -81,7 +81,8 @@ export function render(
           valueType: baseType,
           mode,
           emptyText,
-          ...props 
+          placeholder: props.placeholder || '请输入',
+          ...props,
         }
       }
     
@@ -93,6 +94,7 @@ export function render(
           valueType: baseType,
           mode,
           emptyText,
+          placeholder: props.placeholder || '请输入',
           ...props 
         }
       }
@@ -103,6 +105,7 @@ export function render(
           value: dataValue, 
           mode,
           emptyText,
+          placeholder: props.placeholder || '请输入',
           ...props 
         }
       }
@@ -114,6 +117,7 @@ export function render(
           value: dataValue, 
           mode,
           emptyText,
+          placeholder: props.placeholder || '请输入',
           ...props 
         }
       }
@@ -136,6 +140,7 @@ export function render(
           value: dataValue, 
           mode,
           emptyText,
+          placeholder: props.placeholder || '请输入',
           ...props 
         }
       }
@@ -156,6 +161,7 @@ export function render(
           value: dataValue, 
           mode,
           emptyText,
+          placeholder: props.placeholder || '请选择',
           ...props 
         }
       }
@@ -176,6 +182,7 @@ export function render(
           value: dataValue, 
           mode,
           emptyText,
+          placeholder: props.placeholder || '请选择',
           ...props 
         }
       }
@@ -186,6 +193,7 @@ export function render(
           value: dataValue, 
           mode,
           emptyText,
+          placeholder: props.placeholder || '请选择',
           ...props 
         }
       }
@@ -206,6 +214,7 @@ export function render(
           value: dataValue, 
           mode,
           emptyText,
+          placeholder: props.placeholder || '请选择',
           ...props 
         }
       }
@@ -217,6 +226,7 @@ export function render(
           value: dataValue, 
           mode,
           emptyText,
+          placeholder: props.placeholder || ['请选择', '请选择'],
           ...props 
         }
       }
@@ -228,6 +238,7 @@ export function render(
           value: dataValue, 
           mode,
           emptyText,
+          placeholder: props.placeholder || '请选择',
           ...props 
         }
       }
@@ -239,6 +250,7 @@ export function render(
           value: dataValue, 
           mode,
           emptyText,
+          placeholder: props.placeholder || ['请选择', '请选择'],
           ...props 
         }
       }

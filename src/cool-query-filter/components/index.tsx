@@ -14,7 +14,7 @@ export default defineComponent({
     },
     defaultColsNumber: {
       type: Number
-    },
+    }
   },
   setup(props, { slots }) {
     const collapsed = ref(props.defaultCollapsed)
