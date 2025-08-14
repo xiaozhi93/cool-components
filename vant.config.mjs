@@ -74,6 +74,10 @@ export default {
             path: 'cool-form-list',
             title: 'CoolFormList 表单列表',
           },
+          {
+            path: 'cool-table',
+            title: 'CoolTable 表格',
+          },
         ],
       },
     ],
