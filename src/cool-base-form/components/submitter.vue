@@ -1,9 +1,9 @@
 <template>
   <a-space>
-    <a-button v-if="resetButtonProps" v-bind="resetButtonProps" @click="reset">
+    <a-button v-if="resetText" v-bind="resetButtonProps" @click="reset">
       {{ resetText }}
     </a-button>
-    <a-button v-if="submitButtonProps" type="primary" v-bind="submitButtonProps" @click="submit">
+    <a-button v-if="submitText" type="primary" v-bind="submitButtonProps" @click="submit">
       {{ submitText }}
     </a-button>
   </a-space>
@@ -34,7 +34,7 @@ const reset = () => {
 
 const {
   submitText = '提交',
-  resetText = '重置',
+  resetText = '',
 } = props.searchConfig || {};
 </script>
 <style scoped lang="scss"></style>

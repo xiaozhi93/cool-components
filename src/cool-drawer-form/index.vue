@@ -1,6 +1,6 @@
 <template>
   <Drawer v-model:open="open" v-bind="drawerProps">
-    <CoolBaseForm  v-bind="formProps" :on-finish="handleFinish">
+    <CoolBaseForm ref="baseFormRef" v-bind="formProps" :on-finish="handleFinish">
       <template #default="{ Component }">
         <slot />
          <!-- 先确保footerRef存在 -->
@@ -21,6 +21,7 @@ import { computed, useSlots, h, useAttrs, ref } from 'vue'
 import { Drawer } from 'ant-design-vue'
 import CoolBaseForm from '../cool-base-form/index'
 import type { CoolDrawerFormProps } from './types'
+import { useFormExpose } from '../cool-base-form/composables/useFormExpose'
 defineOptions({
   name: 'CoolDrawerForm',
   inheritAttrs: false
@@ -40,7 +41,6 @@ const props = withDefaults(defineProps<CoolDrawerFormProps>(), {
     }
   })
 })
-
 const open = defineModel<boolean>('open', { required: false })
 const footerRef = ref<HTMLElement>()
 const drawerProps = computed(() => ({
@@ -82,6 +82,9 @@ const handleFinish = async(values: any) => {
   }
   return result;
 }
+
+const baseFormRef = ref<any>()
+useFormExpose(baseFormRef)
 
 </script>
 

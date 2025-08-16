@@ -85,7 +85,6 @@ export default defineComponent<CoolBaseFormProps>({
     };
     // 暴露方法
     expose({
-      formRef,
       submit: handleSubmit,
       reset: handleReset,
       validate: () => formRef.value?.validate(),

@@ -33,4 +33,15 @@ export interface CoolBaseFormProps {
   fieldProps?: Record<string, any>;
 } 
 
+// CoolBaseForm 组件暴露的方法类型
+export interface CoolBaseFormExpose {
+  submit: () => Promise<any>
+  reset: () => Promise<void>
+  validate: () => Promise<any>
+  validateFields: (fields?: string[]) => Promise<any>
+  scrollToField: (name: any, options: [any]) => void
+  resetFields: () => void
+  clearValidate: (fields?: string[]) => void
+}
+
 export type { SubmitterProps }

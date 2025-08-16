@@ -1,5 +1,5 @@
 <template>
-  <component :is="FormRenderComponents" v-bind="$attrs" :model="formModel">
+  <component ref="formRef" :is="FormRenderComponents" v-bind="$attrs" :model="formModel">
     <template v-if="props.columns?.length">
       <CoolSchemaNode 
         v-for="(column, index) in props.columns"
@@ -17,12 +17,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, watch, useAttrs, useSlots } from "vue"
+import { ref, computed, reactive, watch, useAttrs, useSlots } from "vue"
 import type { CoolSchemaFormProps, FormLayoutType, CoolFormColumnsType } from "./types"
 import { SchemaFormLayout } from "./core"
 import { omit } from "lodash-es"
 import { getFieldProp } from "./core"
 import CoolSchemaNode from "./components/CoolSchemaNode.vue"
+import { useFormExpose } from '../cool-base-form/composables/useFormExpose'
+
 defineOptions({
   name: "CoolSchemaForm",
   inheritAttrs: false
@@ -63,7 +65,8 @@ const otherSlots = computed(() => {
   return omit(slots, ['default']) || {}
 })
 
-defineExpose({
+const formRef = ref<any>()
+useFormExpose(formRef, {
   setFieldsValue,
   getFieldsValue
 })

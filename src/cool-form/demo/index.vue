@@ -18,6 +18,7 @@
       <div class="demo-content">
         <div class="example-wrapper">
           <CoolForm
+            ref="basicFormRef"
             :model="basicFormData"
             :rules="basicRules"
             :on-finish="handleBasicSubmit"
@@ -39,6 +40,12 @@
               <a-textarea v-model:value="basicFormData.bio" placeholder="请输入个人简介" :rows="4" />
             </a-form-item>
           </CoolForm>
+          <div class="form-actions">
+            <a-space>
+              <a-button type="primary" @click="handleCustomSubmit">自定义提交</a-button>
+              <a-button @click="handleCustomReset">自定义重置</a-button>
+            </a-space>
+          </div>
         </div>
       </div>
     </section>
@@ -460,6 +467,7 @@ import CoolField from '../../cool-field/index.vue'
 
 // 表单引用
 const asyncFormRef = ref()
+const basicFormRef = ref()
 
 // 基础表单数据
 const basicFormData = reactive({
@@ -719,6 +727,18 @@ const setAsyncFormValues = () => {
 const clearAsyncValidation = () => {
   asyncFormRef.value?.clearValidate()
   message.info('验证状态已清除')
+}
+
+const handleCustomSubmit = () => {
+  console.log(basicFormRef.value)
+  basicFormRef.value.submit()
+  console.log('自定义提交')
+}
+
+const handleCustomReset = () => {
+  console.log(basicFormRef.value)
+  basicFormRef.value.reset()
+  console.log('自定义重置')
 }
 </script>
 

@@ -1,5 +1,6 @@
 <template>
   <CoolBaseForm
+    ref="baseFormRef"
     layout="vertical"
     :is-key-press-submit="true"
     :form-component-type="'CoolQueryFilter'"
@@ -26,11 +27,12 @@
   </CoolBaseForm>
 </template>
 <script setup lang="ts">
-import { useSlots, computed } from 'vue';
+import { useSlots, computed, ref } from 'vue';
 import { omit } from 'lodash-es';
 import CoolBaseForm from '../cool-base-form/index';
 import { CoolQueryFilterProps } from './types';
 import QueryFilterContent from './components/index';
+import { useFormExpose } from '../cool-base-form/composables/useFormExpose'
 
 defineOptions({
   name: 'CoolQueryFilter',
@@ -57,5 +59,7 @@ const submitterProps = computed(() => {
     }
   }
 })
+const baseFormRef = ref<any>()
+useFormExpose(baseFormRef)
 </script>
 <style scoped></style>
