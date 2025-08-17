@@ -1,7 +1,7 @@
 <template>
   <div class="cool-table">
     <div class="cool-table-query">
-      <slot name="query" />
+      <slot name="search" />
     </div>
     <slot name="toolbar"></slot>
     <slot name="alert"></slot>

@@ -1,10 +1,13 @@
 <template>
   <TableRender v-bind="computedTableProps">
-    <template #query>
+    <template #search>
       <FormRender v-bind="search" :columns="columns || []" />
     </template>
     <template #toolbar>
       <ToolbarRender v-bind="toolbar">
+        <template #toolbar>
+          <slot name="toolbar" />
+        </template>
         <SettingRender v-bind="settings" />
       </ToolbarRender>
     </template>

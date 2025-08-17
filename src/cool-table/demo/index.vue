@@ -6,7 +6,11 @@
       :data-source="dataSource"
       :pagination="pagination"
       row-key="id"
-    />
+    >
+      <template #toolbar>
+        <a-button type="primary">新增</a-button>
+      </template>
+    </CoolTable>    
   </div>
 </template>
 
