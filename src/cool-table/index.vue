@@ -1,5 +1,5 @@
 <template>
-  <TableRender v-bind="computedTableProps">
+  <TableRender v-bind="$attrs">
     <template #search>
       <FormRender v-bind="search" :columns="columns || []" />
     </template>
@@ -15,38 +15,24 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useAttrs } from 'vue'
+import { computed, ref } from 'vue'
 import TableRender from './components/TableRender.vue'
 import { CoolTableProps } from './types'
 import FormRender from './components/FormRender.vue'
 import ToolbarRender from './components/ToolbarRender.vue'
 import SettingRender from './components/SettingRender.vue'
-import { onMounted } from 'vue';
-
+import { useCoolTable, ActionType } from './provider'
 const props = withDefaults(defineProps<CoolTableProps<any, any, any>>(), {
-})
-const attrs = useAttrs()
-const computedTableProps = computed(() => {
-  return {
-    ...props,
-    ...attrs
-  }
 })
 
 const settings = computed(() => {
   return [
   ]
 })
-
-onMounted(() => {
-  if (props.actionRef) {
-    Object.assign(props.actionRef, {
-      reload: () => {
-        console.log('reload')
-      }
-    })
-  }
-})
+// 设置actionRef
+const actionRef = ref<ActionType | undefined>(undefined)
+const { setAction } = useCoolTable(props)
+setAction(actionRef.value)
 </script>
 
 <style scoped lang="scss">

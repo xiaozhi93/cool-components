@@ -12,7 +12,7 @@ import type { ProColumns } from '../types'
 import { genProColumnsToFormColumns } from '../core'
 
 const props = defineProps<{
-  search: SearchConfig
+  search?: SearchConfig
   columns: ProColumns<any>[]
 }>()
 

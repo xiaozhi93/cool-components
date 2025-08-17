@@ -1,10 +1,8 @@
 import type { SortOrder, ColumnType } from 'ant-design-vue/es/table/interface';
 import type { CoolFormColumnsType } from '../../cool-schema-form/types';
-import type { TableProps } from 'ant-design-vue';
 import type { OptionConfig, ListToolBarProps } from './toolbar';
 import type { SearchConfig } from './form';
 import type { CoolFieldValueTypeConfig } from '../../cool-field/types/valueTypes';
-import { Ref } from 'vue';
 
 export type RequestData<T> = {
   data: T[] | undefined;
@@ -98,6 +96,4 @@ export type CoolTableProps<DataSource, U, ValueType = 'text'> = {
   onCrudEdit?: (record: DataSource) => Promise<void>;
   /** @name 删除按钮点击回调 */
   onCrudDelete?: (record: DataSource) => Promise<void>;
-
-  actionRef?: Ref<any>;
-} & Omit<TableProps<DataSource>, 'columns'>;
+};

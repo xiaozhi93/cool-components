@@ -36,7 +36,6 @@
               :draggable="draggable"
               :checkable="checkable"
               :show-list-item-option="showListItemOption"
-              :prefix-cls="prefixCls"
               @change="handleColumnChange"
             />
           </div>
@@ -51,7 +50,6 @@
               :draggable="draggable"
               :checkable="checkable"
               :show-list-item-option="showListItemOption"
-              :prefix-cls="prefixCls"
               @change="handleColumnChange"
             />
           </div>
@@ -81,7 +79,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { Checkbox as ACheckbox, Space as ASpace, Tooltip as ATooltip, Popover as APopover } from 'ant-design-vue'
+import { Checkbox as ACheckbox, Tree as ATree, Tooltip as ATooltip, Popover as APopover } from 'ant-design-vue'
 import { SettingOutlined } from '@ant-design/icons-vue'
 import type { ProColumns } from '../../types'
 import ColumnList from './ColumnList.vue'
@@ -183,12 +181,11 @@ const handleReset = () => {
   display: inline-block;
 }
 
-:deep(.cool-table-column-setting-overlay) {
-  .cool-table-column-setting-title {
+.cool-table-column-setting-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
+    padding-bottom: 12px;
     border-bottom: 1px solid #f0f0f0;
     
     .cool-table-column-setting-action-rest-button {
@@ -222,5 +219,4 @@ const handleReset = () => {
       }
     }
   }
-}
 </style>
