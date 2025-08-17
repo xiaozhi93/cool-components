@@ -2,9 +2,14 @@ import { provide, inject, ref, computed, type Ref } from 'vue'
 import type { CoolTableProps, ProColumns } from '../types'
 import { useLocalStorage } from '@vueuse/core'
 import { cloneDeep } from 'lodash-es'
+import type { PaginationQueryResult } from 'vue-request'
+
+export type ActionType = {
+  fullScreen: () => void
+}
+
 export interface CoolTableContext {
-  actionRef: Ref<ActionType | undefined>
-  setAction: (newAction?: ActionType) => void
+  actionRef: PaginationQueryResult<any, any> & ActionType
   columns: ProColumns<any>[]
   defaultColumnKeyMap: Record<string, {
     show: boolean
@@ -24,16 +29,14 @@ export type PageInfo = {
   pageSize: number
 }
 
-export type ActionType = {
-  reload: () => void
-  setPageInfo: (pageInfo: PageInfo) => void
-  fullScreen: () => void
-}
 
 export const CoolTableProviderKey = Symbol('CoolTableProvider')
 
-export const useCoolTable = (props: CoolTableProps<any, any>) => {
-  const actionRef = ref<ActionType | undefined>(undefined)
+export const useCoolTable = (props: CoolTableProps<any, any>, {
+  action,
+}: {
+  action: PaginationQueryResult<any, any> & ActionType
+}) => {
 
   const defaultColumnKeyMap = computed(() => {
     const columnKeyMap: Record<string, {
@@ -63,10 +66,7 @@ export const useCoolTable = (props: CoolTableProps<any, any>) => {
 
   // 提供给子组件的数据
   const context: CoolTableContext = {
-    actionRef,
-    setAction: (newAction?: ActionType) => {
-      actionRef.value = newAction
-    },
+    actionRef: action,
     columns: props.columns || [],
     defaultColumnKeyMap: defaultColumnKeyMap.value,
     columnsMap, // 已经是 Ref，保持响应式

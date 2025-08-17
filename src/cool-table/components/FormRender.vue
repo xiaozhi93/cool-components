@@ -1,6 +1,6 @@
 <template>
   <div class="cool-table-search">
-    <CoolSchemaForm layout-type="CoolQueryFilter" v-bind="search" :columns="formColumns" />
+    <CoolSchemaForm layout-type="CoolQueryFilter" v-bind="search" :onFinish="onFinish" :onReset="onReset" :columns="formColumns" />
   </div>
 </template>
 
@@ -8,19 +8,36 @@
 import { ref, computed } from 'vue'
 import CoolSchemaForm from '../../cool-schema-form/index.vue'
 import type { SearchConfig } from '../types/form'
-import type { ProColumns } from '../types'
 import { genProColumnsToFormColumns } from '../core'
+import { useCoolTableContext } from '../provider'
 
-const props = defineProps<{
+const { columns, actionRef: { run, current, pageSize } } = useCoolTableContext()
+
+defineProps<{
   search?: SearchConfig
-  columns: ProColumns<any>[]
 }>()
 
-const formModel = ref<Record<string, any>>({})
-
 const formColumns = computed(() => {
-  return genProColumnsToFormColumns(props.columns)
+  return genProColumnsToFormColumns(columns || []) as any
 })
+
+const onFinish = (values: any) => {
+  // current.value = 1
+  run({
+    ...values,
+    current: 1,
+    pageSize: pageSize.value,
+    ...values
+  })
+}
+
+const onReset = (values: any) => {
+  run({
+    ...values,
+    current: 1,
+    pageSize: pageSize.value,
+  })
+}
 </script>
 
 <style scoped>

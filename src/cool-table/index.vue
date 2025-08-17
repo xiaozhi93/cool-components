@@ -1,7 +1,7 @@
 <template>
-  <TableRender v-bind="$attrs">
+  <TableRender v-bind="$attrs" :pagination="false" :loading="loading" :data-source="data?.data || $attrs.dataSource || []">
     <template #search>
-      <FormRender v-bind="search" :columns="columns || []" />
+      <FormRender v-if="search !== false" v-bind="search || {}" />
     </template>
     <template #toolbar>
       <ToolbarRender v-bind="toolbar">
@@ -21,18 +21,27 @@ import { CoolTableProps } from './types'
 import FormRender from './components/FormRender.vue'
 import ToolbarRender from './components/ToolbarRender.vue'
 import SettingRender from './components/SettingRender.vue'
-import { useCoolTable, ActionType } from './provider'
+import { useCoolTable } from './provider'
+import { useFetchData } from './composables/useFetchData'
 const props = withDefaults(defineProps<CoolTableProps<any, any, any>>(), {
+  search: undefined,
 })
 
 const settings = computed(() => {
   return [
   ]
 })
-// 设置actionRef
-const actionRef = ref<ActionType | undefined>(undefined)
-const { setAction } = useCoolTable(props)
-setAction(actionRef.value)
+const action = useFetchData({
+  request: props.request as any,
+  requestOptions: props.requestOptions as any,
+})
+const { data, loading, total, current, pageSize } = action
+useCoolTable(props, {
+  action: {
+    ...action,
+    fullScreen: () => {},
+  } as any,
+})
 </script>
 
 <style scoped lang="scss">

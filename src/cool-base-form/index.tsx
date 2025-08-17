@@ -77,7 +77,7 @@ export default defineComponent<CoolBaseFormProps>({
       try {
         formRef.value?.resetFields();
         if (props.onReset) {
-          await props.onReset();
+          await props.onReset(attrs.model || {});
         }
       } catch (error) {
         console.error('Form reset error:', error);
@@ -105,7 +105,12 @@ export default defineComponent<CoolBaseFormProps>({
         onReset: handleReset,
       })
       return (
-        <AForm ref={formRef} auto-complete="off" {...formProps.value}>
+        <AForm ref={formRef} auto-complete="off" {...formProps.value} onKeydown={(e: any) => {
+          if (!props.isKeyPressSubmit) return;
+          if (e.key === 'Enter') {
+            handleSubmit();
+          }
+        }} >
           <RowWrapper>
             {slots.default?.({
               Component: submitterDom,

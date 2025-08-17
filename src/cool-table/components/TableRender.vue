@@ -9,18 +9,21 @@
       v-bind="$attrs"
       :columns="columns"
     />
+    <div class="cool-table-pagination">
+      <a-pagination v-model:current="current" v-model:pageSize="pageSize" :total="total" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts" generic="T, U, ValueType">
 import { computed } from 'vue';
 import type { CoolTableProps } from '../types/index';
-import { Table as ATable } from 'ant-design-vue';
+import { Table as ATable, Pagination as APagination } from 'ant-design-vue';
 import { useCoolTableContext } from '../provider';
 // 表格支持是否可编辑，如果可编辑，则需要cool-form包裹
 const props = defineProps<Omit<CoolTableProps<T, U, ValueType>, 'columns'>>()
 
-const { columns: propsColumns, columnsMap } = useCoolTableContext()
+const { columns: propsColumns, columnsMap, actionRef: { current, pageSize, total } } = useCoolTableContext()
 
 const columns = computed(() => {
   const loopFilter = (column: any[]): any[] => {
@@ -47,4 +50,9 @@ const columns = computed(() => {
 </script>
 
 <style scoped lang="scss">
+.cool-table-pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
 </style>  

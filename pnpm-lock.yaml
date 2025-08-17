@@ -26,6 +26,9 @@ importers:
       lodash-es:
         specifier: ^4.17.0
         version: 4.17.21
+      vue-request:
+        specifier: ^2.0.4
+        version: 2.0.4(vue@3.5.17(typescript@5.8.3))
       vue3-ace-editor:
         specifier: ^2.2.4
         version: 2.2.4(ace-builds@1.43.2)(vue@3.5.17(typescript@5.8.3))
@@ -2273,6 +2276,17 @@ packages:
       terser:
         optional: true
 
+  vue-demi@0.14.10:
+    resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
+    engines: {node: '>=12'}
+    hasBin: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+
   vue-eslint-parser@9.4.3:
     resolution: {integrity: sha512-2rYRLWlIpaiN8xbPiDyXZXRgLGOtWxERV7ND5fFAv5qo1D2N9Fu9MNajBNc6o13lZ+24DAWCkQCvj4klgmcITg==}
     engines: {node: ^14.17.0 || >=16.0.0}
@@ -2289,6 +2303,16 @@ packages:
       '@vue/compiler-sfc':
         optional: true
       vue:
+        optional: true
+
+  vue-request@2.0.4:
+    resolution: {integrity: sha512-+Tu5rDy6ItF9UdD21Mmbjiq5Pq6NZSN9juH72hNQTMn1whHh4KZPTKWVLK2YS4nzbuEnPs+82G91AA2Fgd93mg==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^2.0.0 || >=3.0.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
         optional: true
 
   vue-router@4.5.1:
@@ -4568,6 +4592,10 @@ snapshots:
       sass-embedded: 1.89.2
       terser: 5.43.1
 
+  vue-demi@0.14.10(vue@3.5.17(typescript@5.8.3)):
+    dependencies:
+      vue: 3.5.17(typescript@5.8.3)
+
   vue-eslint-parser@9.4.3(eslint@8.57.1):
     dependencies:
       debug: 4.4.1
@@ -4589,6 +4617,11 @@ snapshots:
       webpack: 5.99.9(esbuild@0.23.1)
     optionalDependencies:
       vue: 3.5.17(typescript@5.8.3)
+
+  vue-request@2.0.4(vue@3.5.17(typescript@5.8.3)):
+    dependencies:
+      vue: 3.5.17(typescript@5.8.3)
+      vue-demi: 0.14.10(vue@3.5.17(typescript@5.8.3))
 
   vue-router@4.5.1(vue@3.5.17(typescript@5.8.3)):
     dependencies:

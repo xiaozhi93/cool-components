@@ -14,12 +14,12 @@ import { ReloadOutlined } from '@ant-design/icons-vue'
 import ColumnSetting from './ColumnSetting/index.vue'
 import { useCoolTableContext } from '../provider';
 
-const { actionRef } = useCoolTableContext()
+const { actionRef: { refresh } } = useCoolTableContext()
 
 
 // 处理刷新
 const handleReload = () => {
-  actionRef.value?.reload()
+  refresh()
 }
 
 </script>

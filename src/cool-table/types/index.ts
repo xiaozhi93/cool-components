@@ -3,6 +3,7 @@ import type { CoolFormColumnsType } from '../../cool-schema-form/types';
 import type { OptionConfig, ListToolBarProps } from './toolbar';
 import type { SearchConfig } from './form';
 import type { CoolFieldValueTypeConfig } from '../../cool-field/types/valueTypes';
+import type { PaginationOptions} from 'vue-request';
 
 export type RequestData<T> = {
   data: T[] | undefined;
@@ -59,11 +60,7 @@ export type CoolTableProps<DataSource, U, ValueType = 'text'> = {
     filter: Record<string, (string | number)[] | null>
   ) => Promise<Partial<RequestData<DataSource>>>;
 
-  /** @name 对数据进行一些处理 */
-  postData?: any;
-
-  /** @name 是否手动触发请求 */
-  manualRequest?: boolean;
+  requestOptions?: PaginationOptions<any, any>
 
   /**
    * @type SearchConfig
