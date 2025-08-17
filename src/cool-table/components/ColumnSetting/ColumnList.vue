@@ -21,24 +21,24 @@
 import { computed, ref, watch } from 'vue'
 import { Tree as ATree } from 'ant-design-vue'
 import type { ProColumns } from '../../types'
+import { useCoolTableContext } from '../../provider'
 
 export interface ColumnListProps {
   /** 列配置 */
   columns: ProColumns<any>[]
-  /** 列状态映射 */
-  columnsMap?: Record<string, any>
 }
 
 const props = withDefaults(defineProps<ColumnListProps>(), {
   columns: () => [],
-  columnsMap: () => ({})
 })
+
+const { columnsMap } = useCoolTableContext()
 
 // 构建树形数据
 const treeData = computed(() => {
   return props.columns.map((column, index) => {
     const key = column.key || column.dataIndex || `column-${index}`
-    const config = props.columnsMap[key as string] || { show: true }
+    const config = columnsMap.value[key as string] || { show: true }
     
     return {
       key,
@@ -54,7 +54,7 @@ const checkedKeys = computed(() => {
   
   const traverse = (nodes: any[]) => {
     nodes.forEach(node => {
-      const config = props.columnsMap[node.key] || { show: true }
+      const config = columnsMap.value[node.key] || { show: true }
       if (config.show !== false) {
         keys.push(node.key)
       }
@@ -70,7 +70,7 @@ const checkedKeys = computed(() => {
 
 // 处理勾选变化
 const handleCheck = (_: any, info: any) => {
-  const newColumnsMap = props.columnsMap
+  const newColumnsMap = columnsMap.value
   
   // 处理当前节点
   const node = info.node

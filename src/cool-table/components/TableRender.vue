@@ -28,7 +28,7 @@ const columns = computed(() => {
         .map((item) => {
           // 删掉不应该显示的
           const columnKey = item.key || item.dataIndex || `column-${item.index}`;
-          const config = columnsMap[columnKey as string];
+          const config = columnsMap.value[columnKey as string];
           if (config && config.show === false) {
             return false;
           }
