@@ -23,7 +23,6 @@
         :key="childColumn.name"
         :column="childColumn"
         :form-model="formModel"
-        :context="context"
         :components="components"
       />
     </template>
@@ -77,6 +76,7 @@ import type { Component } from "vue"
 import CoolFormField from "../../cool-form-field/index"
 import CoolFormList from "../../cool-form-list/index.vue"
 import CoolFormGroup from "../../cool-form-group/index.vue"
+import { useCoolSchemaFormContext } from "../context"
 
 defineOptions({
   name: "CoolSchemaNode",
@@ -86,7 +86,6 @@ defineOptions({
 interface Props {
   column: CoolFormColumnsType
   formModel: Record<string, any>
-  context?: Record<string, any>
   components?: Record<string, Component>
   parentPath?: string // 父级路径
   parentIndex?: number // 父级索引， 用于列表组件
@@ -96,11 +95,10 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   column: () => ({} as CoolFormColumnsType),
   formModel: () => ({}),
-  context: () => ({}),
   components: () => ({}),
   hidden: false
 })
-
+const context = useCoolSchemaFormContext()
 // 获取组件函数，支持字符串和组件对象
 const getComponent = (component: Component | string | undefined): Component | string => {
   if (!component) return ''

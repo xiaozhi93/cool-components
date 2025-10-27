@@ -6,7 +6,6 @@
         :key="column.name"
         :column="column"
         :form-model="formModel"
-        :context="context"
         :components="components"
       />
     </template>
@@ -24,6 +23,7 @@ import { omit } from "lodash-es"
 import { generateDefaultValues } from "./core"
 import CoolSchemaNode from "./components/CoolSchemaNode.vue"
 import { useFormExpose } from '../cool-base-form/composables/useFormExpose'
+import { provideCoolSchemaFormContext } from "./context"
 
 defineOptions({
   name: "CoolSchemaForm",
@@ -42,6 +42,7 @@ const props = withDefaults(defineProps<CoolSchemaFormProps>(), {
   value: () => ({})
 })
 
+const context = provideCoolSchemaFormContext(props.context ?? {})
 const formModel = reactive<Record<string, any>>(props.value ?? {})
 const FormRenderComponents = computed(() => {
   return SchemaFormLayout[props.layoutType as FormLayoutType]
@@ -50,7 +51,7 @@ const FormRenderComponents = computed(() => {
 // 监听columns变化，更新formModel（最好columns有值，然后coolSchemaForm组件才能渲染）
 watch(() => props.columns, () => {
   if(props.columns?.length > 0) {
-    Object.assign(formModel, generateDefaultValues(props.columns, props.value ?? {}, props.context ?? {}))
+    Object.assign(formModel, generateDefaultValues(props.columns, props.value ?? {}, context))
   }
 }, {
   immediate: true
@@ -82,4 +83,5 @@ useFormExpose(formRef, {
   setFieldsValue,
   getFieldsValue
 })
+
 </script>

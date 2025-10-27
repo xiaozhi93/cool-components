@@ -17,7 +17,7 @@
       
       <div class="demo-content">
         <div class="example-wrapper">
-          <CoolSchemaForm ref="basicFormRef" :on-finish="onFinish" :on-reset="onReset" :columns="basicColumns" layout-type="CoolForm" :context="{ username: 'windfly' }" :components="{ customInput: CustomFormInput }" />
+          <CoolSchemaForm ref="basicFormRef" :on-finish="onFinish" :on-reset="onReset" :columns="basicColumns" layout-type="CoolForm" :context="context" :components="{ customInput: CustomFormInput }" />
           <div class="form-actions">
             <a-space>
               <a-button @click="getBasicFormValues" type="primary">获取表单值</a-button>
@@ -247,6 +247,32 @@ import { createFormField } from '../../cool-form-field/core/createFormField'
 import { Input as AInput } from 'ant-design-vue'
 const CustomFormInput = createFormField(AInput)
 
+const context = {
+  username: 'windfly',
+  request: () => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve([{ label: '选项一', value: 'option1' }, { label: '选项二', value: 'option2' }, { label: '选项三', value: 'option3' }])
+      }, 1000)
+    })
+  },
+  // 字典服务
+  dictionaryService: () => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve([{ label: '选项一', value: 'option1' }, { label: '选项二', value: 'option2' }, { label: '选项三', value: 'option3' }])
+      }, 1000)
+    })
+  },
+  // 证照识别服务
+  licenseRecognitionService: () => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve([{ label: '选项一', value: 'option1' }, { label: '选项二', value: 'option2' }, { label: '选项三', value: 'option3' }])
+      }, 1000)
+    })
+  }
+}
 
 // 表单引用
 const basicFormRef = ref()
