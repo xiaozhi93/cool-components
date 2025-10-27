@@ -1,5 +1,5 @@
-import type { FormExpression, FormExpressionResult } from '../types'
-
+import type { CoolFormColumnsType, FormExpression, FormExpressionResult } from '../types'
+import { getFieldProp } from '../core'
 /**
  * 检查字符串是否为有效的表单表达式
  * @param expr 待检查的字符串

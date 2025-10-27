@@ -1,7 +1,7 @@
 import CoolForm from "../../cool-form/index.vue"
 import CoolDrawerForm from "../../cool-drawer-form/index.vue"
 import CoolQueryFilter from "../../cool-query-filter/index.vue"
-import type { FormLayoutType } from "../types"
+import type { CoolFormColumnsType, FormLayoutType } from "../types"
 import { evalFormilyExpr, isFormExpression, isFunctionString, evalFunctionString } from "../utils"
 import { omit } from "lodash-es"
 
@@ -58,4 +58,33 @@ export const getFieldVisibleProp = (field: Record<string, any>, formData: Record
     }
   }
   return visible;
+}
+
+/**
+ * 生成默认值
+ * @param schema 表单列配置
+ * @param value 表单数据
+ * @returns 默认值
+ */
+export function generateDefaultValues(columns: CoolFormColumnsType[], value: Record<string, any> = {}, context?: Record<string, any>) {
+  const model: Record<string, any> = {}
+
+  columns.forEach(field => {
+    const prop = field.name
+    const externalValue = value?.[prop]
+
+    if (field.valueType === 'group' && field.columns) {
+      // 嵌套分组
+      model[prop] = generateDefaultValues(field.columns, value ?? {}, context ?? {})
+    } else {
+      // 单字段
+      if (externalValue !== undefined) {
+        model[prop] = externalValue
+      } else {
+        model[prop] = getFieldProp(field, 'initialValue', {}, context ?? {})
+      }
+    }
+  })
+
+  return model
 }

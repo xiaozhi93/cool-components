@@ -49,4 +49,6 @@ export interface CoolSchemaFormProps {
   context?: Record<string, any>;
   // 自定义组件注册表
   components?: Record<string, Component>;
+  // 表单值
+  value?: Record<string, any>;
 }
