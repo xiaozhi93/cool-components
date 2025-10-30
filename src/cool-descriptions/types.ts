@@ -1,4 +1,4 @@
-import type { VNodeChild } from 'vue';
+import type { VNodeChild, Component } from 'vue';
 
 export type ResponsiveColumns = number | {
   xs?: number;
@@ -25,6 +25,8 @@ export interface DescriptionColumn<RecordType = any> {
   show?: boolean | ((record: RecordType) => boolean);
   ellipsis?: boolean;
   copyable?: boolean;
+  /** 使用注册的组件渲染此值，优先级：slot > render > valueType > formatter > raw */
+  valueType?: string;
   render?: (ctx: { value: any; dataSource: RecordType; column: DescriptionColumn<RecordType>; index: number }) => VNodeChild;
   formatter?: BuiltinFormatterType | ((value: any, record: RecordType, column: DescriptionColumn<RecordType>) => VNodeChild | string | number | null | undefined);
   format?: string; // date/time format
@@ -46,6 +48,8 @@ export interface CoolDescriptionsProps<RecordType = any> {
   request?: (params?: any) => Promise<RecordType>;
   params?: any;
   immediate?: boolean;
+  /** 注册可用的渲染组件，key 即为 column.valueType */
+  components?: Record<string, Component>;
 }
 
 export type CoolDescriptionsEmits<RecordType = any> = {

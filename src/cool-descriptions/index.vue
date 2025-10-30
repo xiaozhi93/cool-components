@@ -35,23 +35,22 @@
           </div>
 
           <div class="cool-descriptions__value" :class="[{ 'is-ellipsis': !!col.ellipsis }]">
-            <!-- slot -> render -> formatter -> raw -->
+            <!-- slot -> render -> valueType -> formatter -> raw -->
             <template v-if="slots[slotKey(col)]">
               <slot :name="slotKey(col)" :value="getValue(col)" :dataSource="innerData" :column="col" :index="idx" />
             </template>
             <template v-else-if="typeof col.render === 'function'">
               <component :is="RenderProxy" :render-fn="col.render" :ctx="{ value: getValue(col), dataSource: innerData, column: col, index: idx }" />
             </template>
-            <template v-else>
-              <span :class="['cool-descriptions__text', col.copyable && 'is-copyable']" @click="col.copyable && copyText(getDisplay(col))" :title="tooltipTitle(col)">
-                <template v-if="isVNode(getDisplay(col))">
-                  <component :is="(getDisplay(col) as any)" />
-                </template>
-                <template v-else>
-                  {{ getDisplay(col) }}
-                </template>
-              </span>
-            </template>
+            <component v-else-if="col.valueType && props.components && props.components[col.valueType]" :is="props.components[col.valueType]" :value="getValue(col)" :dataSource="innerData" :column="col" :index="idx" />
+            <span v-else :class="['cool-descriptions__text', col.copyable && 'is-copyable']" @click="col.copyable && copyText(getDisplay(col))" :title="tooltipTitle(col)">
+              <template v-if="isVNode(getDisplay(col))">
+                <component :is="(getDisplay(col) as any)" />
+              </template>
+              <template v-else>
+                {{ getDisplay(col) }}
+              </template>
+            </span>
             <template v-if="slots[`${slotKey(col)}-extra`]"><slot :name="`${slotKey(col)}-extra`" :value="getValue(col)" :dataSource="innerData" :column="col" :index="idx" /></template>
           </div>
           </div>
