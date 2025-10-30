@@ -78,6 +78,10 @@ export default {
             path: 'cool-table',
             title: 'CoolTable 表格',
           },
+          {
+            path: 'cool-descriptions',
+            title: 'CoolDescriptions 描述列表',
+          },
         ],
       },
     ],
