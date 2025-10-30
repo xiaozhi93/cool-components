@@ -57,6 +57,7 @@
 - request?: (params?: any) => Promise<Record<string, any>>
 - params?: any
 - immediate?: boolean = true
+- components?: Record<string, Component>  // 注册 valueType 组件
 
 ## Column
 - dataIndex: string | (rec) => any
@@ -71,6 +72,51 @@
 - format?: string
 - currency?: string
 - enumMap?: Record<string | number, string | { label: string; color?: string }>
+- valueType?: string  // 使用 components 中注册的 key 渲染
+
+渲染优先级：slot > render > valueType > formatter > 原始值。
+
+### 使用 valueType 的示例
+
+```vue
+<script setup lang="ts">
+import CoolDescriptions from '@/src/cool-descriptions';
+import { Tag } from 'ant-design-vue';
+
+const components = {
+  statusTag: (props: { value: number }) => {
+    const map: any = { 1: { color: 'green', text: '启用' }, 0: { color: 'red', text: '禁用' } };
+    const it = map[props.value] || { color: 'default', text: '-' };
+    return <Tag color={it.color}>{it.text}</Tag>;
+  },
+};
+
+const columns = [
+  { title: '姓名', dataIndex: 'name' },
+  { title: '状态', dataIndex: 'status', valueType: 'statusTag' },
+];
+const data = { name: '张三', status: 1 };
+</script>
+
+<template>
+  <CoolDescriptions :dataSource="data" :columns="columns" :components="components" />
+  <!-- 顶部操作区可用 AntD 的 Space/Button -->
+  <CoolDescriptions
+    :dataSource="data"
+    :columns="columns"
+    :column="{ xs: 2, sm: 3, md: 4 }"
+    title="用户详情"
+  >
+    <template #extra>
+      <a-space>
+        <a-button type="primary">编辑</a-button>
+        <a-button>更多</a-button>
+      </a-space>
+    </template>
+  </CoolDescriptions>
+  
+</template>
+```
 
 ## 插槽
 - #title / #extra 顶部区域

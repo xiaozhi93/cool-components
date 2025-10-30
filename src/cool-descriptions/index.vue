@@ -21,39 +21,43 @@
       <Row :gutter="[16, 0]">
       <template v-for="(col, idx) in visibleColumns" :key="idx">
         <Col :span="calcSpan(undefined, col)" :xs="calcSpan('xs', col)" :sm="calcSpan('sm', col)" :md="calcSpan('md', col)" :lg="calcSpan('lg', col)" :xl="calcSpan('xl', col)">
-          <div class="cool-descriptions__item">
-          <div class="cool-descriptions__label">
-            <template v-if="slots[`${slotKey(col)}-label`]">
-              <slot :name="`${slotKey(col)}-label`" :column="col" :index="idx" />
-            </template>
-            <template v-else>
-              <span class="cool-descriptions__label-text" :title="col.tooltip || undefined">
-                {{ col.title }}：
-              </span>
-            </template>
-            <span v-if="col.tooltip" class="cool-descriptions__tooltip" :title="col.tooltip">i</span>
-          </div>
-
-          <div class="cool-descriptions__value" :class="[{ 'is-ellipsis': !!col.ellipsis }]">
-            <!-- slot -> render -> valueType -> formatter -> raw -->
-            <template v-if="slots[slotKey(col)]">
-              <slot :name="slotKey(col)" :value="getValue(col)" :dataSource="innerData" :column="col" :index="idx" />
-            </template>
-            <template v-else-if="typeof col.render === 'function'">
-              <component :is="RenderProxy" :render-fn="col.render" :ctx="{ value: getValue(col), dataSource: innerData, column: col, index: idx }" />
-            </template>
-            <component v-else-if="col.valueType && props.components && props.components[col.valueType]" :is="props.components[col.valueType]" :value="getValue(col)" :dataSource="innerData" :column="col" :index="idx" />
-            <span v-else :class="['cool-descriptions__text', col.copyable && 'is-copyable']" @click="col.copyable && copyText(getDisplay(col))" :title="tooltipTitle(col)">
-              <template v-if="isVNode(getDisplay(col))">
-                <component :is="(getDisplay(col) as any)" />
-              </template>
-              <template v-else>
-                {{ getDisplay(col) }}
-              </template>
-            </span>
-            <template v-if="slots[`${slotKey(col)}-extra`]"><slot :name="`${slotKey(col)}-extra`" :value="getValue(col)" :dataSource="innerData" :column="col" :index="idx" /></template>
-          </div>
-          </div>
+          <template v-if="typeof col.itemRender === 'function'">
+            <component :is="col.itemRender" :column="col" :value="getValue(col)" :dataSource="innerData" :index="idx" />
+          </template>
+          <template v-else>
+            <div class="cool-descriptions__item">
+              <div class="cool-descriptions__label">
+                <template v-if="slots[`${slotKey(col)}-label`]">
+                  <slot :name="`${slotKey(col)}-label`" :column="col" :index="idx" />
+                </template>
+                <template v-else>
+                  <span class="cool-descriptions__label-text" :title="col.tooltip || undefined">
+                    {{ col.title }}<template v-if="props.colon !== false">：</template>
+                  </span>
+                </template>
+                <span v-if="col.tooltip" class="cool-descriptions__tooltip" :title="col.tooltip">i</span>
+              </div>
+              <div class="cool-descriptions__value" :class="[{ 'is-ellipsis': !!col.ellipsis }]">
+                <!-- slot -> render -> valueType -> formatter -> raw -->
+                <template v-if="slots[slotKey(col)]">
+                  <slot :name="slotKey(col)" :value="getValue(col)" :dataSource="innerData" :column="col" :index="idx" />
+                </template>
+                <template v-else-if="typeof col.render === 'function'">
+                  <component :is="RenderProxy" :renderFn="col.render" :ctx="{ value: getValue(col), dataSource: innerData, column: col, index: idx }" />
+                </template>
+                <component v-else-if="col.valueType && props.components && props.components[col.valueType]" :is="props.components[col.valueType]" :value="getValue(col)" :dataSource="innerData" :column="col" :index="idx" />
+                <span v-else :class="['cool-descriptions__text', col.copyable && 'is-copyable']" @click="col.copyable && copyText(getDisplay(col))" :title="tooltipTitle(col)">
+                  <template v-if="isVNode(getDisplay(col))">
+                    <component :is="(getDisplay(col) as any)" />
+                  </template>
+                  <template v-else>
+                    {{ getDisplay(col) }}
+                  </template>
+                </span>
+                <template v-if="slots[`${slotKey(col)}-extra`]"><slot :name="`${slotKey(col)}-extra`" :value="getValue(col)" :dataSource="innerData" :column="col" :index="idx" /></template>
+              </div>
+            </div>
+          </template>
         </Col>
       </template>
       </Row>
@@ -77,6 +81,7 @@ const props = withDefaults(defineProps<CoolDescriptionsProps<any>>(), {
   emptyText: '-',
   immediate: true,
   title: '',
+  colon: true,
 });
 
 const emits = defineEmits<CoolDescriptionsEmits<any>>();
